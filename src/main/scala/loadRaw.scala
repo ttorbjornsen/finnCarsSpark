@@ -35,16 +35,18 @@ object loadRaw extends App {
 
 
   val json: JsValue = Json.parse(rawDataArray.mkString)
-  val rawDataCarsList = json.\\("group")(0)(0)
+
+  val i = 0
+
+  val location = json.\\("group")(0)(i).\("location")(0).\("text")
+  val title = json.\\("group")(0)(i).\("title")(0).\("text")
+  val url = json.\\("group")(0)(i).\("title")(0).\("href")
+  val year = json.\\("group")(0)(i).\("year")(0).\("text")
+  val km = json.\\("group")(0)(i).\("km")(0).\("text")
+  val price = json.\\("group")(0)(i).\("price")(0).\("text")
 
 
-  rawDataCarsList.as[List[String]]
 
-
-
-  println(rawDataCarsList)
-
-  hc.read.json(rawDataCarsList)
 
   val rawData2 = hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\debug_files\\carsFinn2.json")
   rawData2.show

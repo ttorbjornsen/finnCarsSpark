@@ -77,6 +77,7 @@ fabric.properties
 
 
 ## TT
+metastore_db/
 .idea/copyright/
 .idea/workspace.xml
 .idea/tasks.xml
