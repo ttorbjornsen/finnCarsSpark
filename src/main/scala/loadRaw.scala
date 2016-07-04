@@ -5,6 +5,8 @@ import kafka.serializer.StringDecoder
 import org.apache.spark.sql.hive._
 import play.api.libs.json._
 
+case class CarHeaderRaw(location:String, title:String, url: String, year: String, km: String, price: String)
+
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
   */
@@ -18,47 +20,29 @@ object loadRaw extends App {
   val hc = new HiveContext(sc)
   import hc.implicits._ //allows registering temptables
   val ssc = new StreamingContext(sc, Seconds(5)) //60 in production
-
   val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092")
   val topics = Set("finnCars")
   val directKafkaStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topics)
+
   directKafkaStream.foreachRDD(
-    (rdd,time) => {
-      rdd.foreach(println)
+    (rdd,time) => rdd.foreach{content =>
+      println(content)
     })
 
   val rawData = sc.textFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\debug_files\\carsFinnOrig.json")
   val rawDataArray = rawData.collect
   rawDataArray(0) = "{"
   rawDataArray(rawDataArray.length-1) = "}"
-  val rawDataListString = rawDataArray.mkString :: Nil
-
 
   val json: JsValue = Json.parse(rawDataArray.mkString)
+  val numOfCars = json.\\("group")(0).as[JsArray].value.size
+  val carHeaderRawList = Range(0, numOfCars).map(i =>
+    Utility.createCarHeaderRawObject(i, json)).toList
 
-  val i = 0
-
-  val location = json.\\("group")(0)(i).\("location")(0).\("text")
-  val title = json.\\("group")(0)(i).\("title")(0).\("text")
-  val url = json.\\("group")(0)(i).\("title")(0).\("href")
-  val year = json.\\("group")(0)(i).\("year")(0).\("text")
-  val km = json.\\("group")(0)(i).\("km")(0).\("text")
-  val price = json.\\("group")(0)(i).\("price")(0).\("text")
+  val carHeaderDF = sc.parallelize(carHeaderRawList).toDF
 
 
 
-
-  val rawData2 = hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\debug_files\\carsFinn2.json")
-  rawData2.show
-
-
-  val rawDataValidJson = sc.parallelize(rawDataArray.mkString :: Nil) //Nil to make the array to a List of [String] not Char
-
-
-  hc.read.json(rawDataValidJson).show
-
-
-  println(rawDataArray.mkString(""))
   ssc.start()
   ssc.awaitTermination()
 
