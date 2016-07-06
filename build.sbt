@@ -14,4 +14,6 @@ libraryDependencies += "org.apache.spark" %% "spark-hive" % sparkVersion % "prov
 libraryDependencies += "org.apache.spark" %% "spark-streaming" % sparkVersion % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka" % sparkVersion % "provided"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.2.1" % "provided"
+libraryDependencies += "org.jsoup" % "jsoup" % "1.7.3"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "provided"
 

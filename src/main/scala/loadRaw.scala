@@ -9,10 +9,12 @@ import kafka.serializer.StringDecoder
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.sql.hive._
+import org.jsoup.Jsoup
+import org.jsoup.nodes.{Document, Element, Entities}
 import play.api.libs.json._
 
-
 case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
+case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, load_time:Long, load_date:String)
 
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
@@ -44,10 +46,10 @@ object loadRaw extends App {
         val content = rdd.map(_._2)
 
         content.foreach{jsonDoc =>
-          val json: JsValue = Json.parse(jsonDoc.mkString)
-          val numOfCars = json.\\("group")(0).as[JsArray].value.size
+          val jsonCarHdr: JsValue = Json.parse(jsonDoc.mkString)
+          val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size
           val acqCarHeaderList = Range(0, numOfCars).map(i =>
-            Utility.createAcqCarHeaderObject(i, json)).toList
+            Utility.createAcqCarHeaderObject(i, jsonCarHdr)).toList
 
           val acqCarHeaderDF = sc.parallelize(acqCarHeaderList).toDF
 
@@ -58,6 +60,12 @@ object loadRaw extends App {
             save()
 
           println(acqCarHeaderDF.count + " records written to acq_car_header")
+
+          val acqCarDetailsList = Range(0, numOfCars).map(i =>
+            Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
+
+
+
         }
       }})
 
@@ -66,21 +74,19 @@ object loadRaw extends App {
   //ssc.awaitTermination()
 
 
-  val rawData = sc.textFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\debug_files\\carsFinnOrig.json")
-  val rawDataArray = rawData.collect
-  rawDataArray(0) = "{"
-  rawDataArray(rawDataArray.length-1) = "}"
-  val json: JsValue = Json.parse(rawDataArray.mkString)
-  val numOfCars = json.\\("group")(0).as[JsArray].value.size
-  val extractTime = json.\\("timestamp")(0).as[Long]
 
 
 
 
+    //if js-engine needed to run js code : web-scraping-nashorn-scala
+    //  val manager: ScriptEngineManager = new ScriptEngineManager
+    //  val engine: ScriptEngine = manager.getEngineByName("nashorn")
+    //  val in: Invocable = engine.asInstanceOf[Invocable]
+    //
+    //  engine.eval("function extractCarProperties(doc){ print(doc.select('.mvn+ .col-count2from990').first().html()); }")
+    //  in.invokeFunction("extractCarProperties", doc)
+
+  }
 
 
-  //
-//
-//  val kafkaStream = KafkaUtils.createStream(streamingContext,
-//    [ZK quorum], [consumer group id], [per-topic number of Kafka partitions to consume])
-}
+
