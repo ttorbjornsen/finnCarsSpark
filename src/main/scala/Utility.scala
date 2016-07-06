@@ -19,11 +19,12 @@ object Utility {
   def createAcqCarDetailsObject(i:Int, jsonCarHdr:JsValue)= {
     val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").toString
     val jsonCarDetail:JsObject = getCarsDetailFromFinn(url)
-
+    val carProperties = jsonCarDetail.\\("properties")(0).toString
+    val carEquipment = jsonCarDetail.\\("equipment")(0).toString
+    val carInformation = jsonCarDetail.\\("information")(0).toString
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
-
-    AcqCarDetails(url, "test", "test", "test", 1L, "test")
+    AcqCarDetails(url, carProperties, carEquipment, carInformation, load_time, load_date)
   }
 
   def createAcqCarHeaderObject(i:Int, jsonCarHdr:JsValue) = {

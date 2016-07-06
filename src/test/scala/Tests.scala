@@ -16,6 +16,20 @@ class Tests extends FunSpec with Matchers{
     }
   }
 
+  describe("Create Acq-detail object from JSON") {
+    it ("can create acq-detail object from JSON"){
+      val sourceJson = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\carsFinn.json")
+      val jsonCarHdr: JsValue = Json.parse(sourceJson.mkString)
+      val acqCarDetailsObject = Utility.createAcqCarDetailsObject(1, jsonCarHdr)
+      //http://m.finn.no/car/used/ad.html?finnkode=78540425
+      acqCarDetailsObject.properties should include ("Stasjonsvogn")
+      acqCarDetailsObject.equipment should include ("Sentrallås")
+      acqCarDetailsObject.information should include ("lettstartet varebil")
+    }
+
+  }
+
+
   describe("JSON to Cassandra") {
     //subject of the test
 

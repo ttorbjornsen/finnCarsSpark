@@ -64,6 +64,14 @@ object loadRaw extends App {
           val acqCarDetailsList = Range(0, numOfCars).map(i =>
             Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
 
+          val acqCarDetailsDF = sc.parallelize(acqCarDetailsList).toDF()
+
+          acqCarHeaderDF.write.
+            format("org.apache.spark.sql.cassandra").
+            options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
+            mode(SaveMode.Append).
+            save()
+
 
 
         }
