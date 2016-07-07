@@ -34,7 +34,7 @@ CREATE TABLE finncars.acq_car_details (
     information text,
     load_time timestamp,
     load_date text,
-    PRIMARY KEY ((load_date),url) //include load_time if unique is needed
+    PRIMARY KEY ((load_date),url)
 ) WITH CLUSTERING ORDER BY (url ASC)
     AND bloom_filter_fp_chance = 0.01
     AND caching = '{"keys":"ALL", "rows_per_partition":"NONE"}'
