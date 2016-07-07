@@ -18,10 +18,10 @@ import scala.collection.mutable.ListBuffer
 object Utility {
   def createAcqCarDetailsObject(i:Int, jsonCarHdr:JsValue)= {
     val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").toString
-    val jsonCarDetail:JsObject = getCarsDetailFromFinn(url)
-    val carProperties = jsonCarDetail.\\("properties")(0).toString
-    val carEquipment = jsonCarDetail.\\("equipment")(0).toString
-    val carInformation = jsonCarDetail.\\("information")(0).toString
+    val jsonCarDetail = scrapeCarDetails(url)
+    val carProperties = jsonCarDetail("properties").toString
+    val carEquipment = jsonCarDetail("equipment").toString
+    val carInformation = jsonCarDetail("information").toString
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
     AcqCarDetails(url, carProperties, carEquipment, carInformation, load_time, load_date)
@@ -39,9 +39,9 @@ object Utility {
     AcqCarHeader(title, url, location, year, km, price, load_time, load_date)
   }
 
-  def getCarsDetailFromFinn(url:String):JsObject = {
+  def scrapeCarDetails(url:String):Map[String, JsValue]= {
     //val url = "http://m.finn.no/car/used/ad.html?finnkode=78647939"
-    //val url = "http://m.finn.no/car/used/ad.html?finnkode=77386827" //malformed url?
+    //val url = "http://m.finn.no/car/used/ad.html?finnkode=77386827" //sold
     //val url = "http://m.finn.no/car/used/ad.html?finnkode=78601940" //deleted page
     val validUrl = url.replace("\"", "")
     try {
@@ -77,11 +77,11 @@ object Utility {
       }
 
       val jsObj = Json.obj("url" -> url, "properties" -> carPropListBuffer.toList, "information" -> carInfoElementsText, "equipment" -> carEquipListBuffer.toList)
-      jsObj
+      jsObj.value.toMap
     } catch {
       case e: HttpStatusException => {
         println("URL " + url + " has been deleted.")
-        Json.obj()
+        Map("MISSING URL" -> JsNull)
       }
     }
 

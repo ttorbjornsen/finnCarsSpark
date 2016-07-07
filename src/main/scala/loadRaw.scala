@@ -71,29 +71,12 @@ object loadRaw extends App {
             options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
             mode(SaveMode.Append).
             save()
-
-
-
         }
       }})
 
   ssc.start()
-  ssc.stop(false)
+  ssc.stop(false) //for debugging in REPL
   //ssc.awaitTermination()
-
-
-
-
-
-
-    //if js-engine needed to run js code : web-scraping-nashorn-scala
-    //  val manager: ScriptEngineManager = new ScriptEngineManager
-    //  val engine: ScriptEngine = manager.getEngineByName("nashorn")
-    //  val in: Invocable = engine.asInstanceOf[Invocable]
-    //
-    //  engine.eval("function extractCarProperties(doc){ print(doc.select('.mvn+ .col-count2from990').first().html()); }")
-    //  in.invokeFunction("extractCarProperties", doc)
-
   }
 
 
