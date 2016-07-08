@@ -1,16 +1,10 @@
-import java.time.ZoneId
-
-import kafka.common.TopicAndPartition
-import kafka.message.MessageAndMetadata
-import org.apache.spark.streaming.kafka._
-import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.streaming.{Seconds, StreamingContext}
 import kafka.serializer.StringDecoder
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.sql.hive._
-import org.jsoup.Jsoup
-import org.jsoup.nodes.{Document, Element, Entities}
+import org.apache.spark.streaming.kafka._
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.{SparkConf, SparkContext}
 import play.api.libs.json._
 
 case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
@@ -30,7 +24,7 @@ object loadRaw extends App {
   val hc = new HiveContext(sc)
   import hc.implicits._ //allows registering temptables
   val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092", "auto.offset.reset" -> "smallest")
-  val topics = Set("finnCars")
+  val topics = Set("cars_header")
   //val fromOffsets = Map(new TopicAndPartition("finnCars", 0) -> 0L)
   //val directKafkaStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, fromOffsets, (mmd:MessageAndMetadata[String, String]) => mmd)
   val ssc = new StreamingContext(sc, Seconds(5)) //60 in production
@@ -41,7 +35,6 @@ object loadRaw extends App {
       if (rdd.toLocalIterator.nonEmpty) {
         //when new data from Kafka is available
         println(rdd.count)
-
         //val content = rdd.map(_._2).collect
         val content = rdd.map(_._2)
 
@@ -61,22 +54,22 @@ object loadRaw extends App {
 
           println(acqCarHeaderDF.count + " records written to acq_car_header")
 
-          val acqCarDetailsList = Range(0, numOfCars).map(i =>
-            Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
-
-          val acqCarDetailsDF = sc.parallelize(acqCarDetailsList).toDF()
-
-          acqCarHeaderDF.write.
-            format("org.apache.spark.sql.cassandra").
-            options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
-            mode(SaveMode.Append).
-            save()
+//          val acqCarDetailsList = Range(0, numOfCars).map(i =>
+//            Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
+//
+//          val acqCarDetailsDF = sc.parallelize(acqCarDetailsList).toDF()
+//
+//          acqCarHeaderDF.write.
+//            format("org.apache.spark.sql.cassandra").
+//            options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
+//            mode(SaveMode.Append).
+//            save()
         }
       }})
 
   ssc.start()
-  ssc.stop(false) //for debugging in REPL
-  //ssc.awaitTermination()
+  //ssc.stop(false) //for debugging in REPL
+  ssc.awaitTermination()
   }
 
 
