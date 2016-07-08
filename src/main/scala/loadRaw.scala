@@ -8,7 +8,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 import play.api.libs.json._
 
 case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
-case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, load_time:Long, load_date:String)
+case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
 
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
@@ -54,16 +54,19 @@ object loadRaw extends App {
 
           println(acqCarHeaderDF.count + " records written to acq_car_header")
 
-//          val acqCarDetailsList = Range(0, numOfCars).map(i =>
-//            Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
-//
-//          val acqCarDetailsDF = sc.parallelize(acqCarDetailsList).toDF()
-//
-//          acqCarHeaderDF.write.
-//            format("org.apache.spark.sql.cassandra").
-//            options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
-//            mode(SaveMode.Append).
-//            save()
+          val acqCarDetailsList = Range(0, numOfCars).map(i =>
+            Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
+
+          val acqCarDetailsDF = sc.parallelize(acqCarDetailsList).toDF()
+
+          acqCarDetailsDF.write.
+            format("org.apache.spark.sql.cassandra").
+            options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
+            mode(SaveMode.Append).
+            save()
+
+          println(acqCarHeaderDF.count + " records written to acq_car_details")
+
         }
       }})
 

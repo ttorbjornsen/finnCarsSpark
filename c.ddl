@@ -32,6 +32,7 @@ CREATE TABLE finncars.acq_car_details (
     properties text,
     equipment text,
     information text,
+    deleted boolean,
     load_time timestamp,
     load_date text,
     PRIMARY KEY ((load_date),url)

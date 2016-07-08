@@ -22,9 +22,10 @@ object Utility {
     val carProperties = jsonCarDetail("properties").toString
     val carEquipment = jsonCarDetail("equipment").toString
     val carInformation = jsonCarDetail("information").toString
+    val deleted = jsonCarDetail("deleted").as[Boolean]
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
-    AcqCarDetails(url, carProperties, carEquipment, carInformation, load_time, load_date)
+    AcqCarDetails(url, carProperties, carEquipment, carInformation, deleted, load_time, load_date)
   }
 
   def createAcqCarHeaderObject(i:Int, jsonCarHdr:JsValue) = {
@@ -47,7 +48,7 @@ object Utility {
     try {
       val doc: Document = Jsoup.connect(validUrl).get
       val carPropElements: Element = doc.select(".mvn+ .col-count2from990").first()
-      var carPropListBuffer: ListBuffer[Map[String, String]] = ListBuffer()
+      var carPropMap = Map[String, String]()
 
       if (carPropElements != null) {
         var i = 0
@@ -55,11 +56,11 @@ object Utility {
           if ((i % 2) == 0) {
             val key = elem.text
             val value = elem.nextElementSibling().text
-            carPropListBuffer += Map(key.asInstanceOf[String] -> value.asInstanceOf[String])
+            carPropMap += (key.asInstanceOf[String] -> value.asInstanceOf[String])
           }
           i = i + 1
         }
-      } else carPropListBuffer = ListBuffer(Map("MissingKeys" -> "MissingValues"))
+      } else carPropMap = Map("MissingKeys" -> "MissingValues")
 
       var carEquipListBuffer: ListBuffer[String] = ListBuffer()
       val carEquipElements: Element = doc.select(".col-count2upto990").first()
@@ -76,12 +77,13 @@ object Utility {
         } else "MissingValues"
       }
 
-      val jsObj = Json.obj("url" -> url, "properties" -> carPropListBuffer.toList, "information" -> carInfoElementsText, "equipment" -> carEquipListBuffer.toList)
+      val jsObj = Json.obj("url" -> url, "properties" -> carPropMap, "information" -> carInfoElementsText, "equipment" -> carEquipListBuffer.toList, "deleted" -> false)
       jsObj.value.toMap
     } catch {
       case e: HttpStatusException => {
         println("URL " + url + " has been deleted.")
-        Map("MISSING URL" -> JsNull)
+        val jsObj = Json.obj("url" -> url, "properties" -> Map("NULL" -> "NULL"), "information" -> "NULL", "equipment" -> ListBuffer("NULL").toList, "deleted" -> true)
+        jsObj.value.toMap
       }
     }
 

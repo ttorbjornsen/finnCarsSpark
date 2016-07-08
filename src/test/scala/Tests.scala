@@ -13,20 +13,21 @@ class Tests extends FunSpec with Matchers {
     it("should be able to extract and correctly parse details page") {
       val url = "http://m.finn.no/car/used/ad.html?finnkode=77386827" //temp
       val carDetails: Map[String, JsValue] = Utility.scrapeCarDetails(url)
-      val carProperty: String = carDetails("properties")(0).toString
-      val carEquipment: String = carDetails("equipment")(1).toString
-      val carInformation: String = carDetails("information").toString
 
-      carProperty should include("Årsmodell")
-      carEquipment should include("Vinterhjul")
-      carInformation should include("Xenonpakke")
+      carDetails("properties").as[Map[String, String]] should contain key("Årsmodell")
+      carDetails("equipment").as[List[String]] should contain ("Vinterhjul")
+      carDetails("information").as[String] should include ("Xenonpakke")
+      carDetails("deleted").as[Boolean] should equal(false)
     }
 
     it("can handle deleted detail car pages from finn") {
-      val url = "http://m.finn.no/car/used/ad.html?finnkode=78601940"
+      val url = "http://m.finn.no/car/used/ad.html?finnkode=76755775"
       val carDetails = Utility.scrapeCarDetails(url)
-      carDetails should contain key ("MISSING URL")
-      carDetails should contain value (JsNull)
+
+      carDetails("properties").as[Map[String, String]] should contain key("NULL")
+      carDetails("equipment").as[List[String]] should contain ("NULL")
+      carDetails("information").as[String] should include ("NULL")
+      carDetails("deleted").as[Boolean] should equal(true)
     }
 
   }
