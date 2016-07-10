@@ -9,6 +9,8 @@ import play.api.libs.json._
 
 case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
 case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
+case class PropCar(url:String, title:String, location:String, year: String, km: String, price: String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
+
 
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.

@@ -1,13 +1,15 @@
+import org.apache.spark.sql.cassandra.CassandraSQLContext
+import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest.{BeforeAndAfter, FunSpec, FunSuite, Matchers}
 import play.api.libs.json._
-
+import com.holdenkarau.spark.testing.SharedSparkContext
 import scala.io.Source
 
 
 /**
   * Created by torbjorn.torbjornsen on 06.07.2016.
   */
-class Tests extends FunSpec with Matchers {
+class Tests extends FunSpec with Matchers with SharedSparkContext {
 
   describe("application") {
     it("should be able to extract and correctly parse details page") {
@@ -29,6 +31,16 @@ class Tests extends FunSpec with Matchers {
       carDetails("information").as[String] should include ("NULL")
       carDetails("deleted").as[Boolean] should equal(true)
     }
+
+    it("can extract detail and header page from database and load into one record"){
+      val csc = new CassandraSQLContext(sc)
+      csc.setKeyspace("finncars")
+
+      PropCar(url:String, title:String, location:String, year: String, km: String, price: String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
+    }
+
+
+
 
   }
 
