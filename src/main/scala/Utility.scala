@@ -95,13 +95,13 @@ object Utility {
 
   def mergeCarHeaderAndDetails(acqCarHeader:DataFrame, acqCarDetails:DataFrame) = {
 
-    val acqCarHeaderDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json")
-    val acqCarDetailsDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
-
-    val dfCarHeaderAndDetails = acqCarHeaderDF.as("h").join(acqCarDetailsDF.as("d"))//, col("h.url") === col("d.url"), "left")
-    dfCarHeaderAndDetails.show
-    =  .select
-    acqCarHeader.join(acqCarDetails, $"url")
+//    val acqCarHeaderDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json")
+//    val acqCarDetailsDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
+//
+//    val dfCarHeaderAndDetails = acqCarHeaderDF.as("h").join(acqCarDetailsDF.as("d"))//, col("h.url") === col("d.url"), "left")
+//    dfCarHeaderAndDetails.show
+//    =  .select
+//    acqCarHeader.join(acqCarDetails, $"url")
   }
 
 }

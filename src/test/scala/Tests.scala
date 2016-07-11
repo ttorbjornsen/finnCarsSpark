@@ -1,5 +1,6 @@
 import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.{SparkConf, SparkContext}
+import org.mkuthan.spark.SparkSqlSpec
 import org.scalatest.{BeforeAndAfter, FunSpec, FunSuite, Matchers}
 import play.api.libs.json._
 //import com.holdenkarau.spark.testing.SharedSparkContext
@@ -30,7 +31,24 @@ import org.apache.spark.sql.types._
 /**
   * Created by torbjorn.torbjornsen on 06.07.2016.
   */
-class Tests extends FunSpec with Matchers with SparkSpec {
+class Tests extends FunSpec with Matchers with SparkSqlSpec{
+
+
+  private var dfAcqCarHeader:DataFrame = _
+  private var dfAcqCarDetails:DataFrame = _
+
+  override def beforeAll():Unit={
+    super.beforeAll()
+    val _sqlc = sqlc
+    import _sqlc.implicits._
+    dfAcqCarHeader = _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF()
+
+      //.registerTempTable("acq_car_header")
+    dfAcqCarDetails = _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF()
+      //.registerTempTable("acq_car_details")
+
+
+  }
 
   describe("application") {
     it("should be able to extract and correctly parse details page") {
@@ -55,26 +73,23 @@ class Tests extends FunSpec with Matchers with SparkSpec {
 
     it("can merge detail and header page into one record per day") {
 
-      val hc = new org.apache.spark.sql.HiveContext(sc)
-      import sqlContext.implicits._
-      val dfAcqCarHeader = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json")
-      dfAcqCarHeader.show
+        dfAcqCarHeader.count should equal(5)
 
-      val dfAcqCarDetails = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
-      dfAcqCarDetails.show
-
-      dfAcqCarDetails.registerTempTable("acq_car_details")
-      dfAcqCarHeader.registerTempTable("acq_car_header")
-
-      val dfCarHeaderAndDetails = sqlContext.sql("select h.url, d.url from acq_car_details d, acq_car_header h where d.load_date = h.load_date")
-      val dfCarHeaderAndDetails = sqlContext.sql("select h.url, d.url from acq_car_details d, acq_car_header h")
-      val dfCarHeaderAndDetails = sqlContext.sql("select h.url from acq_car_header AS h UNION select d.url from acq_car_header AS d")
-      dfCarHeaderAndDetails.collect
-
-      val propCarDF = Utility.mergeCarHeaderAndDetails(acqCarHeaderDF, acqCarDetailsDF)
-      propCarDF.show
-
-      propCarDF.count should equal(3)
+//      val dfAcqCarDetails = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
+//      dfAcqCarDetails.show
+//
+//      dfAcqCarDetails.registerTempTable("acq_car_details")
+//      dfAcqCarHeader.registerTempTable("acq_car_header")
+//
+//      val dfCarHeaderAndDetails = sqlContext.sql("select h.url, d.url from acq_car_details d, acq_car_header h where d.load_date = h.load_date")
+//      val dfCarHeaderAndDetails = sqlContext.sql("select h.url, d.url from acq_car_details d, acq_car_header h")
+//      val dfCarHeaderAndDetails = sqlContext.sql("select h.url from acq_car_header AS h UNION select d.url from acq_car_header AS d")
+//      dfCarHeaderAndDetails.collect
+//
+//      val propCarDF = Utility.mergeCarHeaderAndDetails(acqCarHeaderDF, acqCarDetailsDF)
+//      propCarDF.show
+//
+//      propCarDF.count should equal(3)
     }
 
 //

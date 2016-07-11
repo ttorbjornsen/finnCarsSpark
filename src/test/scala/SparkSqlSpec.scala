@@ -16,36 +16,26 @@
 
 package org.mkuthan.spark
 
-import org.apache.spark.{SparkConf, SparkContext}
-import org.scalatest.{BeforeAndAfterAll, Suite}
+import org.apache.spark.sql.hive.HiveContext
+import org.scalatest.Suite
 
-trait SparkSpec extends BeforeAndAfterAll {
+trait SparkSqlSpec extends SparkSpec {
   this: Suite =>
 
-  private var _sc: SparkContext = _
+  private var _sqlc: HiveContext = _
+
+  def sqlc: HiveContext = _sqlc
 
   override def beforeAll(): Unit = {
     super.beforeAll()
-    System.setProperty("hadoop.home.dir", "C:\\Users\\torbjorn.torbjornsen\\Hadoop\\")
-    val conf = new SparkConf()
-      .setMaster("local[*]")
-      .setAppName(this.getClass.getSimpleName)
 
-    sparkConfig.foreach { case (k, v) => conf.setIfMissing(k, v) }
-
-    _sc = new SparkContext(conf)
+    _sqlc = new HiveContext(sc)
   }
-
-  def sparkConfig: Map[String, String] = Map.empty
 
   override def afterAll(): Unit = {
-    if (_sc != null) {
-      _sc.stop()
-      _sc = null
-    }
+    _sqlc = null
+
     super.afterAll()
   }
-
-  def sc: SparkContext = _sc
 
 }

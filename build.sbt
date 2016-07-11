@@ -18,7 +18,5 @@ libraryDependencies += "com.typesafe.play" %% "play-json" % "2.2.1" % "compile"
 libraryDependencies += "org.jsoup" % "jsoup" % "1.7.3" % "compile"
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "compile"
 
-
-javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled")
 parallelExecution in Test := false
 
