@@ -17,7 +17,6 @@ libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka" % sparkVers
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.2.1" % "compile"
 libraryDependencies += "org.jsoup" % "jsoup" % "1.7.3" % "compile"
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "compile"
-libraryDependencies += "com.holdenkarau" %% "spark-testing-base" % "1.4.1_0.3.3" % "compile"
 
 
 javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled")

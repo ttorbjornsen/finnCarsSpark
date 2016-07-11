@@ -6,6 +6,8 @@ import org.apache.spark.streaming.kafka._
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 import play.api.libs.json._
+import org.apache.spark.sql.{SQLContext, DataFrame}
+import com.datastax.spark.connector._
 
 case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
 case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
@@ -68,6 +70,7 @@ object loadRaw extends App {
             save()
 
           println(acqCarHeaderDF.count + " records written to acq_car_details")
+
 
         }
       }})

@@ -1,5 +1,7 @@
 import java.time.ZoneId
 
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.DataFrame
 import org.jsoup.{HttpStatusException, Jsoup}
 import org.jsoup.nodes.{Entities, _}
 import org.jsoup.nodes.Document.OutputSettings
@@ -88,6 +90,18 @@ object Utility {
     }
 
 
+  }
+
+
+  def mergeCarHeaderAndDetails(acqCarHeader:DataFrame, acqCarDetails:DataFrame) = {
+
+    val acqCarHeaderDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json")
+    val acqCarDetailsDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
+
+    val dfCarHeaderAndDetails = acqCarHeaderDF.as("h").join(acqCarDetailsDF.as("d"))//, col("h.url") === col("d.url"), "left")
+    dfCarHeaderAndDetails.show
+    =  .select
+    acqCarHeader.join(acqCarDetails, $"url")
   }
 
 }
