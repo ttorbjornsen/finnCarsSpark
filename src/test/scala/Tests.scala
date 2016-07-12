@@ -33,19 +33,18 @@ import org.apache.spark.sql.types._
   */
 class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
-
-  private var dfAcqCarHeader:DataFrame = _
-  private var dfAcqCarDetails:DataFrame = _
+  private var dao:DAO = _
 
   override def beforeAll():Unit={
     super.beforeAll()
+    val _csc = csc
     val _sqlc = sqlc
     import _sqlc.implicits._
-    dfAcqCarHeader = _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF()
 
-      //.registerTempTable("acq_car_header")
-    dfAcqCarDetails = _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF()
-      //.registerTempTable("acq_car_details")
+    _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF().registerTempTable("acq_car_header")
+    _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF().registerTempTable("acq_car_details")
+
+    dao = new DAO(sqlc, csc)
 
 
   }
@@ -71,9 +70,17 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       carDetails("deleted").as[Boolean] should equal(true)
     }
 
-    it("can merge detail and header page into one record per day") {
+    it("can get header page into one record per day") {
+      val headerUrl = "http://m.finn.no/car/used/ad.html?finnkode=78866263"
+      val loadDate = "01.01.2016"
+      val df = dao.getLatestDetails(headerUrl, loadDate)
+      val array = df.collect
+      array.length should equal(1)
 
-        dfAcqCarHeader.count should equal(5)
+    }
+
+
+        //dfAcqCarHeader.count should equal(5)
 
 //      val dfAcqCarDetails = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
 //      dfAcqCarDetails.show
@@ -90,7 +97,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
 //      propCarDF.show
 //
 //      propCarDF.count should equal(3)
-    }
+
 
 //
 //      //      val csc = new CassandraSQLContext(sc)

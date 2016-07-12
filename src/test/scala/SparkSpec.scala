@@ -30,6 +30,7 @@ trait SparkSpec extends BeforeAndAfterAll {
     val conf = new SparkConf()
       .setMaster("local[*]")
       .setAppName(this.getClass.getSimpleName)
+      .set("spark.cassandra.connection.host","192.168.56.56")
 
     sparkConfig.foreach { case (k, v) => conf.setIfMissing(k, v) }
 

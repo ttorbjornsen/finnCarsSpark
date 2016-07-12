@@ -16,6 +16,7 @@
 
 package org.mkuthan.spark
 
+import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.sql.hive.HiveContext
 import org.scalatest.Suite
 
@@ -23,17 +24,20 @@ trait SparkSqlSpec extends SparkSpec {
   this: Suite =>
 
   private var _sqlc: HiveContext = _
+  private var _csc: CassandraSQLContext = _
 
   def sqlc: HiveContext = _sqlc
+  def csc: CassandraSQLContext = _csc
 
   override def beforeAll(): Unit = {
     super.beforeAll()
-
+    _csc = new CassandraSQLContext(sc)
     _sqlc = new HiveContext(sc)
   }
 
   override def afterAll(): Unit = {
     _sqlc = null
+    _csc = null
 
     super.afterAll()
   }
