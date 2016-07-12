@@ -44,10 +44,11 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
     _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF().registerTempTable("acq_car_header")
     _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF().registerTempTable("acq_car_details")
 
+//    hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF().registerTempTable("acq_car_header")
+//    hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF().registerTempTable("acq_car_details")
+
     dao = new DAO(sqlc, csc)
-
-
-  }
+   }
 
   describe("application") {
     it("should be able to extract and correctly parse details page") {
@@ -70,14 +71,33 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       carDetails("deleted").as[Boolean] should equal(true)
     }
 
-    it("can get header page into one record per day") {
+    it("can get latest details record which have not been deleted") {
       val headerUrl = "http://m.finn.no/car/used/ad.html?finnkode=78866263"
-      val loadDate = "01.01.2016"
-      val df = dao.getLatestDetails(headerUrl, loadDate)
-      val array = df.collect
-      array.length should equal(1)
-
+      val loadTime = 3
+      val df = dao.getLatestDetails(headerUrl, loadTime)
+      val array = df.select("information").collect
+      array(0).toString should equal("[Fin bil]")
     }
+
+    it("can parse and subset json car properties into scala map") {
+      val jsonPropertiesMap = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
+      val parsedPropertiesMap = Utility.getMapSubsetFromJsonMap(jsonPropertiesMap, Seq("Antall seter", "Girkasse")) //subset and remove json structure
+      parsedPropertiesMap.size should equal(2)
+      parsedPropertiesMap should contain key("Antall seter")
+      parsedPropertiesMap should contain value("5")
+      parsedPropertiesMap should contain key("Girkasse")
+      parsedPropertiesMap should contain value("Automat")
+    }
+
+    it("can parse and subset json car equipment to scala list") {
+      val jsonEquipmentArray = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
+      val parsedEquipmentList = Utility.getListSubsetFromJsonArray(jsonEquipmentArray, Seq("Automatisk klimaanlegg", "Skinnseter"))
+      parsedEquipmentList.size should equal(2)
+      parsedEquipmentList should contain ("Automatisk klimaanlegg")
+      parsedEquipmentList should contain ("Skinnseter")
+    }
+
+
 
 
         //dfAcqCarHeader.count should equal(5)

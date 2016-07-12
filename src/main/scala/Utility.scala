@@ -93,6 +93,31 @@ object Utility {
   }
 
 
+  def getMapSubsetFromJsonMap(jsonString:String, keys:Seq[String]):Map[String,String] = {
+//    val keys = Seq("Salgsform", "Girkasse")
+//    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
+    val jsValueMap: JsValue = Json.parse(jsonString)
+    jsValueMap.as[Map[String,String]].filterKeys(keys.toSet)
+  }
+
+  def getListSubsetFromJsonArray(jsonString:String, elements:Seq[String]):Seq[String] = {
+//    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
+//    val elements = Seq("Automatisk klimaanlegg", "Skinnseter")
+
+    val jsValueArray:JsValue = Json.parse(jsonString)
+    val list = jsValueArray.as[Seq[String]]
+    list.filter(x => elements.contains(x))
+  }
+
+  def getStringFromJsonString(jsonString:String):String = {
+//    val jsonString = "\"Fin bil\""
+    Json.parse(jsonString).as[String]
+  }
+
+
+
+
+
   def mergeCarHeaderAndDetails(acqCarHeader:DataFrame, acqCarDetails:DataFrame) = {
 
 //    val acqCarHeaderDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json")
