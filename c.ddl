@@ -1,4 +1,4 @@
-DROP KEYSPACE finncars;
+DROP KEYSPACE IF EXISTS finncars;
 
 CREATE KEYSPACE finncars WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
 
@@ -13,7 +13,7 @@ CREATE TABLE finncars.acq_car_header (
     price text,
     load_time timestamp,
     load_date text,
-    PRIMARY KEY (load_date, url, load_time) //include load_time if unique is needed
+    PRIMARY KEY (load_date, url, load_time)
 ) WITH CLUSTERING ORDER BY (url ASC, load_time DESC)
     AND bloom_filter_fp_chance = 0.01
     AND caching = '{"keys":"ALL", "rows_per_partition":"NONE"}'

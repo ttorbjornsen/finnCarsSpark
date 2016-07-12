@@ -3,7 +3,6 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.mkuthan.spark.SparkSqlSpec
 import org.scalatest.{BeforeAndAfter, FunSpec, FunSuite, Matchers}
 import play.api.libs.json._
-//import com.holdenkarau.spark.testing.SharedSparkContext
 import scala.io.Source
 import scala.collection.JavaConversions._
 import com.datastax.spark.connector._
@@ -34,36 +33,48 @@ import org.apache.spark.sql.types._
 class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
   private var dao:DAO = _
+  private var testCarHeader:DataFrame = _
 
   override def beforeAll():Unit={
     super.beforeAll()
     val _csc = csc
-    val _sqlc = sqlc
-    import _sqlc.implicits._
+    val _hc = hc
+    import _hc.implicits._
 
-    val conf = new SparkConf().setAppName("Testing").setMaster("local[*]").set("spark.cassandra.connection.host","192.168.56.56")
-    val ddl_prod = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\c.ddl").getLines.mkString
-    val ddl_test = ddl_prod.replace("finncars", "test_finncars")
-    val ddl_test_split = ddl_test.split(";")
-    val ddl_test_cmds = ddl_test_split.map(elem => elem + ";")
-    ddl_test_cmds(2)
+    Utility.setupCassandraTestKeyspace() //create keyspace test_finncars
 
-    CassandraConnector(conf).withSessionDo {session =>
-      ddl_test_cmds.map{cmd =>
-        println(cmd)
-        session.execute(cmd)
-    }}
+    val dfTestAcqCarHeader = _hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF()
+    dfTestAcqCarHeader.write.
+      format("org.apache.spark.sql.cassandra").
+      options(Map("table" -> "acq_car_header", "keyspace" -> "test_finncars")).
+      mode(SaveMode.Append).
+      save()
+
+    val dfTestAcqCarDetails = _hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF()
+    dfTestAcqCarDetails.write.
+      format("org.apache.spark.sql.cassandra").
+      options(Map("table" -> "acq_car_details", "keyspace" -> "test_finncars")).
+      mode(SaveMode.Append).
+      save()
+
+    dfTestAcqCarHeader.registerTempTable("acq_car_header")
+    dfTestAcqCarDetails.registerTempTable("acq_car_details")
+
+    //REPL : use val
+    testCarHeader = _csc.read.
+      format("org.apache.spark.sql.cassandra").
+      options(Map("table" -> "acq_car_header", "keyspace" -> "test_finncars")).
+      load().
+      select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
+      limit(1)
+
+    testCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), row.getLong(6), row.getString(7)))
 
 
 
 
-    _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF().registerTempTable("acq_car_header")
-    _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF().registerTempTable("acq_car_details")
 
-//    hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF().registerTempTable("acq_car_header")
-//    hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF().registerTempTable("acq_car_details")
-
-    dao = new DAO(sqlc, csc)
+    dao = new DAO(hc, csc)
    }
 
   describe("application") {
@@ -75,6 +86,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       carDetails("equipment").as[List[String]] should contain ("Vinterhjul")
       carDetails("information").as[String] should include ("Xenonpakke")
       carDetails("deleted").as[Boolean] should equal(false)
+
     }
 
     it("can handle deleted detail car pages from finn") {
@@ -113,58 +125,6 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       parsedEquipmentList should contain ("Skinnseter")
     }
 
-
-
-
-        //dfAcqCarHeader.count should equal(5)
-
-//      val dfAcqCarDetails = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
-//      dfAcqCarDetails.show
-//
-//      dfAcqCarDetails.registerTempTable("acq_car_details")
-//      dfAcqCarHeader.registerTempTable("acq_car_header")
-//
-//      val dfCarHeaderAndDetails = sqlContext.sql("select h.url, d.url from acq_car_details d, acq_car_header h where d.load_date = h.load_date")
-//      val dfCarHeaderAndDetails = sqlContext.sql("select h.url, d.url from acq_car_details d, acq_car_header h")
-//      val dfCarHeaderAndDetails = sqlContext.sql("select h.url from acq_car_header AS h UNION select d.url from acq_car_header AS d")
-//      dfCarHeaderAndDetails.collect
-//
-//      val propCarDF = Utility.mergeCarHeaderAndDetails(acqCarHeaderDF, acqCarDetailsDF)
-//      propCarDF.show
-//
-//      propCarDF.count should equal(3)
-
-
-//
-//      //      val csc = new CassandraSQLContext(sc)
-////      csc.setKeyspace("finncars")
-//      val dfAcqCarDetails = csc.read.
-//        format("org.apache.spark.sql.cassandra").
-//        options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
-//        load().
-//        select("url", "properties", "equipment", "information", "deleted", "load_time", "load_date").
-//        limit(3).
-//        toDF
-//
-//      dfAcqCarDetails.select("deleted").show
-////
-//      val detailUrls = dfAcqCarDetails.select("url").collect().map(row => (row(0).toString)).toList
-//      val headerUrls = detailUrls.map(url => sc.cassandraTable("finncars", "acq_car_header").
-//        select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
-//        where("url = ?", url)
-//      )
-//
-//      val dfAcqCarHeader = sc.union(headerUrls).map(f => new AcqCarHeader(f.getString("title"), f.getString("url"), f.getString("location"), f.getString("year"), f.getString("km"), f.getString("price"), f.getLong("load_time"), f.getString("load_date"))).toDF
-//      dfAcqCarHeader.join()
-//
-//      headerUrls.take(10).foreach(println)
-//
-//
-//
-//      case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
-//      case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
-//      PropCar(url:String, title:String, location:String, year: String, km: String, price: String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
-//    }
 
 
 

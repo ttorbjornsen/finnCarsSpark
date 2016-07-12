@@ -1,5 +1,7 @@
 import java.time.ZoneId
 
+import com.datastax.spark.connector.cql.CassandraConnector
+import org.apache.spark.SparkConf
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.DataFrame
 import org.jsoup.{HttpStatusException, Jsoup}
@@ -11,6 +13,7 @@ import org.jsoup.nodes.Document.OutputSettings
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
+import scala.io.Source
 
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
@@ -114,8 +117,20 @@ object Utility {
     Json.parse(jsonString).as[String]
   }
 
+  def setupCassandraTestKeyspace() = {
+    val conf = new SparkConf().setAppName("Testing").setMaster("local[*]").set("spark.cassandra.connection.host", "192.168.56.56")
+    val ddl_prod = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\c.ddl").getLines.mkString
+    val ddl_test = ddl_prod.replace("finncars", "test_finncars")
+    val ddl_test_split = ddl_test.split(";")
+    val ddl_test_cmds = ddl_test_split.map(elem => elem + ";")
 
-
+    CassandraConnector(conf).withSessionDo { session =>
+      ddl_test_cmds.map { cmd =>
+        println(cmd)
+        session.execute(cmd)
+      }
+    }
+  }
 
 
   def mergeCarHeaderAndDetails(acqCarHeader:DataFrame, acqCarDetails:DataFrame) = {
