@@ -2,7 +2,7 @@ DROP KEYSPACE finncars;
 
 CREATE KEYSPACE finncars WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
 
-DROP TABLE finncars.acq_car_header;
+DROP TABLE IF EXISTS finncars.acq_car_header;
 
 CREATE TABLE finncars.acq_car_header (
     title text,
@@ -29,7 +29,7 @@ CREATE TABLE finncars.acq_car_header (
     AND read_repair_chance = 0.0
     AND speculative_retry = '99.0PERCENTILE';
 
-DROP TABLE finncars.acq_car_details;
+DROP TABLE IF EXISTS finncars.acq_car_details;
 
 CREATE TABLE finncars.acq_car_details (
     url text,
@@ -55,7 +55,7 @@ CREATE TABLE finncars.acq_car_details (
     AND read_repair_chance = 0.0
     AND speculative_retry = '99.0PERCENTILE';
 
-DROP TABLE finncars.prop_car_daily;
+DROP TABLE IF EXISTS finncars.prop_car_daily;
 
 CREATE TABLE finncars.prop_car_daily (
     url text,

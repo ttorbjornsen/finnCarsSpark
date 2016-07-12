@@ -22,7 +22,7 @@ import scala.collection.mutable.ArrayBuffer
 import java.sql.{Date, Timestamp}
 import scala.collection.JavaConversions._
 
-
+import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
 
@@ -40,6 +40,22 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
     val _csc = csc
     val _sqlc = sqlc
     import _sqlc.implicits._
+
+    val conf = new SparkConf().setAppName("Testing").setMaster("local[*]").set("spark.cassandra.connection.host","192.168.56.56")
+    val ddl_prod = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\c.ddl").getLines.mkString
+    val ddl_test = ddl_prod.replace("finncars", "test_finncars")
+    val ddl_test_split = ddl_test.split(";")
+    val ddl_test_cmds = ddl_test_split.map(elem => elem + ";")
+    ddl_test_cmds(2)
+
+    CassandraConnector(conf).withSessionDo {session =>
+      ddl_test_cmds.map{cmd =>
+        println(cmd)
+        session.execute(cmd)
+    }}
+
+
+
 
     _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF().registerTempTable("acq_car_header")
     _sqlc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF().registerTempTable("acq_car_details")
