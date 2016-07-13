@@ -9,6 +9,7 @@ import play.api.libs.json._
 import scala.io.Source
 import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.sql._
+import org.apache.spark.rdd.RDD
 
 
 System.setProperty("hadoop.home.dir", "C:\\Users\\torbjorn.torbjornsen\\Hadoop\\")
@@ -20,4 +21,5 @@ _csc.setKeyspace("finncars")
 val _hc = new HiveContext(sc)
 import _hc.implicits._ //allows registering temptables
 
+val jsonDoc = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\carsFinn.json")
 
