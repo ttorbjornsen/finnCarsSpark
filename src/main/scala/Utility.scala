@@ -24,8 +24,8 @@ object Utility {
   def createAcqCarDetailsObject(i:Int, jsonCarHdr:JsValue)= {
     val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").toString
     val jsonCarDetail = scrapeCarDetails(url)
-    val carProperties = jsonCarDetail("properties").as[Map[String,String]]
-    val carEquipment = jsonCarDetail("equipment").as[Set[String]]
+    val carProperties = jsonCarDetail("properties").toString
+    val carEquipment = jsonCarDetail("equipment").toString
     val carInformation = jsonCarDetail("information").toString
     val deleted = jsonCarDetail("deleted").as[Boolean]
     val load_time = new java.sql.Timestamp(jsonCarHdr.\\("timestamp")(0).as[Long])
@@ -96,21 +96,20 @@ object Utility {
 
   }
 
-
-  def getMapSubsetFromJsonMap(jsonString:String, keys:Seq[String]):Map[String,String] = {
+  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):Map[String,String] = {
 //    val keys = Seq("Salgsform", "Girkasse")
 //    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
     val jsValueMap: JsValue = Json.parse(jsonString)
-    jsValueMap.as[Map[String,String]].filterKeys(keys.toSet)
+    jsValueMap.as[Map[String,String]].filterKeys{excludedKeys.contains(_) == false}
   }
 
-  def getListSubsetFromJsonArray(jsonString:String, elements:Seq[String]):Seq[String] = {
+  def getListSubsetFromJsonArray(jsonString:String, excludedElements:Seq[String]=Seq("None")):Seq[String] = {
 //    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
 //    val elements = Seq("Automatisk klimaanlegg", "Skinnseter")
 
     val jsValueArray:JsValue = Json.parse(jsonString)
     val list = jsValueArray.as[Seq[String]]
-    list.filter(x => elements.contains(x))
+    list.filter(x => !excludedElements.contains(x))
   }
 
   def getStringFromJsonString(jsonString:String):String = {

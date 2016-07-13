@@ -34,7 +34,7 @@ import org.apache.spark.sql.types._
 class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
   private var dao:DAO = _
-  private var testCarHeader:DataFrame = _
+  private var acqCarHeader:AcqCarHeader = _
 
   override def beforeAll():Unit={
     super.beforeAll()
@@ -42,34 +42,35 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
     val _hc = hc
     import _hc.implicits._
 
-    Utility.setupCassandraTestKeyspace() //create keyspace test_finncars
+    //Utility.setupCassandraTestKeyspace() //create keyspace test_finncars
 
-    val dfTestAcqCarHeader = _hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF()
-    dfTestAcqCarHeader.write.
+    val dfAcqCarHeader = _hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF()
+    dfAcqCarHeader.write.
       format("org.apache.spark.sql.cassandra").
-      options(Map("table" -> "acq_car_header", "keyspace" -> "test_finncars")).
+      options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
       mode(SaveMode.Append).
       save()
 
-    val dfTestAcqCarDetails = _hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF()
-    dfTestAcqCarDetails.write.
+    val dfAcqCarDetails = _hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json").toDF()
+    dfAcqCarDetails.write.
       format("org.apache.spark.sql.cassandra").
-      options(Map("table" -> "acq_car_details", "keyspace" -> "test_finncars")).
+      options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
       mode(SaveMode.Append).
       save()
 
-    dfTestAcqCarHeader.registerTempTable("acq_car_header")
-    dfTestAcqCarDetails.registerTempTable("acq_car_details")
+    dfAcqCarHeader.registerTempTable("acq_car_header")
+    dfAcqCarDetails.registerTempTable("acq_car_details")
 
-    val dfTestCarHeader = _csc.read.
+    val dfCarHeader = _csc.read.
       format("org.apache.spark.sql.cassandra").
-      options(Map("table" -> "acq_car_header", "keyspace" -> "test_finncars")).
+      options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
       load().
       select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
+      filter($"url" === "http://m.finn.no/car/used/ad.html?finnkode=78866263").
       limit(1)
 
     //REPL : USE val
-    //testCarHeader = dfTestCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), row(6).asInstanceOf[java.sql.Timestamp], row.getString(7))).collect.toList(0)
+    acqCarHeader = dfCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), row(6).asInstanceOf[java.util.Date], row.getString(7))).collect.toList(0)
 
     dao = new DAO(hc, csc)
    }
@@ -96,15 +97,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       carDetails("deleted").as[Boolean] should equal(true)
     }
 
-    it("can get latest details record which have not been deleted") {
-      val headerUrl = "http://m.finn.no/car/used/ad.html?finnkode=78866263"
-      val loadTime = 3
-      val df = dao.getLatestDetails(headerUrl, loadTime)
-      val array = df.select("information").collect
-      array(0).toString should equal("[Fin bil]")
-    }
-
-    it("can parse and subset json car properties into scala map") {
+     it("can parse and subset json car properties into scala map") {
       val jsonPropertiesMap = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
       val parsedPropertiesMap = Utility.getMapSubsetFromJsonMap(jsonPropertiesMap, Seq("Antall seter", "Girkasse")) //subset and remove json structure
       parsedPropertiesMap.size should equal(2)
@@ -123,9 +116,9 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
     }
 
     it("can merge AcqCarHeader object with AcqCarDetails object") {
-
-
-
+      val df = dao.getLatestDetails(testAcqCarHeader)
+      val array = df.select("information").collect
+      array(0).toString should equal("[Fin bil]")
     }
 
 

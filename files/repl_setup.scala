@@ -10,14 +10,15 @@ import scala.io.Source
 import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.sql._
 import org.apache.spark.rdd.RDD
-
+import com.datastax.spark.connector._
 
 System.setProperty("hadoop.home.dir", "C:\\Users\\torbjorn.torbjornsen\\Hadoop\\")
 val conf = new SparkConf().setAppName("loadRaw").setMaster("local[*]").set("spark.cassandra.connection.host","192.168.56.56")
 val sc = new SparkContext(conf)
 sc.setLogLevel("WARN")
-val _csc = new CassandraSQLContext(sc)
-_csc.setKeyspace("finncars")
+
+val csc = new CassandraSQLContext(sc)
+csc.setKeyspace("finncars")
 val _hc = new HiveContext(sc)
 import _hc.implicits._ //allows registering temptables
 

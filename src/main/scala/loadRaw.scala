@@ -9,8 +9,8 @@ import play.api.libs.json._
 import org.apache.spark.sql.{SQLContext, DataFrame}
 import com.datastax.spark.connector._
 
-case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:java.sql.Timestamp, load_date:String)
-case class AcqCarDetails(url:String, properties:Map[String, String], equipment:Set[String], information:String, deleted:Boolean, load_time:java.sql.Timestamp, load_date:String)
+case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:java.util.Date, load_date:String)
+case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:java.util.Date, load_date:String)
 case class PropCar(url:String, title:String, location:String, year: String, km: String, price: String, properties:Map[String,String], equipment:Set[String], information:String, deleted:Boolean, load_time:java.sql.Timestamp, load_date:String)
 
 
