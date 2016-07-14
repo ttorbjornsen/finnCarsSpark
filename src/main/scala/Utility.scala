@@ -24,7 +24,7 @@ import scala.io.Source
 
 object Utility {
   def createAcqCarDetailsObject(i:Int, jsonCarHdr:JsValue)= {
-    val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").as[String]
+    val url = jsonCarHdr.\\("group").head(i).\("title").head.\("href").as[String]
     val jsonCarDetail = scrapeCarDetails(url)
     val carProperties = jsonCarDetail("properties").toString
     val carEquipment = jsonCarDetail("equipment").toString
@@ -133,6 +133,21 @@ object Utility {
         session.execute(cmd)
       }
     }
+  }
+
+  def parseKM(km:String):String = {
+    //val km = "99 000 km"
+    km.replace(" ", "").replace("km", "")
+  }
+
+  def parseFinnkode(url:String):String = {
+    //val url = "http://m.finn.no/car/used/ad.html?finnkode=72921101"
+    url.substring(43,51)
+  }
+
+  def parsePrice(price:String):String = {
+    //val price = "299 000,-"
+    price.replace(",-","").replace(" ","")
   }
 
   object Constants {
