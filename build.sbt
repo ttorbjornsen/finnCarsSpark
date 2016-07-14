@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-hive" % sparkVersion % "compile",
   "org.apache.spark" %% "spark-streaming" % sparkVersion % "compile",
   "org.apache.spark" %% "spark-streaming-kafka" % sparkVersion exclude("org.apache.spark", "spark-streaming_2.10"),
-  "com.typesafe.play" %% "play-json" % "2.2.1" % "compile",
+  "com.typesafe.play" %% "play-json" % "2.4.3" % "compile" exclude("com.fasterxml.jackson.core", "jackson-databind"),
   "org.jsoup" % "jsoup" % "1.7.3" % "compile",
   "org.scalatest" %% "scalatest" % "2.2.6" % "compile"
 ).map(_.excludeAll(ExclusionRule(organization = "org.mortbay.jetty")))

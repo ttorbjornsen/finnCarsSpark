@@ -35,6 +35,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-databind:2.4.4:jar" level="project" />
     <orderEntry type="library" name="SBT: javax.activation:activation:1.1:jar" level="project" />
     <orderEntry type="library" name="SBT: javax.inject:javax.inject:1:jar" level="project" />
     <orderEntry type="library" name="SBT: javax.xml.bind:jaxb-api:2.2.2:jar" level="project" />
@@ -69,20 +70,14 @@
     <orderEntry type="library" name="SBT: org.scala-stm:scala-stm_2.10:0.7:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.10.6:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.10.6:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.joda:joda-convert:1.3.1:jar" level="project" />
     <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-mapper-asl:1.9.13:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.cassandra:cassandra-clientutil:2.1.9:jar" level="project" />
-    <orderEntry type="library" name="SBT: joda-time:joda-time:2.3:jar" level="project" />
     <orderEntry type="library" name="SBT: io.netty:netty-transport:4.0.27.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: io.netty:netty-handler:4.0.27.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: io.netty:netty-common:4.0.27.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: io.netty:netty-codec:4.0.27.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: io.netty:netty-buffer:4.0.27.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-net:commons-net:3.1:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.typesafe.play:play-json_2.10:2.2.1:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.typesafe.play:play-iteratees_2.10:2.2.1:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.typesafe.play:play-functional_2.10:2.2.1:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.typesafe.play:play-datacommons_2.10:2.2.1:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:jsr166e:1.1.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.datastax.spark:spark-cassandra-connector_2.10:1.4.1:jar" level="project" />
     <orderEntry type="library" name="SBT: com.datastax.cassandra:cassandra-driver-core:2.1.7.1:jar" level="project" />
@@ -102,9 +97,6 @@
     <orderEntry type="library" name="SBT: com.esotericsoftware.kryo:kryo:2.21:jar" level="project" />
     <orderEntry type="library" name="SBT: com.esotericsoftware.minlog:minlog:1.2:jar" level="project" />
     <orderEntry type="library" name="SBT: com.esotericsoftware.reflectasm:reflectasm:1.07:shaded:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-annotations:2.4.4:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-core:2.4.4:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-databind:2.4.4:jar" level="project" />
     <orderEntry type="library" name="SBT: com.fasterxml.jackson.module:jackson-module-scala_2.10:2.4.4:jar" level="project" />
     <orderEntry type="library" name="SBT: com.google.code.findbugs:jsr305:1.3.9:jar" level="project" />
     <orderEntry type="library" name="SBT: com.google.inject:guice:3.0:jar" level="project" />
@@ -118,7 +110,6 @@
     <orderEntry type="library" name="SBT: com.thoughtworks.paranamer:paranamer:2.6:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:chill-java:0.5.0:jar" level="project" />
     <orderEntry type="library" name="SBT: com.twitter:chill_2.10:0.5.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.typesafe:config:1.2.1:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-beanutils:commons-beanutils:1.7.0:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-beanutils:commons-beanutils-core:1.8.0:jar" level="project" />
     <orderEntry type="library" name="SBT: commons-cli:commons-cli:1.2:jar" level="project" />
@@ -225,5 +216,16 @@
     <orderEntry type="library" name="SBT: org.spark-project.hive.shims:hive-shims-0.23:0.13.1a:jar" level="project" />
     <orderEntry type="library" name="SBT: org.spark-project.hive.shims:hive-shims-common:0.13.1a:jar" level="project" />
     <orderEntry type="library" name="SBT: org.spark-project.hive.shims:hive-shims-common-secure:0.13.1a:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-annotations:2.5.4:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.fasterxml.jackson.core:jackson-core:2.5.4:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.5.4:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.5.4:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.typesafe:config:1.3.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.typesafe.play:play-datacommons_2.10:2.4.3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.typesafe.play:play-functional_2.10:2.4.3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.typesafe.play:play-iteratees_2.10:2.4.3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.typesafe.play:play-json_2.10:2.4.3:jar" level="project" />
+    <orderEntry type="library" name="SBT: joda-time:joda-time:2.8.1:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.joda:joda-convert:1.7:jar" level="project" />
   </component>
 </module>

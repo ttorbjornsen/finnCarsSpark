@@ -70,9 +70,9 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       limit(1)
 
     //REPL : USE val
-    acqCarHeader = dfCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), row(6).asInstanceOf[java.util.Date], row.getString(7))).collect.toList(0)
-
-    dao = new DAO(hc, csc)
+    acqCarHeader = dfCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), (row(6).asInstanceOf[java.util.Date]).getTime(), row.getString(7))).collect.toList(0)
+    //REPL : USE val
+    dao = new DAO(_hc, _csc)
    }
 
   describe("application") {
@@ -99,7 +99,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
      it("can parse and subset json car properties into scala map") {
       val jsonPropertiesMap = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
-      val parsedPropertiesMap = Utility.getMapSubsetFromJsonMap(jsonPropertiesMap, Seq("Antall seter", "Girkasse")) //subset and remove json structure
+      val parsedPropertiesMap = Utility.getMapFromJsonMap(jsonPropertiesMap, Seq("Salgsform")) //exclude keys and remove json structure
       parsedPropertiesMap.size should equal(2)
       parsedPropertiesMap should contain key("Antall seter")
       parsedPropertiesMap should contain value("5")
@@ -109,53 +109,23 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
     it("can parse and subset json car equipment to scala list") {
       val jsonEquipmentArray = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
-      val parsedEquipmentList = Utility.getListSubsetFromJsonArray(jsonEquipmentArray, Seq("Automatisk klimaanlegg", "Skinnseter"))
+      val parsedEquipmentList = Utility.getSetFromJsonArray(jsonEquipmentArray, Seq("Aluminiumsfelger"))
       parsedEquipmentList.size should equal(2)
       parsedEquipmentList should contain ("Automatisk klimaanlegg")
       parsedEquipmentList should contain ("Skinnseter")
     }
 
     it("can merge AcqCarHeader object with AcqCarDetails object") {
-      val df = dao.getLatestDetails(testAcqCarHeader)
-      val array = df.select("information").collect
-      array(0).toString should equal("[Fin bil]")
+      val propCar:PropCar = dao.getLatestDetails(acqCarHeader)
+      propCar.information should equal ("Fin bil. NEDSATT PRIS")
     }
-
-
-
-
-
-
-  }
-
-
-  describe("Cassandra CRUD testing") {
-    ignore("can create, update and delete record in acquisition layer") {
-      val testAcqCarHeader = ("UnitTest","http://test.url", "testLocation", "testYear", "testKM", "testPrice", 1L, "01.01.2016")
-      val testAcqCarDetails = ("http://test.url","{testPropertyKey:testPropertyValue}", "{testEquipment}", "{testInformation}", 1L, "01.01.2016")
-    }
-  }
-
-
-
-  describe("Create Acq-detail object from JSON") {
-    ignore ("can create acq-detail object from JSON"){
-      val sourceJson = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\carsFinn.json")
-      val jsonCarHdr: JsValue = Json.parse(sourceJson.mkString)
-      val acqCarDetailsObject = Utility.createAcqCarDetailsObject(1, jsonCarHdr)
-      //http://m.finn.no/car/used/ad.html?finnkode=78540425
-      //acqCarDetailsObject.properties should include ("Stasjonsvogn")
-      //acqCarDetailsObject.equipment should include ("Sentrallås")
-      acqCarDetailsObject.information should include ("lettstartet varebil")
-    }
-
   }
 
 
   describe("JSON to Cassandra") {
     //subject of the test
 
-    ignore("can convert JSON hdr file to list of AcqCarHeaders") {
+    it("can convert JSON hdr file to list of AcqCarHeaders") {
       val sourceJson = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\carsFinn.json")
       val jsonCarHdr: JsValue = Json.parse(sourceJson.mkString)
       val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size
@@ -164,7 +134,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       acqCarHeaderList.length should equal (numOfCars)
     }
 
-    ignore("can convert JSON hdr file to list of AcqCarDetails") {
+    it("can convert JSON hdr file to list of AcqCarDetails") {
       val sourceJson = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\carsFinnLimited.json")
       val jsonCarHdr: JsValue = Json.parse(sourceJson.mkString)
       val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size

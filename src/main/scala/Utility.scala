@@ -11,7 +11,9 @@ import play.api.libs.json._
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Document.OutputSettings
 
+import scala.collection.immutable.Map
 import scala.collection.JavaConversions._
+import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 
@@ -28,8 +30,9 @@ object Utility {
     val carEquipment = jsonCarDetail("equipment").toString
     val carInformation = jsonCarDetail("information").toString
     val deleted = jsonCarDetail("deleted").as[Boolean]
-    val load_time = new java.sql.Timestamp(jsonCarHdr.\\("timestamp")(0).as[Long])
-    val load_date = new java.util.Date(load_time.getTime).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
+    val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
+    val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
+
     AcqCarDetails(url, carProperties, carEquipment, carInformation, deleted, load_time, load_date)
   }
 
@@ -41,8 +44,8 @@ object Utility {
     val year = jsonCarHdr.\\("group")(0)(i).\("year")(0).\("text").toString
     val km = jsonCarHdr.\\("group")(0)(i).\("km")(0).\("text").toString
     val price = jsonCarHdr.\\("group")(0)(i).\("price")(0).\("text").toString
-    val load_time = new java.sql.Timestamp(jsonCarHdr.\\("timestamp")(0).as[Long])
-    val load_date = new java.util.Date(load_time.getTime).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
+    val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
+    val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
     AcqCarHeader(title, url, location, year, km, price, load_time, load_date)
   }
 
@@ -96,20 +99,50 @@ object Utility {
 
   }
 
-  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):Map[String,String] = {
-//    val keys = Seq("Salgsform", "Girkasse")
-//    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
+//  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):Map[String,String] = {
+////    val keys = Seq("Salgsform", "Girkasse")
+////    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
+//
+//    val jsValueMap: JsValue = Json.parse(jsonString)
+//    val propertiesMap = jsValueMap.as[Map[String,String]].filterKeys{excludedKeys.contains(_) == false}
+//    propertiesMap
+//  }
+
+  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):HashMap[String,String] = {
+    //    val keys = Seq("Salgsform", "Girkasse")
+    //    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
+
     val jsValueMap: JsValue = Json.parse(jsonString)
-    jsValueMap.as[Map[String,String]].filterKeys{excludedKeys.contains(_) == false}
+    val propertiesMap = jsValueMap.as[Map[String,String]]
+    val hashMap = new HashMap[String, String]
+    propertiesMap.map{case(k,v) => hashMap.put(k,v) }
+    hashMap
   }
 
-  def getListSubsetFromJsonArray(jsonString:String, excludedElements:Seq[String]=Seq("None")):Seq[String] = {
+  def getMapFromJsonMapTEMP(jsonString:String, excludedKeys:Seq[String]=Seq("None")):HashMap[String,String] = {
+    //    val keys = Seq("Salgsform", "Girkasse")
+    //    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
+
+    case class CarProperties(map:Map[String, String])
+    val carPropRead = (__ \ 'map).read[Map[String,String]].map{l => CarProperties(l)}
+    val jsval = Json.toJson(jsonString)
+
+    val jsValueMap: JsValue = Json.parse(jsonString)
+    val propertiesMap = jsValueMap.as[Map[String,String]]
+    val hashMap = new HashMap[String, String]
+    propertiesMap.map{case(k,v) => hashMap.put(k,v) }
+    hashMap
+
+  }
+
+
+  def getSetFromJsonArray(jsonString:String, excludedElements:Seq[String]=Seq("None")):Set[String] = {
 //    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
 //    val elements = Seq("Automatisk klimaanlegg", "Skinnseter")
 
     val jsValueArray:JsValue = Json.parse(jsonString)
-    val list = jsValueArray.as[Seq[String]]
-    list.filter(x => !excludedElements.contains(x))
+    val set = jsValueArray.as[Set[String]]
+    set.filter(x => !excludedElements.contains(x))
   }
 
   def getStringFromJsonString(jsonString:String):String = {
@@ -143,6 +176,18 @@ object Utility {
 //    =  .select
 //    acqCarHeader.join(acqCarDetails, $"url")
   }
+
+
+
+  object Constants {
+    val EmptyMap = Map("NULL" -> "NULL")
+    val EmptyList = Set("NULL")
+    val EmptyString = "NULL"
+  }
+
+
+
+
 
 }
 
