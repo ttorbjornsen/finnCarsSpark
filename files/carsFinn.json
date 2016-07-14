@@ -1,1239 +1,831 @@
 {
   "extractorData" : {
-    "url" : "http://m.finn.no/car/used/search.html?body_type=4&rows=100&page=2",
-    "resourceId" : "49d9f1cb21c95b66735304d213a911a3",
+    "url" : "http://m.finn.no/car/used/search.html?body_type=4&rows=100&page=1",
+    "resourceId" : "8ec29cfca4d7dccaf9928a14442834db",
     "data" : [ {
       "group" : [ {
         "location" : [ {
-          "text" : "Lysaker"
+          "text" : "Grong"
         } ],
         "title" : [ {
-          "text" : "Ford Mondeo 2,0 TDCI 140hk Titanium X EU OK 2018, fjernstyrt Webasto, tilhengerfeste, adaptiv cruisecontrol",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=77121269"
+          "text" : "Peugeot 508 SW 2,0 HDi 163hk *LED/PANORAMA+*",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78855716"
         } ],
         "year" : [ {
-          "text" : "2010"
+          "text" : "2011"
         } ],
         "km" : [ {
-          "text" : "159 000 km"
+          "text" : "88 433 km"
         } ],
         "price" : [ {
-          "text" : "186 588,-"
+          "text" : "219 900,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Sandefjord"
+          "text" : "Oppdal"
         } ],
         "title" : [ {
-          "text" : "Volkswagen Passat 2,0 TDI 110hk/ innbytte mulig",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78999466"
-        } ],
-        "year" : [ {
-          "text" : "2009"
-        } ],
-        "km" : [ {
-          "text" : "94 200 km"
-        } ],
-        "price" : [ {
-          "text" : "108 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Bergen"
-        } ],
-        "title" : [ {
-          "text" : "BMW 5-serie 525i, Lav km. H-feste, skinn, takluke, Automat/Steptronic",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78997756"
-        } ],
-        "year" : [ {
-          "text" : "2001"
-        } ],
-        "km" : [ {
-          "text" : "167 000 km"
-        } ],
-        "price" : [ {
-          "text" : "59 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Oslo"
-        } ],
-        "title" : [ {
-          "text" : "BMW 3-serie 320 DIESEL STV, EU-OK TIL 7/2018",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78998952"
-        } ],
-        "year" : [ {
-          "text" : "2002"
-        } ],
-        "km" : [ {
-          "text" : "269 061 km"
-        } ],
-        "price" : [ {
-          "text" : "39 900,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Nesoddtangen"
-        } ],
-        "title" : [ {
-          "text" : "Alfa Romeo Crosswagon Quatro",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=66569917"
-        } ],
-        "year" : [ {
-          "text" : "2005"
-        } ],
-        "km" : [ {
-          "text" : "129 000 km"
-        } ],
-        "price" : [ {
-          "text" : "Solgt"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Stavanger"
-        } ],
-        "title" : [ {
-          "text" : "Kia Cee'd",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78997700"
-        } ],
-        "year" : [ {
-          "text" : "2014"
-        } ],
-        "km" : [ {
-          "text" : "25 000 km"
-        } ],
-        "price" : [ {
-          "text" : "245 945,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Arendal"
-        } ],
-        "title" : [ {
-          "text" : "Audi A4 2.0 TDi 140hk Quattro Avant Skinn++",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78999161"
+          "text" : "Volvo V50 1,8",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79043482"
         } ],
         "year" : [ {
           "text" : "2006"
         } ],
         "km" : [ {
-          "text" : "146 000 km"
+          "text" : "202 200 km"
         } ],
         "price" : [ {
-          "text" : "135 900,-"
+          "text" : "63 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Ski"
+          "text" : "Førde"
         } ],
         "title" : [ {
-          "text" : "Toyota Avensis 1,8 147hk Advance InBusiness 2.0 Se denne! MYE utstyr!",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78999601"
-        } ],
-        "year" : [ {
-          "text" : "2015"
-        } ],
-        "km" : [ {
-          "text" : "19 913 km"
-        } ],
-        "price" : [ {
-          "text" : "349 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Svolvær"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V50 1,6 D",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993163"
+          "text" : "Honda Accord 2,2 Sport",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78617773"
         } ],
         "year" : [ {
           "text" : "2006"
         } ],
         "km" : [ {
-          "text" : "137 000 km"
+          "text" : "121 000 km"
         } ],
         "price" : [ {
-          "text" : "83 588,-"
+          "text" : "86 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Hakadal"
+          "text" : "Norddal"
         } ],
         "title" : [ {
-          "text" : "Skoda Octavia Octavia RS 170 HK",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=76730221"
+          "text" : "Volvo V70",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79041913"
         } ],
         "year" : [ {
-          "text" : "2008"
+          "text" : "2007"
         } ],
         "km" : [ {
-          "text" : "177 200 km"
+          "text" : "194 000 km"
         } ],
         "price" : [ {
-          "text" : "120 000,-"
+          "text" : "118 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Fåberg"
+          "text" : "Flaktveit"
         } ],
         "title" : [ {
-          "text" : "Subaru Forester",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78998799"
+          "text" : "Toyota Yaris Verso 1.4 D4-D 75 HK. NY-EU-OK TIL APRIL 2018",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79038202"
         } ],
         "year" : [ {
           "text" : "2006"
+        } ],
+        "km" : [ {
+          "text" : "277 000 km"
+        } ],
+        "price" : [ {
+          "text" : "24 725,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skien"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Golf",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040816"
+        } ],
+        "year" : [ {
+          "text" : "2003"
         } ],
         "km" : [ {
           "text" : "180 000 km"
         } ],
         "price" : [ {
-          "text" : "83 500,-"
+          "text" : "28 538,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Oslo"
+          "text" : "Fjell"
         } ],
         "title" : [ {
-          "text" : "Audi A4 2009 1.8 TFSI S-line ABT styling",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995569"
+          "text" : "Volkswagen Touran",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79043169"
         } ],
         "year" : [ {
-          "text" : "2009"
+          "text" : "2004"
         } ],
         "km" : [ {
-          "text" : "88 766 km"
+          "text" : "208 000 km"
         } ],
         "price" : [ {
-          "text" : "183 588,-"
+          "text" : "31 538,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Lierstranda"
+          "text" : "Finstadjordet"
         } ],
         "title" : [ {
-          "text" : "Audi A4 1,9 TDI",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78998112"
+          "text" : "Ford Mondeo 2,0 TDCI Trend",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79041197"
         } ],
         "year" : [ {
           "text" : "2005"
         } ],
         "km" : [ {
-          "text" : "178 300 km"
+          "text" : "212 000 km"
         } ],
         "price" : [ {
-          "text" : "78 588,-"
+          "text" : "33 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Skåla"
+          "text" : "Skien"
         } ],
         "title" : [ {
-          "text" : "Peugeot Partner",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78996365"
-        } ],
-        "year" : [ {
-          "text" : "2010"
-        } ],
-        "km" : [ {
-          "text" : "96 000 km"
-        } ],
-        "price" : [ {
-          "text" : "116 230,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Iveland"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Caddy Maxi 4 Motion",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995650"
-        } ],
-        "year" : [ {
-          "text" : "2010"
-        } ],
-        "km" : [ {
-          "text" : "113 000 km"
-        } ],
-        "price" : [ {
-          "text" : "99 900,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Sande i Sunnfjord"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Touran",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78996072"
-        } ],
-        "year" : [ {
-          "text" : "2011"
-        } ],
-        "km" : [ {
-          "text" : "102 500 km"
-        } ],
-        "price" : [ {
-          "text" : "176 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Frei"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Passat Highline",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78997620"
-        } ],
-        "year" : [ {
-          "text" : "2006"
-        } ],
-        "km" : [ {
-          "text" : "222 000 km"
-        } ],
-        "price" : [ {
-          "text" : "55 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Grong"
-        } ],
-        "title" : [ {
-          "text" : "Opel Insignia 160hk 4x4 SPORTS TOUR",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78998090"
-        } ],
-        "year" : [ {
-          "text" : "2011"
-        } ],
-        "km" : [ {
-          "text" : "165 000 km"
-        } ],
-        "price" : [ {
-          "text" : "232 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Melhus"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V70 R-AWD",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995617"
-        } ],
-        "year" : [ {
-          "text" : "1998"
-        } ],
-        "km" : [ {
-          "text" : "215 664 km"
-        } ],
-        "price" : [ {
-          "text" : "71 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Eina"
-        } ],
-        "title" : [ {
-          "text" : "Citroen Xsara 1, 6 Stasjonsvogn",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78996873"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "116 000 km"
-        } ],
-        "price" : [ {
-          "text" : "24 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Haugesund"
-        } ],
-        "title" : [ {
-          "text" : "Audi A6 2.5 tdi 180hk",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995919"
-        } ],
-        "year" : [ {
-          "text" : "2002"
-        } ],
-        "km" : [ {
-          "text" : "284 200 km"
-        } ],
-        "price" : [ {
-          "text" : "27 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Inderøy"
-        } ],
-        "title" : [ {
-          "text" : "Ford Mondeo eu ok til jun 2016",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78997528"
-        } ],
-        "year" : [ {
-          "text" : "2006"
-        } ],
-        "km" : [ {
-          "text" : "261 000 km"
-        } ],
-        "price" : [ {
-          "text" : "55 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Hafrsfjord"
-        } ],
-        "title" : [ {
-          "text" : "Toyota Avensis",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=75214729"
+          "text" : "Audi A4 2,0 TDI ! EU OK ! 6 MND Garanti !",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79043048"
         } ],
         "year" : [ {
           "text" : "2009"
         } ],
         "km" : [ {
-          "text" : "126 125 km"
+          "text" : "101 000 km"
         } ],
         "price" : [ {
-          "text" : "85 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Nesøya"
-        } ],
-        "title" : [ {
-          "text" : "Ford Mondeo",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995022"
-        } ],
-        "year" : [ {
-          "text" : "2001"
-        } ],
-        "km" : [ {
-          "text" : "252 700 km"
-        } ],
-        "price" : [ {
-          "text" : "16 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Råholt"
-        } ],
-        "title" : [ {
-          "text" : "Nissan Primera",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78843327"
-        } ],
-        "year" : [ {
-          "text" : "1998"
-        } ],
-        "km" : [ {
-          "text" : "245 000 km"
-        } ],
-        "price" : [ {
-          "text" : "8 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Moss"
-        } ],
-        "title" : [ {
-          "text" : "Subaru Legacy",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=77877047"
-        } ],
-        "year" : [ {
-          "text" : "2010"
-        } ],
-        "km" : [ {
-          "text" : "133 000 km"
-        } ],
-        "price" : [ {
-          "text" : "205 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Drøbak"
-        } ],
-        "title" : [ {
-          "text" : "Peugeot 508 RXH HYBRID 4",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78994474"
-        } ],
-        "year" : [ {
-          "text" : "2014"
-        } ],
-        "km" : [ {
-          "text" : "53 875 km"
-        } ],
-        "price" : [ {
-          "text" : "315 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Hønefoss"
-        } ],
-        "title" : [ {
-          "text" : "Ford Mondeo 116HK Business St.vogn m/Klima/Krok",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990457"
-        } ],
-        "year" : [ {
-          "text" : "2013"
-        } ],
-        "km" : [ {
-          "text" : "89 000 km"
-        } ],
-        "price" : [ {
-          "text" : "166 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Haugesund"
-        } ],
-        "title" : [ {
-          "text" : "Toyota Corolla 1,3 XLI",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995232"
-        } ],
-        "year" : [ {
-          "text" : "1996"
-        } ],
-        "km" : [ {
-          "text" : "173 521 km"
-        } ],
-        "price" : [ {
-          "text" : "16 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Brøttum"
-        } ],
-        "title" : [ {
-          "text" : "Skoda Octavia RS look",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993420"
-        } ],
-        "year" : [ {
-          "text" : "2014"
-        } ],
-        "km" : [ {
-          "text" : "43 000 km"
-        } ],
-        "price" : [ {
-          "text" : "235 945,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Froland"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V40",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78994607"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "322 000 km"
-        } ],
-        "price" : [ {
-          "text" : "6 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Næroset"
-        } ],
-        "title" : [ {
-          "text" : "Audi A4",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78981669"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "199 915 km"
-        } ],
-        "price" : [ {
-          "text" : "111 538,-"
+          "text" : "154 588,-"
         } ]
       }, {
         "location" : [ {
           "text" : "Jessheim"
         } ],
         "title" : [ {
-          "text" : "Audi A4 allroad 2.0 TDI 143 hk quattro manuell",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995747"
-        } ],
-        "year" : [ {
-          "text" : "2012"
-        } ],
-        "km" : [ {
-          "text" : "55 000 km"
-        } ],
-        "price" : [ {
-          "text" : "338 900,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Lindås"
-        } ],
-        "title" : [ {
-          "text" : "BMW 5-serie 525xd",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993773"
+          "text" : "Toyota Auris 1,8 Hybrid Executive HSD med Skinn og Panorama",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79043546"
         } ],
         "year" : [ {
           "text" : "2013"
         } ],
         "km" : [ {
-          "text" : "265 100 km"
+          "text" : "31 500 km"
         } ],
         "price" : [ {
-          "text" : "340 000,-"
+          "text" : "269 000,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Åkrehamn"
+          "text" : "Jessheim"
         } ],
         "title" : [ {
-          "text" : "Citroen Berlingo",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995217"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "172 200 km"
-        } ],
-        "price" : [ {
-          "text" : "36 500,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Hunndalen"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Golf TDI High 4Motion/Webasto/krok/ACC/+",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78995592"
+          "text" : "Toyota Auris 1,8 Hybrid Executive HSD m. skinn og panorama",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79043500"
         } ],
         "year" : [ {
           "text" : "2014"
         } ],
         "km" : [ {
-          "text" : "21 000 km"
+          "text" : "25 600 km"
         } ],
         "price" : [ {
           "text" : "279 000,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Oslo"
+          "text" : "Skulestadmo"
         } ],
         "title" : [ {
-          "text" : "Suzuki Liana 1,6 4wd ny Registerreim",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=76268373"
+          "text" : "Volvo V50 1,6 D DRIVe Momentum Edition",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=75086247"
         } ],
         "year" : [ {
-          "text" : "2005"
+          "text" : "2009"
         } ],
         "km" : [ {
-          "text" : "262 000 km"
+          "text" : "107 800 km"
         } ],
         "price" : [ {
-          "text" : "9 600,-"
+          "text" : "123 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Bjerkvik"
+          "text" : "Skien"
         } ],
         "title" : [ {
-          "text" : "Skoda Octavia Scout",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=70744508"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "225 000 km"
-        } ],
-        "price" : [ {
-          "text" : "129 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Lom"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Passat 1,9 TDI Highline Tiptronic",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78994301"
-        } ],
-        "year" : [ {
-          "text" : "2004"
-        } ],
-        "km" : [ {
-          "text" : "151 000 km"
-        } ],
-        "price" : [ {
-          "text" : "51 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Sellebakk"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Passat 1.9TDI.EU TIL 2018.highline.",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992919"
-        } ],
-        "year" : [ {
-          "text" : "2006"
-        } ],
-        "km" : [ {
-          "text" : "319 000 km"
-        } ],
-        "price" : [ {
-          "text" : "35 500,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Kristiansand S"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V70 D5,2,4 Diesel automat,H-feste,skinn,Eu ok til 2017,Meget pen.",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78958417"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "334 000 km"
-        } ],
-        "price" : [ {
-          "text" : "29 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Vennesla"
-        } ],
-        "title" : [ {
-          "text" : "Toyota Avensis",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993046"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "287 000 km"
-        } ],
-        "price" : [ {
-          "text" : "26 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Kristiansand S"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Passat 2,0 TDI 140hk Comfortline BMT,H-feste,cruise,meget pen,Sotede ruter,multiratt+++",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78958217"
-        } ],
-        "year" : [ {
-          "text" : "2010"
-        } ],
-        "km" : [ {
-          "text" : "113 000 km"
-        } ],
-        "price" : [ {
-          "text" : "114 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Hunndalen"
-        } ],
-        "title" : [ {
-          "text" : "Audi A6 313hk TDI Q/Sline/LED/DAB/Night/ACC",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78932195"
-        } ],
-        "year" : [ {
-          "text" : "2013"
-        } ],
-        "km" : [ {
-          "text" : "107 000 km"
-        } ],
-        "price" : [ {
-          "text" : "579 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Rådal"
-        } ],
-        "title" : [ {
-          "text" : "Saab 9-3 SPORTCOMBI VECTOR 1,9TiD SELGES TIL HØYESTE BUD O.A.P.",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78994690"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "242 000 km"
-        } ],
-        "price" : [ {
-          "text" : "44 800,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Jessheim"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Golf 1,6 TDI 105hk Highline Ergosete",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78994642"
-        } ],
-        "year" : [ {
-          "text" : "2014"
-        } ],
-        "km" : [ {
-          "text" : "42 000 km"
-        } ],
-        "price" : [ {
-          "text" : "229 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Moss"
-        } ],
-        "title" : [ {
-          "text" : "Citroen Berlingo XTR Multispace BlueHDi 100 Nordic Ed. (K) DAB, NAVI, RYGGEKAMERA OG SENSOR F+B",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78994528"
-        } ],
-        "year" : [ {
-          "text" : "2016"
-        } ],
-        "km" : [ {
-          "text" : "3 100 km"
-        } ],
-        "price" : [ {
-          "text" : "275 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Fjellhamar"
-        } ],
-        "title" : [ {
-          "text" : "BMW 5-serie M-Sport",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993221"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "254 000 km"
-        } ],
-        "price" : [ {
-          "text" : "179 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Trondheim"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V50 136HK-2.0TDI-EU TIL JULI 2018-PEN BIL.",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78982646"
-        } ],
-        "year" : [ {
-          "text" : "2005"
-        } ],
-        "km" : [ {
-          "text" : "221 000 km"
-        } ],
-        "price" : [ {
-          "text" : "49 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Trondheim"
-        } ],
-        "title" : [ {
-          "text" : "Audi A6 TDI- REGREIM ER NY - MEGET PEN BIL.",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78979751"
-        } ],
-        "year" : [ {
-          "text" : "2006"
-        } ],
-        "km" : [ {
-          "text" : "249 000 km"
-        } ],
-        "price" : [ {
-          "text" : "79 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Trondheim"
-        } ],
-        "title" : [ {
-          "text" : "Mitsubishi Space Star I 1,8 GDI Comfort",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78991397"
-        } ],
-        "year" : [ {
-          "text" : "2001"
-        } ],
-        "km" : [ {
-          "text" : "152 000 km"
-        } ],
-        "price" : [ {
-          "text" : "8 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Oslo"
-        } ],
-        "title" : [ {
-          "text" : "Ford Focus 1,6 TDCI 90hk Trend",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993794"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "130 000 km"
-        } ],
-        "price" : [ {
-          "text" : "73 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Oslo"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V40 Cross Country Summum,Navi,Tlf,Xenon,Parkvarmer",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993392"
-        } ],
-        "year" : [ {
-          "text" : "2014"
-        } ],
-        "km" : [ {
-          "text" : "19 800 km"
-        } ],
-        "price" : [ {
-          "text" : "264 945,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Blystadlia"
-        } ],
-        "title" : [ {
-          "text" : "Opel Zafira 1,9d automatgir",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78009906"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "116 500 km"
-        } ],
-        "price" : [ {
-          "text" : "102 500,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Drammen"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V70 2,4 140HK. EU12.16. Se denne!",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992785"
-        } ],
-        "year" : [ {
-          "text" : "2000"
-        } ],
-        "km" : [ {
-          "text" : "382 000 km"
-        } ],
-        "price" : [ {
-          "text" : "25 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Jessheim"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Passat 1,6 TDI 105hk BMT Highline R DSG",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78993626"
-        } ],
-        "year" : [ {
-          "text" : "2013"
-        } ],
-        "km" : [ {
-          "text" : "47 500 km"
-        } ],
-        "price" : [ {
-          "text" : "249 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Namsos"
-        } ],
-        "title" : [ {
-          "text" : "Ford C-Max",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78991913"
-        } ],
-        "year" : [ {
-          "text" : "2004"
-        } ],
-        "km" : [ {
-          "text" : "168 000 km"
-        } ],
-        "price" : [ {
-          "text" : "36 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Krokelvdalen"
-        } ],
-        "title" : [ {
-          "text" : "Skoda Octavia 1,6 TDI 110hk 4x4 style",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990478"
-        } ],
-        "year" : [ {
-          "text" : "2016"
-        } ],
-        "km" : [ {
-          "text" : "8 500 km"
-        } ],
-        "price" : [ {
-          "text" : "355 945,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Kristiansand S"
-        } ],
-        "title" : [ {
-          "text" : "Skoda Octavia 1,6 102HK. ELEGANCE.EN EIER.KLIMA.H-FESTE.EU.OK.PEN.VELHOLDT",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992652"
-        } ],
-        "year" : [ {
-          "text" : "2001"
-        } ],
-        "km" : [ {
-          "text" : "265 933 km"
-        } ],
-        "price" : [ {
-          "text" : "13 990,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Sande i Vestfold"
-        } ],
-        "title" : [ {
-          "text" : "BMW 5-serie 520D-177HK-AUT-PANORAMATAK-NAVI",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992091"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "115 900 km"
-        } ],
-        "price" : [ {
-          "text" : "198 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Lillestrøm"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Passat 1,8 Highline 150HK turbo strøken bil. AC",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992618"
-        } ],
-        "year" : [ {
-          "text" : "2002"
-        } ],
-        "km" : [ {
-          "text" : "216 000 km"
-        } ],
-        "price" : [ {
-          "text" : "28 537,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Birtavarre"
-        } ],
-        "title" : [ {
-          "text" : "Opel Astra 1,7 CDTi Cosmo Sports Tourer",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992517"
+          "text" : "Ford Focus 1,6 TDCI ! EU OK ! 6 MND Garanti !",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79042775"
         } ],
         "year" : [ {
           "text" : "2011"
         } ],
         "km" : [ {
-          "text" : "77 433 km"
+          "text" : "178 000 km"
         } ],
         "price" : [ {
-          "text" : "168 588,-"
+          "text" : "99 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Nordbyhagen"
+          "text" : "Førde"
         } ],
         "title" : [ {
-          "text" : "Nissan Primera",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78991353"
+          "text" : "Volvo V70 Xenon Skinn Webasto",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79038810"
+        } ],
+        "year" : [ {
+          "text" : "2003"
+        } ],
+        "km" : [ {
+          "text" : "382 000 km"
+        } ],
+        "price" : [ {
+          "text" : "43 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Gran"
+        } ],
+        "title" : [ {
+          "text" : "BMW 5-serie",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79042670"
+        } ],
+        "year" : [ {
+          "text" : "1998"
+        } ],
+        "km" : [ {
+          "text" : "218 278 km"
+        } ],
+        "price" : [ {
+          "text" : "35 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ski"
+        } ],
+        "title" : [ {
+          "text" : "Opel Vectra 1,8 Comfort",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79042597"
+        } ],
+        "year" : [ {
+          "text" : "2004"
+        } ],
+        "km" : [ {
+          "text" : "188 298 km"
+        } ],
+        "price" : [ {
+          "text" : "28 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Raufoss"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V70 D5 aut",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79042244"
+        } ],
+        "year" : [ {
+          "text" : "2003"
+        } ],
+        "km" : [ {
+          "text" : "338 000 km"
+        } ],
+        "price" : [ {
+          "text" : "66 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Øye"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Passat 2,0 TDI 110hk Highline",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79042029"
+        } ],
+        "year" : [ {
+          "text" : "2009"
+        } ],
+        "km" : [ {
+          "text" : "145 000 km"
+        } ],
+        "price" : [ {
+          "text" : "112 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Jessheim"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Avensis 2,0 152hk Executive Multidrive S",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79042793"
+        } ],
+        "year" : [ {
+          "text" : "2009"
+        } ],
+        "km" : [ {
+          "text" : "91 100 km"
+        } ],
+        "price" : [ {
+          "text" : "189 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Hov"
+        } ],
+        "title" : [ {
+          "text" : "Opel Astra Sport",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040338"
+        } ],
+        "year" : [ {
+          "text" : "1998"
+        } ],
+        "km" : [ {
+          "text" : "260 000 km"
+        } ],
+        "price" : [ {
+          "text" : "7 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Hafrsfjord"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V40",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040798"
+        } ],
+        "year" : [ {
+          "text" : "2000"
+        } ],
+        "km" : [ {
+          "text" : "174 000 km"
+        } ],
+        "price" : [ {
+          "text" : "20 038,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Arendal"
+        } ],
+        "title" : [ {
+          "text" : "Ford Focus 1,6 101 hk",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79041553"
         } ],
         "year" : [ {
           "text" : "2002"
         } ],
         "km" : [ {
-          "text" : "183 000 km"
+          "text" : "251 597 km"
         } ],
         "price" : [ {
-          "text" : "33 500,-"
+          "text" : "19 538,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Hosle"
+          "text" : "Jevnaker"
         } ],
         "title" : [ {
-          "text" : "Volvo V70 D3 150HK Dynamic Edition, Automat, Driver Support, Navi, Skinn, Soltak, ryggekamera, Volvo On Call, herregårdspakke, avtagbart hengerfeste ++",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=76509560"
+          "text" : "Ford Mondeo",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040993"
         } ],
         "year" : [ {
-          "text" : "2016"
+          "text" : "1994"
         } ],
         "km" : [ {
-          "text" : "21 000 km"
+          "text" : "181 307 km"
         } ],
         "price" : [ {
-          "text" : "435 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Stange"
-        } ],
-        "title" : [ {
-          "text" : "Volvo 940 Turbo +. 7 seter Klima Hengerfeste Manuell",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78991468"
-        } ],
-        "year" : [ {
-          "text" : "1997"
-        } ],
-        "km" : [ {
-          "text" : "305 000 km"
-        } ],
-        "price" : [ {
-          "text" : "49 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Ulsteinvik"
-        } ],
-        "title" : [ {
-          "text" : "Toyota Avensis 2,0 D-4D Executive",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78991785"
-        } ],
-        "year" : [ {
-          "text" : "2005"
-        } ],
-        "km" : [ {
-          "text" : "180 962 km"
-        } ],
-        "price" : [ {
-          "text" : "59 000,-"
+          "text" : "6 038,-"
         } ]
       }, {
         "location" : [ {
           "text" : "Tolvsrød"
         } ],
         "title" : [ {
-          "text" : "Opel Vectra 1,6 16V Business",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992050"
+          "text" : "Volkswagen Passat 2,0 TDI Highline",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039048"
+        } ],
+        "year" : [ {
+          "text" : "2006"
+        } ],
+        "km" : [ {
+          "text" : "198 457 km"
+        } ],
+        "price" : [ {
+          "text" : "79 999,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Sagvåg"
+        } ],
+        "title" : [ {
+          "text" : "Peugeot 307 SW",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039202"
+        } ],
+        "year" : [ {
+          "text" : "2002"
+        } ],
+        "km" : [ {
+          "text" : "170 344 km"
+        } ],
+        "price" : [ {
+          "text" : "25 038,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Vikebygd"
+        } ],
+        "title" : [ {
+          "text" : "Chrysler Voyager",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79013355"
         } ],
         "year" : [ {
           "text" : "1998"
         } ],
         "km" : [ {
-          "text" : "235 674 km"
+          "text" : "126 121 km"
+        } ],
+        "price" : [ {
+          "text" : "8 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Vollen"
+        } ],
+        "title" : [ {
+          "text" : "Ford Scorpio",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79018830"
+        } ],
+        "year" : [ {
+          "text" : "1992"
+        } ],
+        "km" : [ {
+          "text" : "200 000 km"
+        } ],
+        "price" : [ {
+          "text" : "4 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Lier"
+        } ],
+        "title" : [ {
+          "text" : "Land Rover Defender",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040695"
+        } ],
+        "year" : [ {
+          "text" : "1996"
+        } ],
+        "km" : [ {
+          "text" : "274 000 km"
+        } ],
+        "price" : [ {
+          "text" : "231 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Rådal"
+        } ],
+        "title" : [ {
+          "text" : "Ford Mondeo PREMIUM 1.6TDCI 6M SPORT/NAVI/H FESTE/WEBASTO/\"NORSK\"",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79041530"
+        } ],
+        "year" : [ {
+          "text" : "2012"
+        } ],
+        "km" : [ {
+          "text" : "87 000 km"
+        } ],
+        "price" : [ {
+          "text" : "198 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Hønefoss"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V70 136HK MOMENTUM SKINN H-FESTE NORSK",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79027669"
+        } ],
+        "year" : [ {
+          "text" : "2010"
+        } ],
+        "km" : [ {
+          "text" : "83 000 km"
+        } ],
+        "price" : [ {
+          "text" : "198 900,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Elnesvågen"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Passat",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79029685"
+        } ],
+        "year" : [ {
+          "text" : "2006"
+        } ],
+        "km" : [ {
+          "text" : "199 953 km"
+        } ],
+        "price" : [ {
+          "text" : "38 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ålesund"
+        } ],
+        "title" : [ {
+          "text" : "Audi A4 2,0 TDI",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040346"
+        } ],
+        "year" : [ {
+          "text" : "2005"
+        } ],
+        "km" : [ {
+          "text" : "177 514 km"
+        } ],
+        "price" : [ {
+          "text" : "95 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Haugesund"
+        } ],
+        "title" : [ {
+          "text" : "Subaru Legacy",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039376"
+        } ],
+        "year" : [ {
+          "text" : "2006"
+        } ],
+        "km" : [ {
+          "text" : "56 000 km"
+        } ],
+        "price" : [ {
+          "text" : "123 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Nesttun"
+        } ],
+        "title" : [ {
+          "text" : "BMW 5-serie 520d Touring 163hk Automat NaviPro, Bi-Xenon, DAB, Park.sens, Sportsseter ++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040726"
+        } ],
+        "year" : [ {
+          "text" : "2012"
+        } ],
+        "km" : [ {
+          "text" : "61 985 km"
+        } ],
+        "price" : [ {
+          "text" : "359 900,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ålesund"
+        } ],
+        "title" : [ {
+          "text" : "BMW 5-serie 528 IAT 258HK SPORTSKINN XENON NAVI HIFI PDC +++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79040570"
+        } ],
+        "year" : [ {
+          "text" : "2011"
+        } ],
+        "km" : [ {
+          "text" : "105 000 km"
+        } ],
+        "price" : [ {
+          "text" : "399 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Hommersåk"
+        } ],
+        "title" : [ {
+          "text" : "Volvo 850",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039982"
+        } ],
+        "year" : [ {
+          "text" : "1996"
+        } ],
+        "km" : [ {
+          "text" : "280 000 km"
         } ],
         "price" : [ {
           "text" : "12 038,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Kokstad"
+          "text" : "Kongsvinger"
         } ],
         "title" : [ {
-          "text" : "Saab 9-3 1,9TiD PF SportCombi Vector Krok, Cruise, Delskinn, Multi.ratt ++",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=77473579"
+          "text" : "Audi A4 allroad Quattro",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=74689316"
         } ],
         "year" : [ {
-          "text" : "2008"
+          "text" : "2011"
         } ],
         "km" : [ {
-          "text" : "110 000 km"
+          "text" : "65 400 km"
         } ],
         "price" : [ {
-          "text" : "114 900,-"
+          "text" : "343 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Hakadal"
+          "text" : "Skollenborg"
         } ],
         "title" : [ {
-          "text" : "Volkswagen Sharan",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78991669"
+          "text" : "Subaru Forester 2,0 S-Turbo",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=66950251"
         } ],
         "year" : [ {
-          "text" : "2005"
+          "text" : "2000"
         } ],
         "km" : [ {
-          "text" : "190 000 km"
+          "text" : "285 111 km"
         } ],
         "price" : [ {
-          "text" : "59 588,-"
+          "text" : "31 500,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Harstad"
+          "text" : "Skatval"
         } ],
         "title" : [ {
-          "text" : "Audi A6 Avant 2,0 TDI 163 Hk multitronic LTD ,Webasto,klima,cruise,navi,tlf,DAB+,parksensorer,",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992523"
+          "text" : "Peugeot Partner",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79037471"
+        } ],
+        "year" : [ {
+          "text" : "2009"
+        } ],
+        "km" : [ {
+          "text" : "126 000 km"
+        } ],
+        "price" : [ {
+          "text" : "29 730,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skien"
+        } ],
+        "title" : [ {
+          "text" : "Ford Mondeo 2,0 Ghia - EU godkjent -> 30.04.17",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79037419"
+        } ],
+        "year" : [ {
+          "text" : "1999"
+        } ],
+        "km" : [ {
+          "text" : "203 686 km"
+        } ],
+        "price" : [ {
+          "text" : "14 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ålesund"
+        } ],
+        "title" : [ {
+          "text" : "BMW 5-serie 550IA TOURING 367 HK M-SPORT KOMF MASSASJE HUD DAB +++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039795"
+        } ],
+        "year" : [ {
+          "text" : "2007"
+        } ],
+        "km" : [ {
+          "text" : "145 000 km"
+        } ],
+        "price" : [ {
+          "text" : "449 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Oslo"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Avensis 2,0 D-4D EXECUTIVE,SKINN,NAVI,EU-OK",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79022926"
+        } ],
+        "year" : [ {
+          "text" : "2007"
+        } ],
+        "km" : [ {
+          "text" : "138 502 km"
+        } ],
+        "price" : [ {
+          "text" : "119 800,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Fredrikstad"
+        } ],
+        "title" : [ {
+          "text" : "Ford Mondeo",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79037701"
+        } ],
+        "year" : [ {
+          "text" : "1998"
+        } ],
+        "km" : [ {
+          "text" : "420 023 km"
+        } ],
+        "price" : [ {
+          "text" : "8 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ranheim"
+        } ],
+        "title" : [ {
+          "text" : "Citroen C5",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79038591"
+        } ],
+        "year" : [ {
+          "text" : "2003"
+        } ],
+        "km" : [ {
+          "text" : "218 000 km"
+        } ],
+        "price" : [ {
+          "text" : "39 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Sparbu"
+        } ],
+        "title" : [ {
+          "text" : "Audi A4 1,9 tdi",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78949277"
+        } ],
+        "year" : [ {
+          "text" : "1998"
+        } ],
+        "km" : [ {
+          "text" : "391 000 km"
+        } ],
+        "price" : [ {
+          "text" : "16 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ågotnes"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Auris Touring Sports 1,8 Hybrid Executive LAV KM - NORSK - MÅ SEES",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039269"
+        } ],
+        "year" : [ {
+          "text" : "2015"
+        } ],
+        "km" : [ {
+          "text" : "7 960 km"
+        } ],
+        "price" : [ {
+          "text" : "289 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skjetten"
+        } ],
+        "title" : [ {
+          "text" : "Audi A4 1.8 TURBO,120HK,WEBASTO,NAVI,H.FESTE,DAB,SKINN,PDC,++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039203"
         } ],
         "year" : [ {
           "text" : "2013"
         } ],
         "km" : [ {
-          "text" : "76 100 km"
+          "text" : "100 000 km"
         } ],
         "price" : [ {
-          "text" : "379 000,-"
+          "text" : "259 000,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Kokstad"
+          "text" : "Skjetten"
         } ],
         "title" : [ {
-          "text" : "Volvo V60 DRIVe Ocean Race 114hk Skinn, Cruise, Navi, Park.sens, Bluetooth ++",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=74693031"
+          "text" : "Volkswagen Caddy Maxi 2.0 TDI,4MOTION,110HK,H.FESTE,2xSKYVEDØRER,VINDU",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79039175"
         } ],
         "year" : [ {
-          "text" : "2012"
+          "text" : "2011"
         } ],
         "km" : [ {
-          "text" : "90 000 km"
+          "text" : "79 000 km"
         } ],
         "price" : [ {
-          "text" : "194 900,-"
+          "text" : "159 000,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Røyneberg"
+          "text" : "Ridabu"
         } ],
         "title" : [ {
-          "text" : "BMW 5-serie 520d",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78969776"
-        } ],
-        "year" : [ {
-          "text" : "2010"
-        } ],
-        "km" : [ {
-          "text" : "84 714 km"
-        } ],
-        "price" : [ {
-          "text" : "229 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Solbergmoen"
-        } ],
-        "title" : [ {
-          "text" : "Audi A4 1,8 TFSI 120 hk multitronic",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78991664"
+          "text" : "Mercedes-Benz R-Klasse Max utstyrt/AMG/Garanti/Velholdt",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79038650"
         } ],
         "year" : [ {
           "text" : "2011"
@@ -1242,489 +834,897 @@
           "text" : "136 000 km"
         } ],
         "price" : [ {
-          "text" : "193 588,-"
+          "text" : "379 900,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Slattum"
+          "text" : "Hamar"
         } ],
         "title" : [ {
-          "text" : "Toyota Corolla 1,4 D-4D Sol",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990925"
-        } ],
-        "year" : [ {
-          "text" : "2007"
-        } ],
-        "km" : [ {
-          "text" : "132 000 km"
-        } ],
-        "price" : [ {
-          "text" : "72 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Jessheim"
-        } ],
-        "title" : [ {
-          "text" : "Volvo XC 70 D4 2,4D 181hk Summum AWD aut",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78992146"
-        } ],
-        "year" : [ {
-          "text" : "2014"
-        } ],
-        "km" : [ {
-          "text" : "39 500 km"
-        } ],
-        "price" : [ {
-          "text" : "508 900,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Tretten"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V70 2,0 T",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=77245647"
-        } ],
-        "year" : [ {
-          "text" : "2002"
-        } ],
-        "km" : [ {
-          "text" : "330 000 km"
-        } ],
-        "price" : [ {
-          "text" : "39 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Kokstad"
-        } ],
-        "title" : [ {
-          "text" : "Audi A4 allroad 2.0 TDI 177 hk quattro S tronic LTD Park.varm, DAB, Sportsseter, Navi, Krok",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=73835073"
-        } ],
-        "year" : [ {
-          "text" : "2013"
-        } ],
-        "km" : [ {
-          "text" : "91 987 km"
-        } ],
-        "price" : [ {
-          "text" : "374 900,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Bergen"
-        } ],
-        "title" : [ {
-          "text" : "Mazda Demio",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989777"
-        } ],
-        "year" : [ {
-          "text" : "2000"
-        } ],
-        "km" : [ {
-          "text" : "89 700 km"
-        } ],
-        "price" : [ {
-          "text" : "7 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Skogn"
-        } ],
-        "title" : [ {
-          "text" : "Toyota Avensis !! BILLIG !! Executive.SKINN ,TECTYL, KROK",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990852"
-        } ],
-        "year" : [ {
-          "text" : "2007"
-        } ],
-        "km" : [ {
-          "text" : "130 000 km"
-        } ],
-        "price" : [ {
-          "text" : "93 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Harstad"
-        } ],
-        "title" : [ {
-          "text" : "Subaru Legacy 2,0 Aut",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989077"
-        } ],
-        "year" : [ {
-          "text" : "2004"
-        } ],
-        "km" : [ {
-          "text" : "133 400 km"
-        } ],
-        "price" : [ {
-          "text" : "96 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Lensvik"
-        } ],
-        "title" : [ {
-          "text" : "Saab 9-5 2.2 tdi",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990529"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "261 876 km"
-        } ],
-        "price" : [ {
-          "text" : "16 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Gran"
-        } ],
-        "title" : [ {
-          "text" : "Volvo V70 2.0F",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=75058650"
+          "text" : "Ford Focus Ford Focus 1.6TDCI/ROMSLIG/CRUISE CONTROL/SPREK",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79038959"
         } ],
         "year" : [ {
           "text" : "2008"
         } ],
         "km" : [ {
-          "text" : "170 000 km"
-        } ],
-        "price" : [ {
-          "text" : "132 500,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Ski"
-        } ],
-        "title" : [ {
-          "text" : "Toyota Prius+ Seven 1,8 VVT-i Hybrid Premium",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990821"
-        } ],
-        "year" : [ {
-          "text" : "2013"
-        } ],
-        "km" : [ {
-          "text" : "59 995 km"
-        } ],
-        "price" : [ {
-          "text" : "275 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Grong"
-        } ],
-        "title" : [ {
-          "text" : "Opel Vectra **LAV KM** OPC SKINN KROK BLUETOOTH",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989631"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "89 250 km"
-        } ],
-        "price" : [ {
-          "text" : "119 900,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Kristiansand S"
-        } ],
-        "title" : [ {
-          "text" : "Subaru Impreza Impreza 4X4.klima.H-feste.rustfri.servicehistorikk.ny reg.reim.Eu.ok.",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989651"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "192 500 km"
-        } ],
-        "price" : [ {
-          "text" : "28 990,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Tiller"
-        } ],
-        "title" : [ {
-          "text" : "BMW 5-serie 525dXA",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78988947"
-        } ],
-        "year" : [ {
-          "text" : "2015"
-        } ],
-        "km" : [ {
-          "text" : "20 093 km"
-        } ],
-        "price" : [ {
-          "text" : "599 945,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Askim"
-        } ],
-        "title" : [ {
-          "text" : "BMW 5-serie 523ia Automat Bensin Msport",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989569"
-        } ],
-        "year" : [ {
-          "text" : "2006"
-        } ],
-        "km" : [ {
-          "text" : "217 721 km"
-        } ],
-        "price" : [ {
-          "text" : "149 900,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Heimdal"
-        } ],
-        "title" : [ {
-          "text" : "BMW 3-serie 318D",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989681"
-        } ],
-        "year" : [ {
-          "text" : "2007"
-        } ],
-        "km" : [ {
-          "text" : "211 500 km"
-        } ],
-        "price" : [ {
-          "text" : "108 588,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Figgjo"
-        } ],
-        "title" : [ {
-          "text" : "BMW 3-serie Touring",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989864"
-        } ],
-        "year" : [ {
-          "text" : "2000"
-        } ],
-        "km" : [ {
-          "text" : "250 000 km"
-        } ],
-        "price" : [ {
-          "text" : "14 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Oltedal"
-        } ],
-        "title" : [ {
-          "text" : "Volkswagen Caddy",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989041"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "104 000 km"
-        } ],
-        "price" : [ {
-          "text" : "76 230,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Jaren"
-        } ],
-        "title" : [ {
-          "text" : "Ford Mondeo 1,8 100hk TDCI Ambiente Navi Varmeseter H.feste Full servicehistorikk Eu ok ut 9/18",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990251"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "131 000 km"
-        } ],
-        "price" : [ {
-          "text" : "89 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Fagernes"
-        } ],
-        "title" : [ {
-          "text" : "Honda HR-V",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78987782"
-        } ],
-        "year" : [ {
-          "text" : "1999"
-        } ],
-        "km" : [ {
-          "text" : "208 000 km"
-        } ],
-        "price" : [ {
-          "text" : "25 538,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Hølen"
-        } ],
-        "title" : [ {
-          "text" : "Citroen Berlingo",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989397"
-        } ],
-        "year" : [ {
-          "text" : "2006"
-        } ],
-        "km" : [ {
-          "text" : "185 000 km"
-        } ],
-        "price" : [ {
-          "text" : "9 999,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Rud"
-        } ],
-        "title" : [ {
-          "text" : "BMW 5-serie 525d xDrive Touring 218hk Sportsautomat PANORAMA HEAD-UP WEBASTO NAVI-PROFF PDC",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78990165"
-        } ],
-        "year" : [ {
-          "text" : "2013"
-        } ],
-        "km" : [ {
-          "text" : "30 000 km"
-        } ],
-        "price" : [ {
-          "text" : "535 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Voss"
-        } ],
-        "title" : [ {
-          "text" : "Skoda Fabia Collection",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78974354"
-        } ],
-        "year" : [ {
-          "text" : "2008"
-        } ],
-        "km" : [ {
-          "text" : "107 300 km"
-        } ],
-        "price" : [ {
-          "text" : "54 000,-"
-        } ]
-      }, {
-        "location" : [ {
-          "text" : "Mo i Rana"
-        } ],
-        "title" : [ {
-          "text" : "Toyota RAV4 D-4D 4wd 4x4,HENGERFESTE,SERVICEHISTORIKK",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989551"
-        } ],
-        "year" : [ {
-          "text" : "2003"
-        } ],
-        "km" : [ {
-          "text" : "170 000 km"
+          "text" : "154 000 km"
         } ],
         "price" : [ {
           "text" : "69 000,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Askim"
+          "text" : "Heggedal"
         } ],
         "title" : [ {
-          "text" : "Volvo V70 2.0 SKINN,REG-REIM OK EU 10.2018",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78606807"
+          "text" : "Skoda Octavia 1,9 TDI L&K 4X4",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79033784"
         } ],
         "year" : [ {
-          "text" : "1999"
+          "text" : "2007"
         } ],
         "km" : [ {
-          "text" : "269 558 km"
+          "text" : "185 325 km"
         } ],
         "price" : [ {
-          "text" : "38 538,-"
+          "text" : "98 500,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Trondheim"
+          "text" : "Kongsberg"
         } ],
         "title" : [ {
-          "text" : "Volkswagen Golf 1,6 102hk Comfortline Panoramatak",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989192"
+          "text" : "Opel Astra 1,4 Turbo 140hk Aut Cosmo Sports Tourer",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79038035"
         } ],
         "year" : [ {
-          "text" : "2008"
+          "text" : "2012"
         } ],
         "km" : [ {
-          "text" : "126 300 km"
+          "text" : "5 000 km"
         } ],
         "price" : [ {
-          "text" : "109 000,-"
+          "text" : "253 588,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Hellandsjøen"
+          "text" : "Hamar"
         } ],
         "title" : [ {
-          "text" : "Volkswagen Golf",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78988471"
+          "text" : "Volkswagen Passat Alltrack 2,0 TDI 177hk DSG 4M Exclusive",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79038698"
         } ],
         "year" : [ {
-          "text" : "2000"
+          "text" : "2015"
         } ],
         "km" : [ {
-          "text" : "168 000 km"
+          "text" : "73 900 km"
         } ],
         "price" : [ {
-          "text" : "18 538,-"
+          "text" : "399 000,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Jaren"
+          "text" : "Oslo"
         } ],
         "title" : [ {
-          "text" : "Suzuki Grand Vitara 2,0 AC H.feste Takstativ Nye sommer og vinterdekk Pen bil Servicehistorikk",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78988987"
+          "text" : "Volkswagen Golf 1,4TSI 140HK HIGHLINE,DSG,NAVI,ACC+",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78989326"
         } ],
         "year" : [ {
-          "text" : "2003"
+          "text" : "2014"
         } ],
         "km" : [ {
-          "text" : "179 000 km"
+          "text" : "42 000 km"
+        } ],
+        "price" : [ {
+          "text" : "299 900,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Hell"
+        } ],
+        "title" : [ {
+          "text" : "Mercedes-Benz C-Klasse Sport Edition, Facelift.",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=76770638"
+        } ],
+        "year" : [ {
+          "text" : "2004"
+        } ],
+        "km" : [ {
+          "text" : "195 000 km"
         } ],
         "price" : [ {
           "text" : "55 000,-"
         } ]
       }, {
         "location" : [ {
-          "text" : "Larkollen"
+          "text" : "Arendal"
         } ],
         "title" : [ {
-          "text" : "Opel Vectra 1,9 CDTI Elegance",
-          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78903031"
+          "text" : "Volvo V70 D5-185 Hk, AUT, Motor/gir skiftet",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79029377"
+        } ],
+        "year" : [ {
+          "text" : "2007"
+        } ],
+        "km" : [ {
+          "text" : "467 000 km"
+        } ],
+        "price" : [ {
+          "text" : "59 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Fredrikstad"
+        } ],
+        "title" : [ {
+          "text" : "Peugeot 407",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79037318"
         } ],
         "year" : [ {
           "text" : "2005"
         } ],
         "km" : [ {
-          "text" : "336 000 km"
+          "text" : "193 000 km"
         } ],
         "price" : [ {
-          "text" : "33 588,-"
+          "text" : "29 900,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Jessheim"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Avensis 2,0 D-4D DPF 126hk Advance NaviTech",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79037918"
+        } ],
+        "year" : [ {
+          "text" : "2010"
+        } ],
+        "km" : [ {
+          "text" : "139 000 km"
+        } ],
+        "price" : [ {
+          "text" : "159 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Nodeland"
+        } ],
+        "title" : [ {
+          "text" : "Audi A4 1,9 TDI Quatro",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036588"
+        } ],
+        "year" : [ {
+          "text" : "2003"
+        } ],
+        "km" : [ {
+          "text" : "258 100 km"
+        } ],
+        "price" : [ {
+          "text" : "50 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Bergen"
+        } ],
+        "title" : [ {
+          "text" : "Citroen Xsara 2.0 HDI",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036235"
+        } ],
+        "year" : [ {
+          "text" : "2000"
+        } ],
+        "km" : [ {
+          "text" : "235 000 km"
+        } ],
+        "price" : [ {
+          "text" : "17 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Son"
+        } ],
+        "title" : [ {
+          "text" : "Opel Vectra OPC-line",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78986132"
+        } ],
+        "year" : [ {
+          "text" : "2008"
+        } ],
+        "km" : [ {
+          "text" : "210 000 km"
+        } ],
+        "price" : [ {
+          "text" : "63 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skedsmokorset"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V50 1,8",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79037435"
+        } ],
+        "year" : [ {
+          "text" : "2006"
+        } ],
+        "km" : [ {
+          "text" : "166 000 km"
+        } ],
+        "price" : [ {
+          "text" : "63 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Heimdal"
+        } ],
+        "title" : [ {
+          "text" : "BMW 3-serie 320d 163hk Touring, Skinn, Pamorama, el.krok, el. bakluke, DAB+",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79037187"
+        } ],
+        "year" : [ {
+          "text" : "2013"
+        } ],
+        "km" : [ {
+          "text" : "148 000 km"
+        } ],
+        "price" : [ {
+          "text" : "239 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skedsmokorset"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V50 1,8",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036870"
+        } ],
+        "year" : [ {
+          "text" : "2006"
+        } ],
+        "km" : [ {
+          "text" : "166 000 km"
+        } ],
+        "price" : [ {
+          "text" : "58 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Strandvik"
+        } ],
+        "title" : [ {
+          "text" : "Peugeot 508 SW Allure 1.6 e-HDi EMG 112 hk",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036080"
+        } ],
+        "year" : [ {
+          "text" : "2011"
+        } ],
+        "km" : [ {
+          "text" : "138 000 km"
+        } ],
+        "price" : [ {
+          "text" : "163 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Stokke"
+        } ],
+        "title" : [ {
+          "text" : "Volvo XC 70 D5 AWD, Summum, aut, skinn, NAV, hengerf, Webasto, skiboks, USB/AUX",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=72921101"
+        } ],
+        "year" : [ {
+          "text" : "2010"
+        } ],
+        "km" : [ {
+          "text" : "99 000 km"
+        } ],
+        "price" : [ {
+          "text" : "299 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ålesund"
+        } ],
+        "title" : [ {
+          "text" : "Opel Astra 1,7 CDTi Enjoy Sports Tourer Lav km!! Krok, Cruise, Takluke, Ryggesensor, Multiratt, BT+",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036817"
+        } ],
+        "year" : [ {
+          "text" : "2011"
+        } ],
+        "km" : [ {
+          "text" : "14 100 km"
+        } ],
+        "price" : [ {
+          "text" : "169 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Heimdal"
+        } ],
+        "title" : [ {
+          "text" : "Ford Mondeo 1,6 TDCi 115hk Titanium , KROK, ISOFIX, CRUISE, OPPVARMET FRONTRUTE, REGNSENSOR,",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036734"
+        } ],
+        "year" : [ {
+          "text" : "2013"
+        } ],
+        "km" : [ {
+          "text" : "89 843 km"
+        } ],
+        "price" : [ {
+          "text" : "199 900,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Storforshei"
+        } ],
+        "title" : [ {
+          "text" : "Skoda Octavia TDI Elegance 4X4",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79035849"
+        } ],
+        "year" : [ {
+          "text" : "2004"
+        } ],
+        "km" : [ {
+          "text" : "206 000 km"
+        } ],
+        "price" : [ {
+          "text" : "46 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Gol"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V60 D2 Momentum aut skinn,telefon,dieselvarmer,Plusspakke,Teknikkpakke,VOC++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036499"
+        } ],
+        "year" : [ {
+          "text" : "2014"
+        } ],
+        "km" : [ {
+          "text" : "50 464 km"
+        } ],
+        "price" : [ {
+          "text" : "299 900,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Nesttun"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Passat",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78981152"
+        } ],
+        "year" : [ {
+          "text" : "2002"
+        } ],
+        "km" : [ {
+          "text" : "183 000 km"
+        } ],
+        "price" : [ {
+          "text" : "39 500,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Sarpsborg"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V60 D2 Summum VolvoOnCall/Varmer/Navigasjon/Xenon/Lav km!",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79036025"
+        } ],
+        "year" : [ {
+          "text" : "2012"
+        } ],
+        "km" : [ {
+          "text" : "51 384 km"
+        } ],
+        "price" : [ {
+          "text" : "239 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Sandnes"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V70 2,4 D 126HK LIMITED EDITION/WEBASTO",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79035291"
+        } ],
+        "year" : [ {
+          "text" : "2007"
+        } ],
+        "km" : [ {
+          "text" : "174 500 km"
+        } ],
+        "price" : [ {
+          "text" : "102 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Ankenes"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V50 1,6 D",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79033042"
+        } ],
+        "year" : [ {
+          "text" : "2007"
+        } ],
+        "km" : [ {
+          "text" : "177 339 km"
+        } ],
+        "price" : [ {
+          "text" : "106 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Sandefjord"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Avensis 2.0D-4D DPF Advance",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79035529"
+        } ],
+        "year" : [ {
+          "text" : "2010"
+        } ],
+        "km" : [ {
+          "text" : "92 000 km"
+        } ],
+        "price" : [ {
+          "text" : "136 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Drammen"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Tiguan 2.0 DIESEL 4x4 STV KUN 68800 KM",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79023062"
+        } ],
+        "year" : [ {
+          "text" : "2008"
+        } ],
+        "km" : [ {
+          "text" : "68 800 km"
+        } ],
+        "price" : [ {
+          "text" : "189 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Fyllingsdalen"
+        } ],
+        "title" : [ {
+          "text" : "Volvo V50 D2 Limited Edition start/stop",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034602"
+        } ],
+        "year" : [ {
+          "text" : "2012"
+        } ],
+        "km" : [ {
+          "text" : "60 769 km"
+        } ],
+        "price" : [ {
+          "text" : "148 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Fetsund"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Golf 1,6 TDI 105hk Highline DSG",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034878"
+        } ],
+        "year" : [ {
+          "text" : "2011"
+        } ],
+        "km" : [ {
+          "text" : "90 000 km"
+        } ],
+        "price" : [ {
+          "text" : "129 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Drammen"
+        } ],
+        "title" : [ {
+          "text" : "Audi A6 1,9TDI. EU-01.17. Se på denne!",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79033633"
+        } ],
+        "year" : [ {
+          "text" : "2002"
+        } ],
+        "km" : [ {
+          "text" : "271 000 km"
+        } ],
+        "price" : [ {
+          "text" : "17 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Halden"
+        } ],
+        "title" : [ {
+          "text" : "Toyota RAV4 2,0 4wd aut 5-dørs",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79035129"
+        } ],
+        "year" : [ {
+          "text" : "2005"
+        } ],
+        "km" : [ {
+          "text" : "154 368 km"
+        } ],
+        "price" : [ {
+          "text" : "89 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Fredrikstad"
+        } ],
+        "title" : [ {
+          "text" : "Saab 9-5 2,0t Aut SportCombi Vector",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034162"
+        } ],
+        "year" : [ {
+          "text" : "2007"
+        } ],
+        "km" : [ {
+          "text" : "256 000 km"
+        } ],
+        "price" : [ {
+          "text" : "48 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Brumunddal"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Passat 1,9 TDI Comfortline Tiptronic Automat, Hengerfeste, Radio/CD, USB/AUX",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79035062"
+        } ],
+        "year" : [ {
+          "text" : "2002"
+        } ],
+        "km" : [ {
+          "text" : "323 500 km"
+        } ],
+        "price" : [ {
+          "text" : "29 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Kolbotn"
+        } ],
+        "title" : [ {
+          "text" : "Saab 9-5 2.0TURBO, AUTOMAT, CRUISE,F1 GIRING",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79030138"
+        } ],
+        "year" : [ {
+          "text" : "2003"
+        } ],
+        "km" : [ {
+          "text" : "305 000 km"
+        } ],
+        "price" : [ {
+          "text" : "23 038,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Inderøy"
+        } ],
+        "title" : [ {
+          "text" : "Skoda Octavia 1,9 TDI Elegance 4X4",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78423640"
+        } ],
+        "year" : [ {
+          "text" : "2007"
+        } ],
+        "km" : [ {
+          "text" : "178 000 km"
+        } ],
+        "price" : [ {
+          "text" : "85 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skien"
+        } ],
+        "title" : [ {
+          "text" : "BMW 5-serie 525d xDrive 211hk Automat komfortseter Navigsjon krok M-Sport Xenon +++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034924"
+        } ],
+        "year" : [ {
+          "text" : "2013"
+        } ],
+        "km" : [ {
+          "text" : "137 916 km"
+        } ],
+        "price" : [ {
+          "text" : "459 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Hønefoss"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Passat Alltrack 2,0 TDI 170hk BMT DSG 4M Adaptivcru Soltak Webasto H.feste Navi Skin",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034901"
+        } ],
+        "year" : [ {
+          "text" : "2013"
+        } ],
+        "km" : [ {
+          "text" : "161 451 km"
+        } ],
+        "price" : [ {
+          "text" : "299 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skien"
+        } ],
+        "title" : [ {
+          "text" : "BMW 3-serie 318d xDrive Touring 143hk M-Sport Xenon/19\"/DAB/Navi/Hifi/Cruise/BT/Xenon++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034806"
+        } ],
+        "year" : [ {
+          "text" : "2014"
+        } ],
+        "km" : [ {
+          "text" : "28 700 km"
+        } ],
+        "price" : [ {
+          "text" : "389 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Krokstadelva"
+        } ],
+        "title" : [ {
+          "text" : "Audi A6 2,0TDI/NAVI/XENON/SKINN/KROK/19\"++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79032893"
+        } ],
+        "year" : [ {
+          "text" : "2008"
+        } ],
+        "km" : [ {
+          "text" : "139 917 km"
+        } ],
+        "price" : [ {
+          "text" : "169 500,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Haugesund"
+        } ],
+        "title" : [ {
+          "text" : "Ford Mondeo 2,0 130hk TDCI Titanium",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034472"
+        } ],
+        "year" : [ {
+          "text" : "2008"
+        } ],
+        "km" : [ {
+          "text" : "132 717 km"
+        } ],
+        "price" : [ {
+          "text" : "98 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Tolga"
+        } ],
+        "title" : [ {
+          "text" : "Hyundai i40 1.7 CRDi Premium Panorama",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034061"
+        } ],
+        "year" : [ {
+          "text" : "2012"
+        } ],
+        "km" : [ {
+          "text" : "67 800 km"
+        } ],
+        "price" : [ {
+          "text" : "219 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Asker"
+        } ],
+        "title" : [ {
+          "text" : "Mitsubishi Galant 2,0 GLX",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=78877784"
+        } ],
+        "year" : [ {
+          "text" : "1999"
+        } ],
+        "km" : [ {
+          "text" : "253 000 km"
+        } ],
+        "price" : [ {
+          "text" : "15 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Kristiansand S"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Passat 1,6 TDI 105hk BMT Business Edition DSG",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034553"
+        } ],
+        "year" : [ {
+          "text" : "2013"
+        } ],
+        "km" : [ {
+          "text" : "66 500 km"
+        } ],
+        "price" : [ {
+          "text" : "245 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Fredrikstad"
+        } ],
+        "title" : [ {
+          "text" : "BMW 3-serie 316IT/XENON/H-FESTE/SE PRIS/",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034200"
+        } ],
+        "year" : [ {
+          "text" : "2005"
+        } ],
+        "km" : [ {
+          "text" : "164 000 km"
+        } ],
+        "price" : [ {
+          "text" : "43 588,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Hønefoss"
+        } ],
+        "title" : [ {
+          "text" : "Audi A6 Avant 3,0 TDI 204 Hk quattro S tronic Webasto Navi DAB+ TLF Adaptiv crus H.feste Ass pk",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034478"
+        } ],
+        "year" : [ {
+          "text" : "2012"
+        } ],
+        "km" : [ {
+          "text" : "76 707 km"
+        } ],
+        "price" : [ {
+          "text" : "469 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Skien"
+        } ],
+        "title" : [ {
+          "text" : "BMW 3-serie 320d xDrive 163hk M-Sport/Kamera/Headup/Naviproff/Hifi/DAB/BT/Varmeiratt/18\"+++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034503"
+        } ],
+        "year" : [ {
+          "text" : "2013"
+        } ],
+        "km" : [ {
+          "text" : "143 570 km"
+        } ],
+        "price" : [ {
+          "text" : "339 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Kvaløya"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Corolla Verso",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79020005"
+        } ],
+        "year" : [ {
+          "text" : "2003"
+        } ],
+        "km" : [ {
+          "text" : "224 480 km"
+        } ],
+        "price" : [ {
+          "text" : "58 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Molde"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Avensis Touring Sports 1,8 Active Style M-drive 7S",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034262"
+        } ],
+        "year" : [ {
+          "text" : "2015"
+        } ],
+        "km" : [ {
+          "text" : "15 000 km"
+        } ],
+        "price" : [ {
+          "text" : "349 000,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Os"
+        } ],
+        "title" : [ {
+          "text" : "Volkswagen Golf 1,9 TDI 105hk Comfortline",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79033258"
+        } ],
+        "year" : [ {
+          "text" : "2008"
+        } ],
+        "km" : [ {
+          "text" : "174 185 km"
+        } ],
+        "price" : [ {
+          "text" : "52 500,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Tromsø"
+        } ],
+        "title" : [ {
+          "text" : "Volvo XC 70 D4 2,4D 163hk Summum AWD aut VOC/ Gearshift/ Park. sensorer/ NAVI/ Varme i ratt/ +++",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79034235"
+        } ],
+        "year" : [ {
+          "text" : "2016"
+        } ],
+        "km" : [ {
+          "text" : "1 000 km"
+        } ],
+        "price" : [ {
+          "text" : "4 990,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Norheimsund"
+        } ],
+        "title" : [ {
+          "text" : "Mercedes-Benz E-Klasse",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79032981"
+        } ],
+        "year" : [ {
+          "text" : "2001"
+        } ],
+        "km" : [ {
+          "text" : "571 167 km"
+        } ],
+        "price" : [ {
+          "text" : "61 538,-"
+        } ]
+      }, {
+        "location" : [ {
+          "text" : "Bønes"
+        } ],
+        "title" : [ {
+          "text" : "Toyota Corolla",
+          "href" : "http://m.finn.no/car/used/ad.html?finnkode=79033550"
+        } ],
+        "year" : [ {
+          "text" : "2003"
+        } ],
+        "km" : [ {
+          "text" : "226 481 km"
+        } ],
+        "price" : [ {
+          "text" : "16 538,-"
         } ]
       } ]
     } ]
   },
   "pageData" : {
     "statusCode" : 200,
-    "timestamp" : 1468482015871
+    "timestamp" : 1468520431497
   }
 }

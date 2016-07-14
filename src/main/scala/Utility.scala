@@ -24,7 +24,7 @@ import scala.io.Source
 
 object Utility {
   def createAcqCarDetailsObject(i:Int, jsonCarHdr:JsValue)= {
-    val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").toString
+    val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").as[String]
     val jsonCarDetail = scrapeCarDetails(url)
     val carProperties = jsonCarDetail("properties").toString
     val carEquipment = jsonCarDetail("equipment").toString
@@ -32,18 +32,17 @@ object Utility {
     val deleted = jsonCarDetail("deleted").as[Boolean]
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
-
     AcqCarDetails(url, carProperties, carEquipment, carInformation, deleted, load_time, load_date)
   }
 
 
   def createAcqCarHeaderObject(i:Int, jsonCarHdr:JsValue) = {
-    val location = jsonCarHdr.\\("group")(0)(i).\("location")(0).\("text").toString
-    val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").toString
-    val title = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("text").toString
-    val year = jsonCarHdr.\\("group")(0)(i).\("year")(0).\("text").toString
-    val km = jsonCarHdr.\\("group")(0)(i).\("km")(0).\("text").toString
-    val price = jsonCarHdr.\\("group")(0)(i).\("price")(0).\("text").toString
+    val location = jsonCarHdr.\\("group")(0)(i).\("location")(0).\("text").as[String]
+    val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").as[String]
+    val title = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("text").as[String]
+    val year = jsonCarHdr.\\("group")(0)(i).\("year")(0).\("text").as[String]
+    val km = jsonCarHdr.\\("group")(0)(i).\("km")(0).\("text").as[String]
+    val price = jsonCarHdr.\\("group")(0)(i).\("price")(0).\("text").as[String]
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
     AcqCarHeader(title, url, location, year, km, price, load_time, load_date)
@@ -95,51 +94,22 @@ object Utility {
         jsObj.value.toMap
       }
     }
-
-
   }
 
-//  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):Map[String,String] = {
-////    val keys = Seq("Salgsform", "Girkasse")
-////    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
-//
-//    val jsValueMap: JsValue = Json.parse(jsonString)
-//    val propertiesMap = jsValueMap.as[Map[String,String]].filterKeys{excludedKeys.contains(_) == false}
-//    propertiesMap
-//  }
 
-  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):HashMap[String,String] = {
+  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):Map[String,String] = {
     //    val keys = Seq("Salgsform", "Girkasse")
     //    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
-
     val jsValueMap: JsValue = Json.parse(jsonString)
     val propertiesMap = jsValueMap.as[Map[String,String]]
     val hashMap = new HashMap[String, String]
     propertiesMap.map{case(k,v) => hashMap.put(k,v) }
-    hashMap
+    hashMap.toMap
   }
-
-  def getMapFromJsonMapTEMP(jsonString:String, excludedKeys:Seq[String]=Seq("None")):HashMap[String,String] = {
-    //    val keys = Seq("Salgsform", "Girkasse")
-    //    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
-
-    case class CarProperties(map:Map[String, String])
-    val carPropRead = (__ \ 'map).read[Map[String,String]].map{l => CarProperties(l)}
-    val jsval = Json.toJson(jsonString)
-
-    val jsValueMap: JsValue = Json.parse(jsonString)
-    val propertiesMap = jsValueMap.as[Map[String,String]]
-    val hashMap = new HashMap[String, String]
-    propertiesMap.map{case(k,v) => hashMap.put(k,v) }
-    hashMap
-
-  }
-
 
   def getSetFromJsonArray(jsonString:String, excludedElements:Seq[String]=Seq("None")):Set[String] = {
 //    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
 //    val elements = Seq("Automatisk klimaanlegg", "Skinnseter")
-
     val jsValueArray:JsValue = Json.parse(jsonString)
     val set = jsValueArray.as[Set[String]]
     set.filter(x => !excludedElements.contains(x))
@@ -164,20 +134,6 @@ object Utility {
       }
     }
   }
-
-
-  def mergeCarHeaderAndDetails(acqCarHeader:DataFrame, acqCarDetails:DataFrame) = {
-
-//    val acqCarHeaderDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json")
-//    val acqCarDetailsDF = sqlContext.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarDetails.json")
-//
-//    val dfCarHeaderAndDetails = acqCarHeaderDF.as("h").join(acqCarDetailsDF.as("d"))//, col("h.url") === col("d.url"), "left")
-//    dfCarHeaderAndDetails.show
-//    =  .select
-//    acqCarHeader.join(acqCarDetails, $"url")
-  }
-
-
 
   object Constants {
     val EmptyMap = Map("NULL" -> "NULL")

@@ -21,10 +21,9 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
       where("load_time <= ?", new java.util.Date(acqCarHeaderLoadTime)).
       filter(row => row.deleted == false).collect
 
-
     if (prevAcqCarDetails.length > 0) {
       val acqCarDetails = prevAcqCarDetails.maxBy(_.load_time)
-      val propertiesMap:Map[String,String] = Utility.getMapFromJsonMap(acqCarDetails.properties).toMap
+      val propertiesMap:Map[String,String] = Utility.getMapFromJsonMap(acqCarDetails.properties)
       val equipmentList:Set[String] = Utility.getSetFromJsonArray(acqCarDetails.equipment)
       PropCar(url=acqCarHeader.url, location=acqCarHeader.location, title=acqCarHeader.title, year=acqCarHeader.year, km=acqCarHeader.km, price=acqCarHeader.price, properties=propertiesMap, equipment=equipmentList, information=acqCarDetails.information, deleted=acqCarDetails.deleted, load_time=acqCarHeader.load_time, load_date=acqCarHeader.load_date)
     } else {

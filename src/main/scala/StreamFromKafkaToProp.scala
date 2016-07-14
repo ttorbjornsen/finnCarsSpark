@@ -73,7 +73,6 @@ object StreamFromKafkaToProp extends App {
             val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.getLatestDetails(hdr)))
             propCarRDD.saveToCassandra("finncars", "prop_car_daily")
 
-            //case class PropCar(url: String, title: String, location: String, year: String, km: String, price: String, properties: Map[String, String], equipment: Set[String], information: String, deleted: Boolean, load_time: Long, load_date: String)
 
 
           }
