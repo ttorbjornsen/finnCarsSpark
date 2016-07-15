@@ -11,7 +11,7 @@ import com.datastax.spark.connector._
 
 case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
 case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
-case class PropCar(url:String, title:String, location:String, year: String, km: String, price: String, properties:Map[String,String], equipment:Set[String], information:String, deleted:Boolean, load_time:Long, load_date:String)
+case class PropCar(url:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:Map[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long, load_date:String)
 
 
 /**
@@ -28,7 +28,7 @@ object StreamFromKafkaToProp extends App {
   val hc = new HiveContext(sc)
   import hc.implicits._ //allows registering temptables
   val dao = new DAO(hc, csc)
-  val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092", "auto.offset.reset" -> "smallest")
+  val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092")//, "auto.offset.reset" -> "smallest")
   val topics = Set("cars_header")
   //val fromOffsets = Map(new TopicAndPartition("finnCars", 0) -> 0L)
   //val directKafkaStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, fromOffsets, (mmd:MessageAndMetadata[String, String]) => mmd)
@@ -70,10 +70,10 @@ object StreamFromKafkaToProp extends App {
               save()
 
             println(acqCarHeaderDF.count + " records written to acq_car_details")
-            val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.getLatestDetails(hdr)))
+            val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
             propCarRDD.saveToCassandra("finncars", "prop_car_daily")
 
-
+            println(propCarRDD.count + " records written to prop_car_daily")
 
           }
         }

@@ -49,26 +49,33 @@ val dfCarHeader = _csc.read.
   options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
   load().
   select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
-  filter($"url" === "http://m.finn.no/car/used/ad.html?finnkode=78866263").
+//  filter($"url" === "http://m.finn.no/car/used/ad.html?finnkode=67572478").
   limit(1)
 
 val acqCarHeader = dfCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), (row(6).asInstanceOf[java.util.Date]).getTime(), row.getString(7))).collect.toList(0)
 val dao = new DAO(_hc, _csc)
 
-val propCar = dao.getLatestDetails(acqCarHeader)
+val propCar = dao.createPropCar(acqCarHeader)
+val jsonCarHdr: JsValue = Json.parse(jsonDoc.mkString)
 
 
 //TEMP
-//
-//val dfCarHeader = _csc.read.
-//  format("org.apache.spark.sql.cassandra").
-//  options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
-//  load().
-//  select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
-//  filter($"url" === "http://m.finn.no/car/used/ad.html?finnkode=72921101").
-//  limit(1)
-//
-//val acqCarHeader = dfCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), (row(6).asInstanceOf[java.util.Date]).getTime(), row.getString(7))).collect.toList(0)
-//
-//val propCar:PropCar = dao.getLatestDetails(acqCarHeader)
-//val temp = propCar.km
+val url = "http://m.finn.no/car/used/ad.html?finnkode=78991353"
+val validUrl = "http://m.finn.no/car/used/ad.html?finnkode=78991353"
+
+//val carTitle: Elements = doc.select(".h1 mtn r-margin")
+val carTitle: Element = doc.select(".mtn.r-margin").first()
+carTitle.text
+val temp = Utility.scrapeCarDetails("http://m.finn.no/car/used/ad.html?finnkode=79068104")
+temp("km")
+
+Utility.createAcqCarDetailsObject(1,jsonCarHdr)
+
+val dfCarHeader = _csc.read.
+  format("org.apache.spark.sql.cassandra").
+  options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
+  load().
+  select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
+  filter($"url" === url).
+  limit(1)
+
