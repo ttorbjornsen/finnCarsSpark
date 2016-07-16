@@ -44,8 +44,6 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
     //Utility.setupCassandraTestKeyspace() //create keyspace test_finncars
 
-
-//
 //    val dfAcqCarHeader = _hc.read.json("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\AcqCarHeader.json").toDF()
 //    dfAcqCarHeader.write.
 //      format("org.apache.spark.sql.cassandra").
@@ -59,9 +57,19 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
 //      options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
 //      mode(SaveMode.Append).
 //      save()
-
+//
 //    dfAcqCarHeader.registerTempTable("acq_car_header")
 //    dfAcqCarDetails.registerTempTable("acq_car_details")
+//
+//    val dfCarHeader = _csc.read.
+//      format("org.apache.spark.sql.cassandra").
+//      options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
+//      load().
+//      select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
+//      filter($"url" === "http://m.finn.no/car/used/ad.html?finnkode=78866263").
+//      limit(1)
+
+    //REPL : USE val
 
     val dfRandomCarHeader = _csc.read.
       format("org.apache.spark.sql.cassandra").
@@ -69,10 +77,10 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       load().
       select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
       limit(1)
+//REPL : USE val
+      randomAcqCarHeader = dfRandomCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), (row(6).asInstanceOf[java.util.Date]).getTime(), row.getString(7))).collect.toList(0)
 
-    //REPL : USE val
-    randomAcqCarHeader = dfRandomCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), (row(6).asInstanceOf[java.util.Date]).getTime(), row.getString(7))).collect.toList(0)
-    //REPL : USE val
+
     dao = new DAO(_hc, _csc)
    }
 
@@ -119,12 +127,6 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
     ignore("can merge AcqCarHeader object with AcqCarDetails object") {
       val propCar:PropCar = dao.createPropCar(randomAcqCarHeader)
       propCar.information should equal ("Fin bil. NEDSATT PRIS")
-    }
-
-    it("can retrieve the last price from before it was marked as sold") {
-      //val urlSoldCar = "http://m.finn.no/car/used/ad.html?finnkode=79068104"
-      //val acqCarHeaderSoldCar = Utility.createAcqCarHeaderObjectFromUrl(urlSoldCar)
-      //val lastPrice = dao.getLastPrice(acqCarHeaderSoldCar)
     }
   }
 

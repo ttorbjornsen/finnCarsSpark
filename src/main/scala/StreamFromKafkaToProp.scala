@@ -28,61 +28,62 @@ object StreamFromKafkaToProp extends App {
   val hc = new HiveContext(sc)
   import hc.implicits._ //allows registering temptables
   val dao = new DAO(hc, csc)
-  val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092")//, "auto.offset.reset" -> "smallest")
+  val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092", "auto.offset.reset" -> "smallest")
   val topics = Set("cars_header")
   //val fromOffsets = Map(new TopicAndPartition("finnCars", 0) -> 0L)
   //val directKafkaStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, fromOffsets, (mmd:MessageAndMetadata[String, String]) => mmd)
   val ssc = new StreamingContext(sc, Seconds(5)) //60 in production
   val directKafkaStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topics)
-    directKafkaStream.foreachRDD(
-      (rdd, time) => {
-        if (rdd.toLocalIterator.nonEmpty) {
-          //when new data from Kafka is available
-          println(rdd.count)
-          //val content = rdd.map(_._2).collect
-          val content = rdd.map(_._2)
+  directKafkaStream.foreachRDD(
+    (rdd, time) => {
+      if (rdd.toLocalIterator.nonEmpty) {
+        //when new data from Kafka is available
+        println(rdd.count + " new Kafka messages to process")
+        //val content = rdd.map(_._2).collect
+        val content = rdd.map(_._2)
 
-          content.foreach { jsonDoc =>
-            val jsonCarHdr: JsValue = Json.parse(jsonDoc.mkString)
-            val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size
-            val acqCarHeaderList = Range(0, numOfCars).map(i =>
-              Utility.createAcqCarHeaderObject(i, jsonCarHdr)).toList
+        content.foreach { jsonDoc =>
+          val jsonCarHdr: JsValue = Json.parse(jsonDoc.mkString)
+          val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size
+          val acqCarHeaderList = Range(0, numOfCars).map(i =>
+            Utility.createAcqCarHeaderObject(i, jsonCarHdr)).toList
 
-            val acqCarHeaderDF = sc.parallelize(acqCarHeaderList).toDF
+          val acqCarHeaderDF = sc.parallelize(acqCarHeaderList).toDF
 
-            acqCarHeaderDF.write.
-              format("org.apache.spark.sql.cassandra").
-              options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
-              mode(SaveMode.Append).
-              save()
+          acqCarHeaderDF.write.
+            format("org.apache.spark.sql.cassandra").
+            options(Map("table" -> "acq_car_header", "keyspace" -> "finncars")).
+            mode(SaveMode.Append).
+            save()
 
-            println(acqCarHeaderDF.count + " records written to acq_car_header")
+          //println(acqCarHeaderDF.count + " records written to acq_car_header")
+          println(numOfCars + " records written to acq_car_header")
+          val acqCarDetailsList = Range(0, numOfCars).map(i =>
+            Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
 
-            val acqCarDetailsList = Range(0, numOfCars).map(i =>
-              Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
+          val acqCarDetailsDF = sc.parallelize(acqCarDetailsList).toDF()
 
-            val acqCarDetailsDF = sc.parallelize(acqCarDetailsList).toDF()
+          acqCarDetailsDF.write.
+            format("org.apache.spark.sql.cassandra").
+            options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
+            mode(SaveMode.Append).
+            save()
 
-            acqCarDetailsDF.write.
-              format("org.apache.spark.sql.cassandra").
-              options(Map("table" -> "acq_car_details", "keyspace" -> "finncars")).
-              mode(SaveMode.Append).
-              save()
+          //println(acqCarHeaderDF.count + " records written to acq_car_details")
+          println(numOfCars + " records written to acq_car_details")
+          val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
+          propCarRDD.saveToCassandra("finncars", "prop_car_daily")
 
-            println(acqCarHeaderDF.count + " records written to acq_car_details")
-            val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
-            propCarRDD.saveToCassandra("finncars", "prop_car_daily")
+          //println(propCarRDD.count + " records written to prop_car_daily")
+          println(numOfCars + " records written to prop_car_daily")
 
-            println(propCarRDD.count + " records written to prop_car_daily")
-
-          }
         }
-      })
+      }
+    })
 
   ssc.start()
   //ssc.stop(false) //for debugging in REPL
   ssc.awaitTermination()
-  }
-
+}
 
 

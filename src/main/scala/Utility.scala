@@ -16,6 +16,9 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
+import scala.util.Try
+import scala.util.{Failure, Success}
+import java.net.URL
 
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
@@ -48,89 +51,82 @@ object Utility {
     AcqCarHeader(title, url, location, year, km, price, load_time, load_date)
   }
 
-  /* This gets header information from details page. Not necessarily 100% equal to header page, e.g. location have to be transformed, but good enough for testing purposes */
-  def createAcqCarHeaderObjectFromUrl(url:String) = {
-    val jsonCarDetail = scrapeCarDetails(url)
-    val location = jsonCarDetail("location").as[String]
-    val title = jsonCarDetail("title").as[String]
-    val year = jsonCarDetail("year").as[String]
-    val km = jsonCarDetail("km").as[String]
-    val price = jsonCarDetail("price").as[String]
-    val load_time = System.currentTimeMillis()
-    val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
-    AcqCarHeader(title, url, location, year, km, price, load_time, load_date)
+  def getURL(url: String)(retry: Int): Try[Document] = {
+    Try(Jsoup.connect(url).get)
+      .recoverWith {
+        case _ if(retry > 0) => {
+          Thread.sleep(3000)
+          println("Retry url " + url + " - " + retry + " retries left")
+          getURL(url)(retry - 1)
+        }
+      }
   }
-
-
-
   def scrapeCarDetails(url:String):Map[String, JsValue]= {
     //val url = "http://m.finn.no/car/used/ad.html?finnkode=78647939"
     //val url = "http://m.finn.no/car/used/ad.html?finnkode=77386827" //sold
     //val url = "http://m.finn.no/car/used/ad.html?finnkode=78601940" //deleted page
     val validUrl = url.replace("\"", "")
-    try {
-      val doc: Document = Jsoup.connect(validUrl).get
-      val carPropElements: Element = doc.select(".mvn+ .col-count2from990").first()
-      var carPropMap = Map[String, String]()
+    val doc: Try[Document] = getURL(validUrl)(10)
+    doc match {
+      case Success(doc) =>
+        val carPropElements: Element = doc.select(".mvn+ .col-count2from990").first()
+        var carPropMap = Map[String, String]()
 
-      if (carPropElements != null) {
-        var i = 0
-        for (elem: Element <- carPropElements.children()) {
-          if ((i % 2) == 0) {
-            val key = elem.text
-            val value = elem.nextElementSibling().text
-            carPropMap += (key.asInstanceOf[String] -> value.asInstanceOf[String])
+        if (carPropElements != null) {
+          var i = 0
+          for (elem: Element <- carPropElements.children()) {
+            if ((i % 2) == 0) {
+              val key = elem.text
+              val value = elem.nextElementSibling().text
+              carPropMap += (key.asInstanceOf[String] -> value.asInstanceOf[String])
+            }
+            i = i + 1
           }
-          i = i + 1
+        } else carPropMap = Map("MissingKeys" -> "MissingValues")
+
+        var carEquipListBuffer: ListBuffer[String] = ListBuffer()
+        val carEquipElements: Element = doc.select(".col-count2upto990").first()
+        if (carEquipElements != null) {
+          for (elem: Element <- carEquipElements.children()) {
+            carEquipListBuffer += elem.text
+          }
+        } else carEquipListBuffer = ListBuffer("MissingValues")
+
+        val carInfoElements: Element = doc.select(".object-description p[data-automation-id]").first()
+        val carInfoElementsText = {
+          if (carInfoElements != null) {
+            carInfoElements.text
+          } else "MissingValues"
         }
-      } else carPropMap = Map("MissingKeys" -> "MissingValues")
 
-      var carEquipListBuffer: ListBuffer[String] = ListBuffer()
-      val carEquipElements: Element = doc.select(".col-count2upto990").first()
-      if (carEquipElements != null) {
-        for (elem: Element <- carEquipElements.children()) {
-          carEquipListBuffer += elem.text
+        val carPriceElement: Element = doc.select(".mtn.r-margin").first()
+        var carPriceText = {
+          if (carPriceElement != null) carPriceElement.text else "MissingValue"
         }
-      } else carEquipListBuffer = ListBuffer("MissingValues")
 
-      val carInfoElements: Element = doc.select(".object-description p[data-automation-id]").first()
-      val carInfoElementsText = {
-        if (carInfoElements != null) {
-          carInfoElements.text
-        } else "MissingValues"
-      }
+        val carTitleElement: Element = doc.select(".tcon").first()
+        var carTitleText = {
+          if (carTitleElement != null) carTitleElement.text else "MissingValue"
+        }
 
-      val carPriceElement: Element = doc.select(".mtn.r-margin").first()
-      var carPriceText = {
-        if (carPriceElement != null) carPriceElement.text else "MissingValue"
-      }
+        val carLocationElement: Element = doc.select(".hide-lt768 h2").first()
+        var carLocationText= {
+          if (carLocationElement != null) carLocationElement.text else "MissingValue"
+        }
 
-      val carTitleElement: Element = doc.select(".tcon").first()
-      var carTitleText = {
-        if (carTitleElement != null) carTitleElement.text else "MissingValue"
-      }
+        val carYearElement: Element = doc.select("hr+ .col-count2from990 dd:nth-child(2) , .mvn+ .col-count2from990 dt:nth-child(2)").first()
+        var carYearText= {
+          if (carYearElement != null) carYearElement.text else "MissingValue"
+        }
 
-      val carLocationElement: Element = doc.select(".hide-lt768 h2").first()
-      var carLocationText= {
-        if (carLocationElement != null) carLocationElement.text else "MissingValue"
-      }
+        val carKMElement: Element = doc.select(".mvn+ .col-count2from990 dd:nth-child(6)").first()
+        val carKMText = {
+          if (carKMElement != null) carKMElement.text else "MissingValue"
+        }
 
-      val carYearElement: Element = doc.select("hr+ .col-count2from990 dd:nth-child(2) , .mvn+ .col-count2from990 dt:nth-child(2)").first()
-      var carYearText= {
-        if (carYearElement != null) carYearElement.text else "MissingValue"
-      }
-
-      val carKMElement: Element = doc.select(".mvn+ .col-count2from990 dd:nth-child(6)").first()
-      val carKMText = {
-        if (carKMElement != null) carKMElement.text else "MissingValue"
-      }
-
-
-
-      val jsObj = Json.obj("url" -> url, "properties" -> carPropMap, "information" -> carInfoElementsText, "equipment" -> carEquipListBuffer.toList, "deleted" -> false, "title" -> carTitleText, "location" -> carLocationText, "price" -> carPriceText, "year" -> carYearText, "km" -> carKMText)
-      jsObj.value.toMap
-    } catch {
-      case e: HttpStatusException => {
+        val jsObj = Json.obj("url" -> url, "properties" -> carPropMap, "information" -> carInfoElementsText, "equipment" -> carEquipListBuffer.toList, "deleted" -> false, "title" -> carTitleText, "location" -> carLocationText, "price" -> carPriceText, "year" -> carYearText, "km" -> carKMText)
+        jsObj.value.toMap
+      case Failure(e) => {
         println("URL " + url + " has been deleted.")
         val jsObj = Json.obj("url" -> url, "properties" -> Map("NULL" -> "NULL"), "information" -> "NULL", "equipment" -> ListBuffer("NULL").toList, "deleted" -> true, "title" -> "NULL", "location" -> "NULL", "price" -> "NULL", "year" -> "NULL", "km" -> "NULL")
         jsObj.value.toMap

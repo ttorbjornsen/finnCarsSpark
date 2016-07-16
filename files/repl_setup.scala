@@ -13,6 +13,11 @@ import org.apache.spark.rdd.RDD
 import com.datastax.spark.connector._
 import play.api.libs.json.Reads._ // Custom validation helpers
 import play.api.libs.functional.syntax._ // Combinator syntax
+import org.jsoup.{HttpStatusException, Jsoup}
+import org.jsoup.nodes.{Entities, _}
+import org.jsoup.nodes.Document.OutputSettings
+import org.jsoup.select.Elements
+
 
 System.setProperty("hadoop.home.dir", "C:\\Users\\torbjorn.torbjornsen\\Hadoop\\")
 val conf = new SparkConf().setAppName("loadRaw").setMaster("local[*]").set("spark.cassandra.connection.host","192.168.56.56")
