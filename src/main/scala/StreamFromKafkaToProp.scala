@@ -70,8 +70,8 @@ object StreamFromKafkaToProp extends App {
             mode(SaveMode.Append).
             save()
 
-//          //println(acqCarHeaderDF.count + " records written to acq_car_details")
-//          println(numOfCars + " records written to acq_car_details")
+          println(acqCarHeaderDF.count + " records written to acq_car_details")
+          println(numOfCars + " records written to acq_car_details")
 //          val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
 //          propCarRDD.saveToCassandra("finncars", "prop_car_daily")
 //
