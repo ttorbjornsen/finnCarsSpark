@@ -124,6 +124,8 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       parsedEquipmentList should contain ("Skinnseter")
     }
 
+
+
     ignore("can merge AcqCarHeader object with AcqCarDetails object") {
       val propCar:PropCar = dao.createPropCar(randomAcqCarHeader)
       propCar.information should equal ("Fin bil. NEDSATT PRIS")

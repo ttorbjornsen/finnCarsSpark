@@ -40,12 +40,12 @@ object Utility {
 
 
   def createAcqCarHeaderObject(i:Int, jsonCarHdr:JsValue) = {
-    val location = jsonCarHdr.\\("group")(0)(i).\("location")(0).\("text").as[String]
-    val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").as[String]
-    val title = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("text").as[String]
-    val year = jsonCarHdr.\\("group")(0)(i).\("year")(0).\("text").as[String]
-    val km = jsonCarHdr.\\("group")(0)(i).\("km")(0).\("text").as[String]
-    val price = jsonCarHdr.\\("group")(0)(i).\("price")(0).\("text").as[String]
+    val location = jsonCarHdr.\\("group")(0)(i).\("location")(0).\("text").asOpt[String].getOrElse(Utility.Constants.EmptyString)
+    val url = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("href").asOpt[String].getOrElse(Utility.Constants.EmptyString)
+    val title = jsonCarHdr.\\("group")(0)(i).\("title")(0).\("text").asOpt[String].getOrElse(Utility.Constants.EmptyString)
+    val year = jsonCarHdr.\\("group")(0)(i).\("year")(0).\("text").asOpt[String].getOrElse(Utility.Constants.EmptyString)
+    val km = jsonCarHdr.\\("group")(0)(i).\("km")(0).\("text").asOpt[String].getOrElse(Utility.Constants.EmptyString)
+    val price = jsonCarHdr.\\("group")(0)(i).\("price")(0).\("text").asOpt[String].getOrElse(Utility.Constants.EmptyString)
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
     AcqCarHeader(title, url, location, year, km, price, load_time, load_date)
@@ -141,7 +141,7 @@ object Utility {
     val jsValueMap: JsValue = Json.parse(jsonString)
     val propertiesMap = jsValueMap.as[Map[String,String]]
     val hashMap = new HashMap[String, String]
-    propertiesMap.map{case(k,v) => hashMap.put(k,v) }
+    propertiesMap.map{case(k,v) => if (!excludedKeys.contains(k)) hashMap.put(k,v) }
     hashMap.toMap
   }
 

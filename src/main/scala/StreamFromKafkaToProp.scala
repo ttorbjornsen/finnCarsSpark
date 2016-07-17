@@ -44,6 +44,7 @@ object StreamFromKafkaToProp extends App {
 
         content.foreach { jsonDoc =>
           val jsonCarHdr: JsValue = Json.parse(jsonDoc.mkString)
+          val headerUrl = jsonCarHdr.\\("url").head.as[String]
           val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size
           val acqCarHeaderList = Range(0, numOfCars).map(i =>
             Utility.createAcqCarHeaderObject(i, jsonCarHdr)).toList
@@ -57,7 +58,7 @@ object StreamFromKafkaToProp extends App {
             save()
 
           //println(acqCarHeaderDF.count + " records written to acq_car_header")
-          println(numOfCars + " records written to acq_car_header")
+          println(numOfCars + " records written to acq_car_header. Url: " + headerUrl)
           val acqCarDetailsList = Range(0, numOfCars).map(i =>
             Utility.createAcqCarDetailsObject(i, jsonCarHdr)).toList
 
@@ -69,13 +70,13 @@ object StreamFromKafkaToProp extends App {
             mode(SaveMode.Append).
             save()
 
-          //println(acqCarHeaderDF.count + " records written to acq_car_details")
-          println(numOfCars + " records written to acq_car_details")
-          val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
-          propCarRDD.saveToCassandra("finncars", "prop_car_daily")
-
-          //println(propCarRDD.count + " records written to prop_car_daily")
-          println(numOfCars + " records written to prop_car_daily")
+//          //println(acqCarHeaderDF.count + " records written to acq_car_details")
+//          println(numOfCars + " records written to acq_car_details")
+//          val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
+//          propCarRDD.saveToCassandra("finncars", "prop_car_daily")
+//
+//          //println(propCarRDD.count + " records written to prop_car_daily")
+//          println(numOfCars + " records written to prop_car_daily")
 
         }
       }
