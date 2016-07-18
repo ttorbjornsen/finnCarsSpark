@@ -96,7 +96,8 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
     }
 
-    it("can handle deleted detail car pages from finn") {
+    //temp removed due to 10 retries taking long time
+    ignore("can handle deleted detail car pages from finn") {
       val url = "http://m.finn.no/car/used/ad.html?finnkode=76755775"
       val carDetails = Utility.scrapeCarDetails(url)
 

@@ -1,12 +1,19 @@
 /**
   * Created by torbjorn.torbjornsen on 11.07.2016.
   */
+import java.time.{LocalDate}
+
 import scala.collection.JavaConversions._
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 import com.datastax.spark.connector._
 
+import scala.collection.mutable.ListBuffer
+
+case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
+case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
+case class PropCar(url:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:Map[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long, load_date:String)
 
 class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializable{
   import _hc.implicits._
@@ -32,6 +39,32 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
     }
   }
 
+
+  def getLatestLoadDate(tableName:String):LocalDate = {
+    val currentDay = LocalDate.now()
+    val startLoadDate = currentDay.minusDays(Utility.Constants.ETLSafetyMargin)
+    val daysBetween = Utility.Constants.ETLSafetyMargin
+
+    val listOfDays = ListBuffer[String]()
+    for (i <- (0 to daysBetween).reverse) {
+      listOfDays += (startLoadDate.plusDays(i).toString)
+    }
+
+    val datesWithRecords = listOfDays.map { date =>
+      _csc.sparkContext.cassandraTable("finncars", tableName).
+        where("load_date = ?", date).
+        select("load_date").
+        limit(1).
+        collect
+    }.toList
+
+    val indexWithLatestLoadDate = datesWithRecords.indexWhere(_.nonEmpty)
+
+    if (indexWithLatestLoadDate == -1) {
+      Utility.Constants.ETLFirstLoadDate
+    } else (currentDay.minusDays(datesWithRecords.indexWhere(_.nonEmpty)))
+
+  }
 
   def createPropCar(acqCarHeader:AcqCarHeader):PropCar = {
     //val acqCarHeader = AcqCarHeader("Volkswagen Passat 1,6 TDI 105hk BlueMotion Business","http://m.finn.no/car/used/ad.html?finnkode=78537231","Kirkenes","2010","121 835 km","149 000,-",2016-07-04 13:41:21.477,2016-07-04))

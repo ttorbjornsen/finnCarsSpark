@@ -1,5 +1,3 @@
-import java.time.ZoneId
-
 import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.SparkConf
 import org.apache.spark.rdd.RDD
@@ -19,6 +17,7 @@ import scala.io.Source
 import scala.util.Try
 import scala.util.{Failure, Success}
 import java.net.URL
+import java.time.{LocalDate, ZoneId}
 
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
@@ -196,11 +195,24 @@ object Utility {
     if (price == "Solgt") true else false
   }
 
+  def getDatesBetween(dateStart:LocalDate, dateEnd:LocalDate):Seq[String] = {
+    val daysBetween = dateStart.until(dateEnd).getDays
+    val listOfDays = ListBuffer[String]()
+
+    for (i <- 0 to daysBetween) {
+      listOfDays += (dateStart.plusDays(i)).toString
+    }
+
+    listOfDays.toList
+  }
+
 
   object Constants {
     val EmptyMap = Map("NULL" -> "NULL")
     val EmptyList = Set("NULL")
     val EmptyString = "NULL"
+    val ETLSafetyMargin = 7 //days
+    val ETLFirstLoadDate = LocalDate.of(2016,7,1)
   }
 
 

@@ -9,9 +9,6 @@ import play.api.libs.json._
 import org.apache.spark.sql.{SQLContext, DataFrame}
 import com.datastax.spark.connector._
 
-case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
-case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
-case class PropCar(url:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:Map[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long, load_date:String)
 
 
 /**
@@ -21,6 +18,7 @@ object StreamFromKafkaToProp extends App {
 
   System.setProperty("hadoop.home.dir", "C:\\Users\\torbjorn.torbjornsen\\Hadoop\\")
   val conf = new SparkConf().setAppName("loadRaw").setMaster("local[*]").set("spark.cassandra.connection.host","192.168.56.56")
+  //val conf = new SparkConf().setAppName("loadRaw").setMaster("spark://torbjorn-VirtualBox:7077").set("spark.cassandra.connection.host","192.168.56.56")
   val sc = new SparkContext(conf)
   sc.setLogLevel("WARN")
   val csc = new CassandraSQLContext(sc)
@@ -28,7 +26,7 @@ object StreamFromKafkaToProp extends App {
   val hc = new HiveContext(sc)
   import hc.implicits._ //allows registering temptables
   val dao = new DAO(hc, csc)
-  val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092", "auto.offset.reset" -> "smallest")
+  val kafkaParams = Map("metadata.broker.list" -> "192.168.56.56:9092")//, "auto.offset.reset" -> "smallest")
   val topics = Set("cars_header")
   //val fromOffsets = Map(new TopicAndPartition("finnCars", 0) -> 0L)
   //val directKafkaStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, fromOffsets, (mmd:MessageAndMetadata[String, String]) => mmd)
@@ -70,13 +68,7 @@ object StreamFromKafkaToProp extends App {
             mode(SaveMode.Append).
             save()
 
-          println(acqCarHeaderDF.count + " records written to acq_car_details")
           println(numOfCars + " records written to acq_car_details")
-//          val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
-//          propCarRDD.saveToCassandra("finncars", "prop_car_daily")
-//
-//          //println(propCarRDD.count + " records written to prop_car_daily")
-//          println(numOfCars + " records written to prop_car_daily")
 
         }
       }
