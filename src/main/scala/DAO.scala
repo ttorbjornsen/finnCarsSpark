@@ -44,16 +44,16 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
   }
 
 
-  def getFirstLoadDateFromBTL(url:String):String = {
-    val url = "http://test"
-    val btl_car_record = _csc.sparkContext.cassandraTable[BtlCar]("finncars", "btl_car").
-      where("url = ?", url).
-      collect
-
-    if (btl_car_record.length == 0)
-
-
-  }
+//  def getFirstLoadDateFromBTL(url:String):String = {
+//    val url = "http://test"
+//    val btl_car_record = _csc.sparkContext.cassandraTable[BtlCar]("finncars", "btl_car").
+//      where("url = ?", url).
+//      collect
+//
+//    if (btl_car_record.length == 0)
+//
+//
+//  }
 
   def getLatestLoadDate(tableName:String):LocalDate = {
     val currentDay = LocalDate.now()

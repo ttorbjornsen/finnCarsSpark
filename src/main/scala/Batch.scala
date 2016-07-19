@@ -15,7 +15,7 @@ object Batch extends App{
   System.setProperty("hadoop.home.dir", "C:\\Users\\torbjorn.torbjornsen\\Hadoop\\")
   val conf = new SparkConf().setAppName("loadRaw").setMaster("local[*]").set("spark.cassandra.connection.host","192.168.56.56")
   val sc = new SparkContext(conf)
-  sc.setLogLevel("WARN")
+  sc.setLogLevel("INFO")
   val csc = new CassandraSQLContext(sc)
   csc.setKeyspace("finncars")
   val hc = new HiveContext(sc)
@@ -23,7 +23,7 @@ object Batch extends App{
   val dao = new DAO(hc, csc)
 
 
-val deltaLoadDates = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_daily"), LocalDate.now) //prop_car_daily is the target table, check last load date
+  val deltaLoadDates = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_daily"), LocalDate.now) //prop_car_daily is the target table, check last load date
 
   //get all dates, not only delta
   //val deltaLoadDates = Utility.getDatesBetween(LocalDate.of(2016,7,15), LocalDate.now) //prop_car_daily is the target table, check last load date
@@ -61,26 +61,12 @@ val deltaLoadDates = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_dai
 
   // traverse all urls that have been updated since last (delta)
   btlDeltaUrlList.map { url =>
-    val firstLoadDate = dao.getFirstLoadDateFromBTL(url)
-
-    // traverse x dates which may contain
-    val partition = deltaLoadDatesBTL.map{date => sc.cassandraTable[PropCar]("finncars", "prop_car_daily").
-      where("load_date = ?", date).
-      where("url = ?", url)
+    deltaLoadDatesBTL.map { date =>
+      val partition = deltaLoadDatesBTL.map { date => sc.cassandraTable[PropCar]("finncars", "prop_car_daily").
+        where("load_date = ?", date).
+        where("url = ?", url)
       }
-    val propCarUrlRDD = sc.union(partition)
-
-
-
+      val propCarUrlRDD = sc.union(partition)
+    }
   }
-
-
-
-
-
-
-
-
-
-
 }
