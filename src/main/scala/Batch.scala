@@ -52,7 +52,7 @@ object Batch extends App{
   val propCarRDD = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay ).map { row =>
     PropCar(load_date=row._1._1, url=row._1._2, finnkode=Utility.parseFinnkode(row._1._2), title=row._2._1.title, location=row._2._1.location, year=Utility.parseYear(row._2._1.year), km=Utility.parseKM(row._2._1.km), price=dao.getLastPrice(row._2._1.price, row._2._1.url, row._2._1.load_date, row._2._1.load_time), properties=Utility.getMapFromJsonMap(row._2._2.properties), equipment=Utility.getSetFromJsonArray(row._2._2.equipment), information=Utility.getStringFromJsonString(row._2._2.information), sold=Utility.carMarkedAsSold(row._2._1.price), deleted=row._2._2.deleted, load_time=row._2._1.load_time)
   }
-
+  //NOTE! Number of records between PropCar and AcqHeader/AcqDetails may differ. E.g. when traversing Finn header pages, some cars will be bound to come two times when new cars are entered. Duplicate entries may in other words occur due to load_time being part of Acq* primary key.
   propCarRDD.saveToCassandra("finncars", "prop_car_daily")
 
   /* Start populating BTL-layer */
