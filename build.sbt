@@ -2,7 +2,7 @@ name := "finnCarsSpark"
 
 version := "1.0"
 
-scalaVersion := "2.10.5"
+scalaVersion := "2.11.8" //need 2.11 because limit of 23 columns in case class with 2.10
 val sparkVersion = "1.4.1"
 
 

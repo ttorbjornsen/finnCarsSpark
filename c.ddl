@@ -127,9 +127,9 @@ CREATE TABLE finncars.btl_car (
     sportsseter text,
     tilstandsrapport boolean,
     vekt int,
-    PRIMARY KEY (load_date_first, url)
-) WITH CLUSTERING ORDER BY (url DESC)
-    AND bloom_filter_fp_chance = 0.01
+    last_updated text,
+    PRIMARY KEY (url)
+) WITH bloom_filter_fp_chance = 0.01
     AND caching = '{"keys":"ALL", "rows_per_partition":"NONE"}'
     AND comment = ''
     AND compaction = {'min_threshold': '4', 'class': 'org.apache.cassandra.db.compaction.DateTieredCompactionStrategy', 'max_sstable_age_days': '365', 'base_time_seconds': '3600', 'max_threshold': '32'}

@@ -14,7 +14,7 @@ import scala.collection.mutable.ListBuffer
 case class AcqCarHeader(url:String, load_date:String, load_time:Long, title:String, location:String, year: String, km: String, price: String)
 case class AcqCarDetails(url:String, load_date:String, load_time:Long, properties:String, equipment:String, information:String, deleted:Boolean)
 case class PropCar(url:String, load_date:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:Map[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long)
-//case class BtlCar(load_date_first:String,url:String,finnkode:Int,title:String,location:String,year:Int,km:Int,price_first:Int,price_last:Int,price_delta:Int,sold:Boolean,sold_date:String,lead_time_sold:Int,deleted:Boolean,deleted_date:String,lead_time_deleted:Int,load_date_latest:String,automatgir:Boolean,hengerfeste:Boolean,skinnInterior:String,drivstoff:String,sylindervolum:Double,effekt:Int,regnsensor:Boolean,farge:String,cruisekontroll:Boolean,parkeringssensor:Boolean,antall_eiere:Int,kommune:String,fylke:String,xenon:Boolean,navigasjon:Boolean,servicehefte:Boolean,sportsseter:String,tilstandsrapport:Boolean,vekt:Int)
+case class BtlCar(url:String,finnkode:Int,title:String,location:String,year:Int,km:Int,price_first:Int,price_last:Int,price_delta:Int,sold:Boolean,sold_date:String,lead_time_sold:Int,deleted:Boolean,deleted_date:String,lead_time_deleted:Int,load_date_first:String,load_date_latest:String,automatgir:Boolean,hengerfeste:Boolean,skinninterior:String,drivstoff:String,sylindervolum:Double,effekt:Int,regnsensor:Boolean,farge:String,cruisekontroll:Boolean,parkeringssensor:Boolean,antall_eiere:Int,kommune:String,fylke:String,xenon:Boolean,navigasjon:Boolean,servicehefte:Boolean,sportsseter:String,tilstandsrapport:Boolean,vekt:Int)
 
 
 class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializable{
@@ -43,6 +43,17 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
     }
   }
 
+
+  def getFirstLoadDateFromBTL(url:String):String = {
+    val url = "http://test"
+    val btl_car_record = _csc.sparkContext.cassandraTable[BtlCar]("finncars", "btl_car").
+      where("url = ?", url).
+      collect
+
+    if (btl_car_record.length == 0)
+
+
+  }
 
   def getLatestLoadDate(tableName:String):LocalDate = {
     val currentDay = LocalDate.now()

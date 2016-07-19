@@ -38,6 +38,9 @@ val deltaLoadDates = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_dai
   val rddDeltaLoadAcqHeaderLastLoadTimePerDay = sc.union(rddDeltaLoadAcqHeaderDatePartition).
     map(row => ((row.load_date, row.url),(AcqCarHeader(title=row.title, url=row.url, location=row.location, year=row.year, km=row.km, price=row.price, load_time=row.load_time, load_date=row.load_date)))).reduceByKey((x,y) => if(y.load_time > x.load_time) y else x)
 
+  rddDeltaLoadAcqHeaderLastLoadTimePerDay.cache
+
+
   val rddDeltaLoadAcqDetailsDatePartition = deltaLoadDates.map(date => sc.cassandraTable[AcqCarDetails]("finncars", "acq_car_details").
     where("load_date = ?", date)//.where("url = ?", url)
   )
@@ -51,6 +54,31 @@ val deltaLoadDates = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_dai
   }
 
   propCarRDD.saveToCassandra("finncars", "prop_car_daily")
+
+  /* Start populating BTL-layer */
+  val btlDeltaUrlList = rddDeltaLoadAcqHeaderLastLoadTimePerDay.map(row => row._1._2).distinct.collect
+  val deltaLoadDatesBTL = Utility.getDatesBetween(LocalDate.now.plusDays(-365), LocalDate.now) //assume all cars have been at finn for less than x amount of days. If this is not the case, the car is not updated correctly to BTL layer.
+
+  // traverse all urls that have been updated since last (delta)
+  btlDeltaUrlList.map { url =>
+    val firstLoadDate = dao.getFirstLoadDateFromBTL(url)
+
+    // traverse x dates which may contain
+    val partition = deltaLoadDatesBTL.map{date => sc.cassandraTable[PropCar]("finncars", "prop_car_daily").
+      where("load_date = ?", date).
+      where("url = ?", url)
+      }
+    val propCarUrlRDD = sc.union(partition)
+
+
+
+  }
+
+
+
+
+
+
 
 
 
