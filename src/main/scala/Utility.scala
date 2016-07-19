@@ -34,7 +34,7 @@ object Utility {
     val deleted = jsonCarDetail("deleted").as[Boolean]
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
-    AcqCarDetails(url, carProperties, carEquipment, carInformation, deleted, load_time, load_date)
+    AcqCarDetails(url = url, properties = carProperties, equipment = carEquipment, information = carInformation, deleted = deleted, load_time = load_time, load_date = load_date)
   }
 
 
@@ -47,7 +47,7 @@ object Utility {
     val price = jsonCarHdr.\\("group")(0)(i).\("price")(0).\("text").asOpt[String].getOrElse(Utility.Constants.EmptyString)
     val load_time = jsonCarHdr.\\("timestamp")(0).as[Long]
     val load_date = new java.util.Date(load_time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString
-    AcqCarHeader(title, url, location, year, km, price, load_time, load_date)
+    AcqCarHeader(title=title, url=url, location=location, year=year, km=km, price=price, load_time=load_time, load_date=load_date)
   }
 
   def getURL(url: String)(retry: Int): Try[Document] = {
@@ -206,6 +206,10 @@ object Utility {
     listOfDays.toList
   }
 
+  def saveToCSV(rdd:RDD[org.apache.spark.sql.Row]) = {
+    val temp = rdd.map(row => row.mkString(";"))
+    temp.coalesce(1).saveAsTextFile("/home/torbjorn/projects/temp_spark_output/")
+  }
 
   object Constants {
     val EmptyMap = Map("NULL" -> "NULL")

@@ -78,7 +78,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       select("title", "url", "location", "year", "km", "price", "load_time", "load_date").
       limit(1)
 //REPL : USE val
-      randomAcqCarHeader = dfRandomCarHeader.map(row => AcqCarHeader(row.getString(0), row.getString(1), row.getString(2), row.getString(3), row.getString(4), row.getString(5), (row(6).asInstanceOf[java.util.Date]).getTime(), row.getString(7))).collect.toList(0)
+      randomAcqCarHeader = dfRandomCarHeader.map(row => AcqCarHeader(title=row.getString(0), url=row.getString(1), location=row.getString(2), year=row.getString(3), km=row.getString(4), price=row.getString(5), load_time=(row(6).asInstanceOf[java.util.Date]).getTime(), load_date=row.getString(7))).collect.toList(0)
 
 
     dao = new DAO(_hc, _csc)

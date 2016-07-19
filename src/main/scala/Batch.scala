@@ -23,38 +23,36 @@ object Batch extends App{
   val dao = new DAO(hc, csc)
 
 
-  val deltaLoadDates = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_daily"), LocalDate.now) //prop_car_daily is the target table, check last load date
-  val rddDeltaLoadAcqHeaderPerPartition  = deltaLoadDates.map { date =>
+val deltaLoadDates = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_daily"), LocalDate.now) //prop_car_daily is the target table, check last load date
+
+  //get all dates, not only delta
+  //val deltaLoadDates = Utility.getDatesBetween(LocalDate.of(2016,7,15), LocalDate.now) //prop_car_daily is the target table, check last load date
+
+//  val url = "http://m.finn.no/car/used/ad.html?finnkode=79020080"
+
+  val rddDeltaLoadAcqHeaderDatePartition  = deltaLoadDates.map { date =>
     sc.cassandraTable[AcqCarHeader]("finncars", "acq_car_header").
-      where("load_date = ?", date)
+      where("load_date = ?", date)//.where("url = ?", url)
   }
 
-  val rddDeltaLoadAcqHeader = sc.union(rddDeltaLoadAcqHeaderPerPartition)
-  val rddDeltaLoadAcqHeaderPairRDD = rddDeltaLoadAcqHeader.map(row =>
-    ((row.load_date, row.url),row)
+  val rddDeltaLoadAcqHeaderLastLoadTimePerDay = sc.union(rddDeltaLoadAcqHeaderDatePartition).
+    map(row => ((row.load_date, row.url),(AcqCarHeader(title=row.title, url=row.url, location=row.location, year=row.year, km=row.km, price=row.price, load_time=row.load_time, load_date=row.load_date)))).reduceByKey((x,y) => if(y.load_time > x.load_time) y else x)
+
+  val rddDeltaLoadAcqDetailsDatePartition = deltaLoadDates.map(date => sc.cassandraTable[AcqCarDetails]("finncars", "acq_car_details").
+    where("load_date = ?", date)//.where("url = ?", url)
   )
 
-  val rddDeltaLoadAcqDetailsPerPartition = deltaLoadDates.map(date => sc.cassandraTable[AcqCarDetails]("finncars", "acq_car_details").
-  where("load_date = ?", date)
-  )
-  val rddDeltaLoadAcqDetails = sc.union(rddDeltaLoadAcqDetailsPerPartition)
+  val rddDeltaLoadAcqDetailsLastLoadTimePerDay = sc.union(rddDeltaLoadAcqDetailsDatePartition).map(row =>
+    ((row.load_date, row.url),(AcqCarDetails(url=row.url, load_date=row.load_date, load_time=row.load_time, properties=row.properties, equipment=row.equipment, information=row.information, deleted=row.deleted)))).
+    reduceByKey((x,y) => if(y.load_time > x.load_time) y else x)
 
-  val rddDeltaLoadAcqDetailsPairRDD = rddDeltaLoadAcqDetails.map(row =>
-    ((row.load_date, row.url),row)
-  )
+  val propCarRDD = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay ).map { row =>
+    PropCar(load_date=row._1._1, url=row._1._2, finnkode=Utility.parseFinnkode(row._1._2), title=row._2._1.title, location=row._2._1.location, year=Utility.parseYear(row._2._1.year), km=Utility.parseKM(row._2._1.km), price=dao.getLastPrice(row._2._1.price, row._2._1.url, row._2._1.load_date, row._2._1.load_time), properties=Utility.getMapFromJsonMap(row._2._2.properties), equipment=Utility.getSetFromJsonArray(row._2._2.equipment), information=Utility.getStringFromJsonString(row._2._2.information), sold=Utility.carMarkedAsSold(row._2._1.price), deleted=row._2._2.deleted, load_time=row._2._1.load_time)
+  }
 
-  val rddJoinCarHeaderDetails = rddDeltaLoadAcqHeaderPairRDD.join(rddDeltaLoadAcqDetailsPairRDD)
-
+  propCarRDD.saveToCassandra("finncars", "prop_car_daily")
 
 
-  //if successful, write load date to t
-
-
-//  val propCarRDD = sc.parallelize(acqCarHeaderList.map(hdr => dao.createPropCar(hdr)))
-//  propCarRDD.saveToCassandra("finncars", "prop_car_daily")
-//
-//  //println(propCarRDD.count + " records written to prop_car_daily")
-//  println(numOfCars + " records written to prop_car_daily")
 
 
 }

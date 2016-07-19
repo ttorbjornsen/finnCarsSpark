@@ -5,6 +5,7 @@ version := "1.0"
 scalaVersion := "2.10.5"
 val sparkVersion = "1.4.1"
 
+
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 
 //%% henter automatisk rett scalaversjon av biblioteket
@@ -21,6 +22,7 @@ libraryDependencies ++= Seq(
 ).map(_.excludeAll(ExclusionRule(organization = "org.mortbay.jetty")))
 
 parallelExecution in Test := false
+
 
 
 assemblyMergeStrategy in assembly := {

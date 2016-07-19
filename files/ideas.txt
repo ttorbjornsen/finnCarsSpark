@@ -1,0 +1,3 @@
+Hente inn mer korrekte kjøretøysopplysninger fra Statens Vegvesen med å slå opp med regnr
+http://www.vegvesen.no/kjoretoy/Kjop+og+salg/Kj%C3%B8ret%C3%B8yopplysninger?registreringsnummer=AB12345
+http://stackoverflow.com/questions/6644168/how-to-submit-text-via-forms-using-jsoup

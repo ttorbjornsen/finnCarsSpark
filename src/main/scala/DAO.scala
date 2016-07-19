@@ -1,7 +1,7 @@
 /**
   * Created by torbjorn.torbjornsen on 11.07.2016.
   */
-import java.time.{LocalDate}
+import java.time.{LocalDate, LocalTime, Instant}
 
 import scala.collection.JavaConversions._
 import org.apache.spark.rdd.RDD
@@ -11,24 +11,28 @@ import com.datastax.spark.connector._
 
 import scala.collection.mutable.ListBuffer
 
-case class AcqCarHeader(title:String, url:String, location:String, year: String, km: String, price: String, load_time:Long, load_date:String)
-case class AcqCarDetails(url:String, properties:String, equipment:String, information:String, deleted:Boolean, load_time:Long, load_date:String)
-case class PropCar(url:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:Map[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long, load_date:String)
+case class AcqCarHeader(url:String, load_date:String, load_time:Long, title:String, location:String, year: String, km: String, price: String)
+case class AcqCarDetails(url:String, load_date:String, load_time:Long, properties:String, equipment:String, information:String, deleted:Boolean)
+case class PropCar(url:String, load_date:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:Map[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long)
+//case class BtlCar(load_date_first:String,url:String,finnkode:Int,title:String,location:String,year:Int,km:Int,price_first:Int,price_last:Int,price_delta:Int,sold:Boolean,sold_date:String,lead_time_sold:Int,deleted:Boolean,deleted_date:String,lead_time_deleted:Int,load_date_latest:String,automatgir:Boolean,hengerfeste:Boolean,skinnInterior:String,drivstoff:String,sylindervolum:Double,effekt:Int,regnsensor:Boolean,farge:String,cruisekontroll:Boolean,parkeringssensor:Boolean,antall_eiere:Int,kommune:String,fylke:String,xenon:Boolean,navigasjon:Boolean,servicehefte:Boolean,sportsseter:String,tilstandsrapport:Boolean,vekt:Int)
+
 
 class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializable{
   import _hc.implicits._
 
   /* returns the current price, but if the car is marked as sold, then the price from before it was sold is retrieved.  */
-  def getLastPrice(acqCarHeader:AcqCarHeader):Int = {
-    if (acqCarHeader.price != "Solgt") {
-      val parsedPrice = acqCarHeader.price.replace(",-","").replace(" ","").replace("\"", "")
+  // tbd : derive load_date from load time and reduce number of parameters
+  def getLastPrice(price:String, url:String, load_date:String, load_time:Long):Int = {
+
+    if (price != "Solgt") {
+      val parsedPrice = price.replace(",-","").replace(" ","").replace("\"", "")
       if (parsedPrice.forall(_.isDigit)) parsedPrice.toInt else -1 //price invalid
     } else {
       val prevAcqCarHeaderNotSold = _csc.sparkContext.cassandraTable[AcqCarHeader]("finncars", "acq_car_header").
-        where("url = ?", acqCarHeader.url).
-        where("load_time <= ?", new java.util.Date(acqCarHeader.load_time)).
+        where("url = ?", url).
+        where("load_time <= ?", new java.util.Date(load_time)).
         filter(row => row.price != "Solgt").
-        filter(row => row.load_date != acqCarHeader.load_date). //since we also want to find the price diff from yesterday
+        filter(row => row.load_date != load_date). //since we also want to find the price diff from yesterday
         collect
 
       if (prevAcqCarHeaderNotSold.length > 0) {
@@ -84,7 +88,7 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
         title=acqCarHeader.title,
         year=Utility.parseYear(acqCarHeader.year),
         km=Utility.parseKM(acqCarHeader.km),
-        price=getLastPrice(acqCarHeader),
+        price=getLastPrice(acqCarHeader.price, acqCarHeader.url, acqCarHeader.load_date, acqCarHeader.load_time),
         properties=propertiesMap,
         equipment=equipmentList,
         information=acqCarDetails.information,
@@ -99,7 +103,7 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
         title=acqCarHeader.title,
         year=Utility.parseYear(acqCarHeader.year),
         km=Utility.parseKM(acqCarHeader.km),
-        price=getLastPrice(acqCarHeader),
+        price=getLastPrice(acqCarHeader.price, acqCarHeader.url, acqCarHeader.load_date, acqCarHeader.load_time),
         properties=Utility.Constants.EmptyMap,
         equipment=Utility.Constants.EmptyList,
         information=Utility.Constants.EmptyString,

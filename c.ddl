@@ -87,3 +87,58 @@ CREATE TABLE finncars.prop_car_daily (
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99.0PERCENTILE';
+
+DROP TABLE IF EXISTS finncars.btl_car;
+
+CREATE TABLE finncars.btl_car (
+    load_date_first text,
+    url text,
+    finnkode int,
+    title text,
+    location text,
+    year int,
+    km int,
+    price_first int,
+    price_last int,
+    price_delta int,
+    sold boolean,
+    sold_date text,
+    lead_time_sold int,
+    deleted boolean,
+    deleted_date text,
+    lead_time_deleted int,
+    load_date_latest text,
+    automatgir boolean,
+    hengerfeste boolean,
+    skinninterior text,
+    drivstoff text,
+    sylindervolum double,
+    effekt int,
+    regnsensor boolean,
+    farge text,
+    cruisekontroll boolean,
+    parkeringssensor boolean,
+    antall_eiere int,
+    kommune text,
+    fylke text,
+    xenon boolean,
+    navigasjon boolean,
+    servicehefte boolean,
+    sportsseter text,
+    tilstandsrapport boolean,
+    vekt int,
+    PRIMARY KEY (load_date_first, url)
+) WITH CLUSTERING ORDER BY (url DESC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = '{"keys":"ALL", "rows_per_partition":"NONE"}'
+    AND comment = ''
+    AND compaction = {'min_threshold': '4', 'class': 'org.apache.cassandra.db.compaction.DateTieredCompactionStrategy', 'max_sstable_age_days': '365', 'base_time_seconds': '3600', 'max_threshold': '32'}
+    AND compression = {'sstable_compression': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 1209600
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99.0PERCENTILE';
