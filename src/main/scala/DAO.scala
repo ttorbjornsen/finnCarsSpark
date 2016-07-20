@@ -1,7 +1,8 @@
 /**
   * Created by torbjorn.torbjornsen on 11.07.2016.
   */
-import java.time.{LocalDate, LocalTime, Instant}
+import java.time.{Instant, LocalDate, LocalTime}
+import java.util.HashMap
 
 import scala.collection.JavaConversions._
 import org.apache.spark.rdd.RDD
@@ -13,9 +14,9 @@ import scala.collection.mutable.ListBuffer
 
 case class AcqCarHeader(url:String, load_date:String, load_time:Long, title:String, location:String, year: String, km: String, price: String)
 case class AcqCarDetails(url:String, load_date:String, load_time:Long, properties:String, equipment:String, information:String, deleted:Boolean)
-case class PropCar(url:String, load_date:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:Map[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long)
+case class PropCar(url:String, load_date:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:HashMap[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long)
 case class BtlCar(url:String,finnkode:Int,title:String,location:String,year:Int,km:Int,price_first:Int,price_last:Int,price_delta:Int,sold:Boolean,sold_date:String,lead_time_sold:Int,deleted:Boolean,deleted_date:String,lead_time_deleted:Int,load_date_first:String,load_date_latest:String,automatgir:Boolean,hengerfeste:Boolean,skinninterior:String,drivstoff:String,sylindervolum:Double,effekt:Int,regnsensor:Boolean,farge:String,cruisekontroll:Boolean,parkeringssensor:Boolean,antall_eiere:Int,kommune:String,fylke:String,xenon:Boolean,navigasjon:Boolean,servicehefte:Boolean,sportsseter:String,tilstandsrapport:Boolean,vekt:Int)
-
+case class BtlCarKf_FirstLoad(price_first:Int, load_date_first:String)
 
 class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializable{
   import _hc.implicits._
@@ -43,17 +44,23 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
     }
   }
 
+  def getPropCarDateRange(dateStart:LocalDate, dateEnd:LocalDate):RDD[(String,PropCar)] = {
+    //val dateStart = LocalDate.now()
+    //val dateEnd = LocalDate.now.plusDays(-365)
+    val dateKeys = Utility.getDatesBetween(dateStart, dateEnd)
 
-//  def getFirstLoadDateFromBTL(url:String):String = {
-//    val url = "http://test"
-//    val btl_car_record = _csc.sparkContext.cassandraTable[BtlCar]("finncars", "btl_car").
-//      where("url = ?", url).
-//      collect
-//
-//    if (btl_car_record.length == 0)
-//
-//
-//  }
+    val propCarPartitions = dateKeys.map(date => _csc.sparkContext.cassandraTable[PropCar]("finncars", "prop_car_daily").
+      select("url", "load_date", "finnkode", "title", "location", "year", "km", "price", "properties", "equipment", "information", "sold", "deleted", "load_time").
+      where("load_date = ?", date)).take(10)
+
+    val propCarPairRDD = _csc.sparkContext.union(propCarPartitions).map { row =>
+      (row.url, row)
+    }
+    propCarPairRDD
+  }
+
+
+
 
   def getLatestLoadDate(tableName:String):LocalDate = {
     val currentDay = LocalDate.now()
@@ -91,7 +98,7 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
 
     if (prevAcqCarDetails.length > 0) {
       val acqCarDetails = prevAcqCarDetails.maxBy(_.load_time)
-      val propertiesMap:Map[String,String] = Utility.getMapFromJsonMap(acqCarDetails.properties)
+      val propertiesMap:HashMap[String,String] = Utility.getMapFromJsonMap(acqCarDetails.properties)
       val equipmentList:Set[String] = Utility.getSetFromJsonArray(acqCarDetails.equipment)
       PropCar(url=acqCarHeader.url,
         finnkode=Utility.parseFinnkode(acqCarHeader.url),

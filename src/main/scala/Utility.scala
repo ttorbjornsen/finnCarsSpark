@@ -9,14 +9,15 @@ import play.api.libs.json._
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Document.OutputSettings
 
-import scala.collection.immutable.Map
+import scala.collection.immutable.{Map}
 import scala.collection.JavaConversions._
-import scala.collection.mutable.HashMap
+import java.util.HashMap
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.Try
 import scala.util.{Failure, Success}
 import java.net.URL
+import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, ZoneId}
 
 /**
@@ -99,22 +100,22 @@ object Utility {
         }
 
         val carPriceElement: Element = doc.select(".mtn.r-margin").first()
-        var carPriceText = {
+        val carPriceText = {
           if (carPriceElement != null) carPriceElement.text else "MissingValue"
         }
 
         val carTitleElement: Element = doc.select(".tcon").first()
-        var carTitleText = {
+        val carTitleText = {
           if (carTitleElement != null) carTitleElement.text else "MissingValue"
         }
 
         val carLocationElement: Element = doc.select(".hide-lt768 h2").first()
-        var carLocationText= {
+        val carLocationText= {
           if (carLocationElement != null) carLocationElement.text else "MissingValue"
         }
 
         val carYearElement: Element = doc.select("hr+ .col-count2from990 dd:nth-child(2) , .mvn+ .col-count2from990 dt:nth-child(2)").first()
-        var carYearText= {
+        val carYearText= {
           if (carYearElement != null) carYearElement.text else "MissingValue"
         }
 
@@ -134,14 +135,14 @@ object Utility {
   }
 
 
-  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):Map[String,String] = {
+  def getMapFromJsonMap(jsonString:String, excludedKeys:Seq[String]=Seq("None")):HashMap[String,String] = {
     //    val keys = Seq("Salgsform", "Girkasse")
     //    val jsonString = "{\"Salgsform\":\"Bruktbil til salgs\",\"Girkasse\":\"Automat\",\"Antall seter\":\"5\"}"
     val jsValueMap: JsValue = Json.parse(jsonString)
     val propertiesMap = jsValueMap.as[Map[String,String]]
     val hashMap = new HashMap[String, String]
     propertiesMap.map{case(k,v) => if (!excludedKeys.contains(k)) hashMap.put(k,v) }
-    hashMap.toMap
+    hashMap
   }
 
   def getSetFromJsonArray(jsonString:String, excludedElements:Seq[String]=Seq("None")):Set[String] = {
@@ -196,15 +197,38 @@ object Utility {
   }
 
   def getDatesBetween(dateStart:LocalDate, dateEnd:LocalDate):Seq[String] = {
-    val daysBetween = dateStart.until(dateEnd).getDays
+    //val dateStart = LocalDate.now
+    //val dateEnd = LocalDate.now.plusDays(-365)
+    val daysBetween = dateStart.until(dateEnd, ChronoUnit.DAYS).toInt
     val listOfDays = ListBuffer[String]()
 
-    for (i <- 0 to daysBetween) {
+    for (i <- 0 to daysBetween by -1) {
       listOfDays += (dateStart.plusDays(i)).toString
     }
 
     listOfDays.toList
   }
+
+
+  def getFirstPropCarAllRecords(propCarPairRDD:RDD[(String,PropCar)]):RDD[(String, PropCar)] = {
+    val firstRecordsRDD = propCarPairRDD.reduceByKey((c1,c2) => if (c1.load_time < c2.load_time) c1 else c2)
+    firstRecordsRDD
+  }
+
+  def getFirstPropCarRecord(propCarPairRDD:RDD[(String,PropCar)], url:String):PropCar = {
+    val firstPropCar = propCarPairRDD.lookup(url)(0)
+    firstPropCar
+  }
+
+  def getBtlKfFirstLoad(firstPropCar:PropCar):BtlCarKf_FirstLoad ={
+    BtlCarKf_FirstLoad(firstPropCar.price, firstPropCar.load_date)
+  }
+
+
+
+
+
+
 
   def saveToCSV(rdd:RDD[org.apache.spark.sql.Row]) = {
     val temp = rdd.map(row => row.mkString(";"))
@@ -212,7 +236,7 @@ object Utility {
   }
 
   object Constants {
-    val EmptyMap = Map("NULL" -> "NULL")
+    val EmptyMap = new java.util.HashMap[String,String](Map("NULL" -> "NULL"))
     val EmptyList = Set("NULL")
     val EmptyString = "NULL"
     val ETLSafetyMargin = 7 //days

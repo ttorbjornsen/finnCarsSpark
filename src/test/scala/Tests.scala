@@ -131,6 +131,12 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       val propCar:PropCar = dao.createPropCar(randomAcqCarHeader)
       propCar.information should equal ("Fin bil. NEDSATT PRIS")
     }
+
+
+    ignore("can get the date when car was first loaded into Acq-layer") {
+      //getPropCarDateRange - how to test?
+
+    }
   }
 
 
