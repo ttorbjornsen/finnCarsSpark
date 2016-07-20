@@ -3,25 +3,25 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.mkuthan.spark.SparkSqlSpec
 import org.scalatest.{BeforeAndAfter, FunSpec, FunSuite, Matchers}
 import play.api.libs.json._
-import scala.io.Source
 
+import scala.io.Source
 import scala.collection.JavaConversions._
 import com.datastax.spark.connector._
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql._
-
-
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{SQLContext, DataFrame}
+import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 import com.datastax.spark.connector._
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.hive._
+
 import scala.collection.mutable.ArrayBuffer
 import java.sql.{Date, Timestamp}
-import scala.collection.JavaConversions._
+import java.time.LocalDate
 
+import scala.collection.JavaConversions._
 import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
@@ -132,6 +132,12 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       propCar.information should equal ("Fin bil. NEDSATT PRIS")
     }
 
+    it("can return a sequence of dates between two dates, used for querying C*") {
+      val startDate = LocalDate.of(2016,12,31)
+      val endDate = LocalDate.of(2017,1,4)
+      val dates:Seq[String] = Utility.getDatesBetween(startDate, endDate)
+      dates.length should equal(5)
+    }
 
     ignore("can get the date when car was first loaded into Acq-layer") {
       //getPropCarDateRange - how to test?
