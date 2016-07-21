@@ -15,8 +15,8 @@ import scala.collection.mutable.ListBuffer
 case class AcqCarHeader(url:String, load_date:String, load_time:Long, title:String, location:String, year: String, km: String, price: String)
 case class AcqCarDetails(url:String, load_date:String, load_time:Long, properties:String, equipment:String, information:String, deleted:Boolean)
 case class PropCar(url:String, load_date:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:HashMap[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long)
-case class BtlCar(url:String,finnkode:Int,title:String,location:String,year:Int,km:Int,price_first:Int,price_last:Int,price_delta:Int,sold:Boolean,sold_date:String,lead_time_sold:Int,deleted:Boolean,deleted_date:String,lead_time_deleted:Int,load_date_first:String,load_date_latest:String,automatgir:Boolean,hengerfeste:Boolean,skinninterior:String,drivstoff:String,sylindervolum:Double,effekt:Int,regnsensor:Boolean,farge:String,cruisekontroll:Boolean,parkeringssensor:Boolean,antall_eiere:Int,kommune:String,fylke:String,xenon:Boolean,navigasjon:Boolean,servicehefte:Boolean,sportsseter:String,tilstandsrapport:Boolean,vekt:Int)
-case class BtlCarKf_FirstLoad(price_first:Int, load_date_first:String)
+case class BtlCar(url:String = Utility.Constants.EmptyString,finnkode:Int = Utility.Constants.EmptyInt,title:String = Utility.Constants.EmptyString,location:String = Utility.Constants.EmptyString,year:Int = Utility.Constants.EmptyInt,km:Int = Utility.Constants.EmptyInt,price_first:Int = Utility.Constants.EmptyInt,price_last:Int = Utility.Constants.EmptyInt,price_delta:Int = Utility.Constants.EmptyInt,sold:Boolean = false,sold_date:String = Utility.Constants.EmptyDate,lead_time_sold:Int = Utility.Constants.EmptyInt,deleted:Boolean = false,deleted_date:String = Utility.Constants.EmptyDate,lead_time_deleted:Int = Utility.Constants.EmptyInt,load_date_first:String = Utility.Constants.EmptyDate,load_date_latest:String = Utility.Constants.EmptyDate,automatgir:Boolean = false,hengerfeste:Boolean = false,skinninterior:String = Utility.Constants.EmptyString,drivstoff:String = Utility.Constants.EmptyString,sylindervolum:Double = Utility.Constants.EmptyInt,effekt:Int = Utility.Constants.EmptyInt,regnsensor:Boolean = false,farge:String = Utility.Constants.EmptyString,cruisekontroll:Boolean = false,parkeringssensor:Boolean = false,antall_eiere:Int = Utility.Constants.EmptyInt,kommune:String = Utility.Constants.EmptyString,fylke:String = Utility.Constants.EmptyString,xenon:Boolean = false,navigasjon:Boolean = false,servicehefte:Boolean = false,sportsseter:String = Utility.Constants.EmptyString,tilstandsrapport:Boolean = false,vekt:Int = Utility.Constants.EmptyInt)
+
 
 class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializable{
   import _hc.implicits._
@@ -45,13 +45,13 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
   }
 
   def getPropCarDateRange(dateStart:LocalDate, dateEnd:LocalDate):RDD[(String,PropCar)] = {
-    //val dateStart = LocalDate.now()
-    //val dateEnd = LocalDate.now.plusDays(-365)
+    //val dateStart = LocalDate.now().plusDays(-365)
+    //val dateEnd = LocalDate.now
     val dateKeys = Utility.getDatesBetween(dateStart, dateEnd)
 
     val propCarPartitions = dateKeys.map(date => _csc.sparkContext.cassandraTable[PropCar]("finncars", "prop_car_daily").
       select("url", "load_date", "finnkode", "title", "location", "year", "km", "price", "properties", "equipment", "information", "sold", "deleted", "load_time").
-      where("load_date = ?", date)).take(10)
+      where("load_date = ?", date))
 
     val propCarPairRDD = _csc.sparkContext.union(propCarPartitions).map { row =>
       (row.url, row)

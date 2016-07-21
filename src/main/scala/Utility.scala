@@ -9,9 +9,10 @@ import play.api.libs.json._
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Document.OutputSettings
 
-import scala.collection.immutable.{Map}
+import scala.collection.immutable.Map
 import scala.collection.JavaConversions._
 import java.util.HashMap
+
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.Try
@@ -19,6 +20,8 @@ import scala.util.{Failure, Success}
 import java.net.URL
 import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, ZoneId}
+import java.util
+import java.util.HashMap
 
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
@@ -26,6 +29,7 @@ import java.time.{LocalDate, ZoneId}
 
 
 object Utility {
+
   def createAcqCarDetailsObject(i:Int, jsonCarHdr:JsValue)= {
     val url = jsonCarHdr.\\("group").head(i).\("title").head.\("href").as[String]
     val jsonCarDetail = scrapeCarDetails(url)
@@ -146,15 +150,14 @@ object Utility {
   }
 
   def getSetFromJsonArray(jsonString:String, excludedElements:Seq[String]=Seq("None")):Set[String] = {
-//    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
-//    val elements = Seq("Automatisk klimaanlegg", "Skinnseter")
+    //    val elements = Seq("Automatisk klimaanlegg", "Skinnseter")
     val jsValueArray:JsValue = Json.parse(jsonString)
     val set = jsValueArray.as[Set[String]]
     set.filter(x => !excludedElements.contains(x))
   }
 
   def getStringFromJsonString(jsonString:String):String = {
-//    val jsonString = "\"Fin bil\""
+    //    val jsonString = "\"Fin bil\""
     Json.parse(jsonString).as[String]
   }
 
@@ -196,13 +199,17 @@ object Utility {
     if (price == "Solgt") true else false
   }
 
+  def getDaysBetweenStringDates(dateStart:String, dateFinish:String):Int = {
+    LocalDate.parse(dateStart).until(LocalDate.parse(dateFinish), ChronoUnit.DAYS).toInt
+  }
+
   def getDatesBetween(dateStart:LocalDate, dateEnd:LocalDate):Seq[String] = {
     //val dateStart = LocalDate.now
     //val dateEnd = LocalDate.now.plusDays(-365)
     val daysBetween = dateStart.until(dateEnd, ChronoUnit.DAYS).toInt
     val listOfDays = ListBuffer[String]()
 
-    for (i <- 0 to daysBetween by -1) {
+    for (i <- 0 to daysBetween by 1) {
       listOfDays += (dateStart.plusDays(i)).toString
     }
 
@@ -210,24 +217,78 @@ object Utility {
   }
 
 
-  def getFirstPropCarAllRecords(propCarPairRDD:RDD[(String,PropCar)]):RDD[(String, PropCar)] = {
-    val firstRecordsRDD = propCarPairRDD.reduceByKey((c1,c2) => if (c1.load_time < c2.load_time) c1 else c2)
+
+
+  def getFirstRecordFromFilteredPropCarRDD(propCarPairRDD:RDD[(String,PropCar)], filterFunc: ((String, PropCar)) => Boolean = (t => true)):RDD[(String, PropCar)] = {
+    val propCarPairRDDFiltered = propCarPairRDD.filter(filterFunc)
+    val firstRecordsRDD = propCarPairRDDFiltered.reduceByKey((c1,c2) => if (c1.load_time < c2.load_time) c1 else c2)
+    //val firstRecordsRDD = propCarPairRDD.reduceByKey((c1,c2) => if (c1.load_time < c2.load_time) c1 else c2)
     firstRecordsRDD
   }
 
-  def getFirstPropCarRecord(propCarPairRDD:RDD[(String,PropCar)], url:String):PropCar = {
-    val firstPropCar = propCarPairRDD.lookup(url)(0)
-    firstPropCar
+  def getLastPropCarAll(propCarPairRDD: RDD[(String,PropCar)]) = {
+    "START REDUCING"
+    propCarPairRDD.map(t => println(t._1)).collect
+    val lastRecordsRDD = propCarPairRDD.reduceByKey((c1,c2) => if (c1.load_time > c2.load_time) c1 else c2)
+    "FINISH REDUCTNG"
+    lastRecordsRDD
+  }
+  //    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
+
+  def popTopPropCarRecord(propCarPairRDD:RDD[(String,PropCar)], url:String):PropCar = {
+    val topPropCar = propCarPairRDD.lookup(url)(0)
+    topPropCar
   }
 
-  def getBtlKfFirstLoad(firstPropCar:PropCar):BtlCarKf_FirstLoad ={
-    BtlCarKf_FirstLoad(firstPropCar.price, firstPropCar.load_date)
+  def getBtlKfFirstLoad(firstPropCar:PropCar):BtlCar ={
+    BtlCar(price_first = firstPropCar.price, load_date_first = firstPropCar.load_date)
   }
 
+  def getBtlKfLastLoad(lastPropCar:PropCar):BtlCar ={
+    BtlCar(url=lastPropCar.url,
+    finnkode=lastPropCar.finnkode,
+    title=lastPropCar.title,
+    location=lastPropCar.location,
+    year=lastPropCar.year,
+    km=lastPropCar.km,
+    price_last = lastPropCar.price,
+    sold = lastPropCar.sold,
+    deleted = lastPropCar.deleted,
+    load_date_latest = lastPropCar.load_date,
+    automatgir = hasAutomatgir(lastPropCar.properties)
+    )
+  }
 
+  def getBtlKfEventDates(propCarPairRDD:RDD[(String,PropCar)], url:String):BtlCar= {
+    val firstDeletedDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.deleted == true)), url)
+    val firstSoldDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.sold == true)), url)
+    BtlCar(sold_date = firstDeletedDatePropCar.load_date,
+      deleted_date = firstSoldDatePropCar.load_date)
+  }
 
+  def hasAutomatgir(properties:HashMap[String, String]):Boolean = {
+    properties.get("Girkasse") == "Automat"
+  }
 
+  def propCarToString(p:Product):String = {
+    p.productIterator.map {
+      case s: String => "\"" + s + "\""
+      case hm: HashMap[_, _] => "new HashMap[String,String](Map" + hm.map(t => "\"" + t._1 + "\"" + "->" + "\"" + t._2 + "\"") + ")" //cannot convert HashMap without first specifying a Scala map
+      case set: Set[_] => set.map(v => "\"" + v + "\"")
+      case l:Long => l.toString + "L"
+      case other => other.toString
+    }.mkString (p.productPrefix + "(", ", ", ")").replace("ArrayBuffer", "")
+  }
 
+  def propCarToStringAndKey(p:Product, url:String):(String,String) = {
+    (url, p.productIterator.map {
+      case s: String => "\"" + s + "\""
+      case hm: HashMap[_, _] => "new HashMap[String,String](Map" + hm.map(t => "\"" + t._1 + "\"" + "->" + "\"" + t._2 + "\"") + ")" //cannot convert HashMap without first specifying a Scala map
+      case set: Set[_] => set.map(v => "\"" + v + "\"")
+      case l:Long => l.toString + "L"
+      case other => other.toString
+    }.mkString (p.productPrefix + "(", ", ", ")").replace("ArrayBuffer", ""))
+  }
 
 
   def saveToCSV(rdd:RDD[org.apache.spark.sql.Row]) = {
@@ -239,6 +300,8 @@ object Utility {
     val EmptyMap = new java.util.HashMap[String,String](Map("NULL" -> "NULL"))
     val EmptyList = Set("NULL")
     val EmptyString = "NULL"
+    val EmptyInt = -1
+    val EmptyDate = "1900-01-01"
     val ETLSafetyMargin = 7 //days
     val ETLFirstLoadDate = LocalDate.of(2016,7,1)
   }

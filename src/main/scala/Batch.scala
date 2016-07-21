@@ -4,7 +4,9 @@ import org.apache.spark.util.SizeEstimator
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
 import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.sql.hive.HiveContext
+import org.apache.spark.storage.StorageLevel
 import com.datastax.spark.connector._
+import org.apache.spark.rdd.RDD
 
 
 
@@ -27,8 +29,8 @@ object Batch extends App {
   val dao = new DAO(hc, csc)
 
 
-  val deltaLoadDates:Seq[String] = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_daily"), LocalDate.now) //prop_car_daily is the target table, check last load date
 
+  val deltaLoadDates:Seq[String] = Utility.getDatesBetween(dao.getLatestLoadDate("prop_car_daily"), LocalDate.now) //prop_car_daily is the target table, check last load date
   //get all dates, not only delta
 //  val deltaLoadDates:Seq[String] = Utility.getDatesBetween(LocalDate.of(2016,7,15), LocalDate.now) //prop_car_daily is the target table, check last load date
 
@@ -39,10 +41,11 @@ object Batch extends App {
       where("load_date = ?", date) //.where("url = ?", url)
   }
 
+
   val rddDeltaLoadAcqHeaderLastLoadTimePerDay = sc.union(rddDeltaLoadAcqHeaderDatePartition).
     map(row => ((row.load_date, row.url), (AcqCarHeader(title = row.title, url = row.url, location = row.location, year = row.year, km = row.km, price = row.price, load_time = row.load_time, load_date = row.load_date)))).reduceByKey((x, y) => if (y.load_time > x.load_time) y else x)
 
-  rddDeltaLoadAcqHeaderLastLoadTimePerDay.cache
+  rddDeltaLoadAcqHeaderLastLoadTimePerDay.first
 
 
   val rddDeltaLoadAcqDetailsDatePartition = deltaLoadDates.map(date => sc.cassandraTable[AcqCarDetails]("finncars", "acq_car_details").
@@ -54,29 +57,83 @@ object Batch extends App {
     reduceByKey((x, y) => if (y.load_time > x.load_time) y else x)
 
   val propCarRDD = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay).map { row =>
-    PropCar(load_date = row._1._1, url = row._1._2, finnkode = Utility.parseFinnkode(row._1._2), title = row._2._1.title, location = row._2._1.location, year = Utility.parseYear(row._2._1.year), km = Utility.parseKM(row._2._1.km), price = dao.getLastPrice(row._2._1.price, row._2._1.url, row._2._1.load_date, row._2._1.load_time), properties = Utility.getMapFromJsonMap(row._2._2.properties), equipment = Utility.getSetFromJsonArray(row._2._2.equipment), information = Utility.getStringFromJsonString(row._2._2.information), sold = Utility.carMarkedAsSold(row._2._1.price), deleted = row._2._2.deleted, load_time = row._2._1.load_time)
+    (row._1._2, PropCar(load_date = row._1._1, url = row._1._2, finnkode = Utility.parseFinnkode(row._1._2), title = row._2._1.title, location = row._2._1.location, year = Utility.parseYear(row._2._1.year), km = Utility.parseKM(row._2._1.km), price = dao.getLastPrice(row._2._1.price, row._2._1.url, row._2._1.load_date, row._2._1.load_time), properties = Utility.getMapFromJsonMap(row._2._2.properties), equipment = Utility.getSetFromJsonArray(row._2._2.equipment), information = Utility.getStringFromJsonString(row._2._2.information), sold = Utility.carMarkedAsSold(row._2._1.price), deleted = row._2._2.deleted, load_time = row._2._1.load_time))
   }
+
+
+  //propCarRDD.take(10).map(row => println(Utility.propCarToString(row)))
+
   //NOTE! Number of records between PropCar and AcqHeader/AcqDetails may differ. E.g. when traversing Finn header pages, some cars will be bound to come two times when new cars are entered. Duplicate entries may in other words occur due to load_time being part of Acq* primary key.
   //propCarRDD.saveToCassandra("finncars", "prop_car_daily")
 
   /* Start populating BTL-layer */
+  //get the urls that are part of the delta load
   val btlDeltaUrlList = rddDeltaLoadAcqHeaderLastLoadTimePerDay.map(row => row._1._2).distinct.collect
 
+  //create propcar lookup table, limit by x number of days
   val propCarYearRDD = dao.getPropCarDateRange(LocalDate.now.plusDays(-365), LocalDate.now)
-  propCarYearRDD.cache()
-  println(propCarYearRDD.count)
-  val propCarFirstRecordsRDD = Utility.getFirstPropCarAllRecords(propCarYearRDD)
+  propCarYearRDD.persist(StorageLevel.MEMORY_AND_DISK)
+
+
+  /* START populate key figures in BTL based on the first record */
+  val propCarFirstRecordsRDD = Utility.getFirstRecordFromFilteredPropCarRDD(propCarYearRDD)
+  propCarFirstRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
+  propCarFirstRecordsRDD.first
+
+  val propCarLastRecordsRDD = Utility.getLastPropCarAll(propCarRDD)
+  propCarLastRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
+  propCarLastRecordsRDD.first //ERROR!
+  val btlCar = btlDeltaUrlList.map{url =>
+    val btlCarKf_FirstLoad:BtlCar = Utility.getBtlKfFirstLoad(Utility.popTopPropCarRecord(propCarFirstRecordsRDD ,url))
+    val btlCarKf_LastLoad:BtlCar = Utility.getBtlKfLastLoad(Utility.popTopPropCarRecord(propCarLastRecordsRDD,url))
+    val btlCarKf_EventDates:BtlCar = Utility.getBtlKfEventDates(propCarYearRDD, url)
+    BtlCar(url = url,
+      finnkode = btlCarKf_LastLoad.finnkode,
+      title = btlCarKf_LastLoad.title,
+      location = btlCarKf_LastLoad.location,
+      year = btlCarKf_LastLoad.year,
+      km = btlCarKf_LastLoad.km,
+      price_first = btlCarKf_FirstLoad.price_first,
+      price_last = btlCarKf_LastLoad.price_last,
+      price_delta = (btlCarKf_LastLoad.price_last - btlCarKf_FirstLoad.price_first),
+      sold = btlCarKf_LastLoad.sold,
+      sold_date = btlCarKf_EventDates.sold_date,
+      lead_time_sold = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_EventDates.sold_date),
+      deleted = btlCarKf_LastLoad.deleted,
+      deleted_date = btlCarKf_EventDates.deleted_date,
+      lead_time_deleted = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_EventDates.deleted_date),
+      load_date_first = btlCarKf_FirstLoad.load_date_first,
+      load_date_latest = btlCarKf_LastLoad.load_date_latest,
+      automatgir = btlCarKf_LastLoad.automatgir,
+      hengerfeste = btlCarKf_LastLoad.hengerfeste,
+      skinninterior = btlCarKf_LastLoad.skinninterior,
+      drivstoff = btlCarKf_LastLoad.drivstoff,
+      sylindervolum = btlCarKf_LastLoad.sylindervolum,
+      effekt = btlCarKf_LastLoad.effekt,
+      regnsensor = btlCarKf_LastLoad.regnsensor,
+      farge = btlCarKf_LastLoad.farge,
+      cruisekontroll = btlCarKf_LastLoad.cruisekontroll,
+      parkeringssensor = btlCarKf_LastLoad.parkeringssensor,
+      antall_eiere = btlCarKf_LastLoad.antall_eiere,
+      kommune = btlCarKf_LastLoad.kommune,
+      fylke = btlCarKf_LastLoad.fylke,
+      xenon = btlCarKf_LastLoad.xenon,
+      navigasjon = btlCarKf_LastLoad.navigasjon,
+      servicehefte = btlCarKf_LastLoad.servicehefte,
+      sportsseter = btlCarKf_LastLoad.sportsseter,
+      tilstandsrapport = btlCarKf_LastLoad.tilstandsrapport,
+      vekt = btlCarKf_LastLoad.vekt
+      )
+  }
+  btlCar
+  btlCar.take(10).foreach(println)
+
+
+  /* END populate key figures in BTL based on the first record */
+
 
   propCarFirstRecordsRDD.foreach(println)
-//
-//  btlDeltaUrlList.map{url =>
-//    Utility.getBtlKfFirstLoad()
-//  }
 
-
-  println(propCarYearRDD.count)
-//  propCarYearRDD.partitionBy(new HashPartitioner(4))
-//  propCarYearRDD.cache()
 
 
 }
