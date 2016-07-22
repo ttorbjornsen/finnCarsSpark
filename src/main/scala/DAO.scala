@@ -3,7 +3,9 @@
   */
 import java.time.{Instant, LocalDate, LocalTime}
 import java.util.HashMap
+import scala.concurrent.duration._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.JavaConversions._
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.cassandra.CassandraSQLContext
@@ -11,10 +13,12 @@ import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 import com.datastax.spark.connector._
 
 import scala.collection.mutable.ListBuffer
+import scala.concurrent.{Await, Promise}
+import scala.util.{Failure, Success}
 
-case class AcqCarHeader(url:String, load_date:String, load_time:Long, title:String, location:String, year: String, km: String, price: String)
-case class AcqCarDetails(url:String, load_date:String, load_time:Long, properties:String, equipment:String, information:String, deleted:Boolean)
-case class PropCar(url:String, load_date:String, finnkode:Int, title:String, location:String, year: Int, km: Int, price: Int, properties:HashMap[String,String], equipment:Set[String], information:String, sold:Boolean, deleted:Boolean, load_time:Long)
+case class AcqCarHeader(url:String = Utility.Constants.EmptyString, load_date:String = Utility.Constants.EmptyDate, load_time:Long= Utility.Constants.EmptyInt, title:String= Utility.Constants.EmptyString, location:String= Utility.Constants.EmptyString, year: String= Utility.Constants.EmptyString, km: String= Utility.Constants.EmptyString, price: String= Utility.Constants.EmptyString)
+case class AcqCarDetails(url:String= Utility.Constants.EmptyString, load_date:String= Utility.Constants.EmptyString, load_time:Long= Utility.Constants.EmptyInt, properties:String= Utility.Constants.EmptyString, equipment:String= Utility.Constants.EmptyString, information:String= Utility.Constants.EmptyString, deleted:Boolean=false)
+case class PropCar(url:String = Utility.Constants.EmptyString, load_date:String= Utility.Constants.EmptyDate, finnkode:Int= Utility.Constants.EmptyInt, title:String= Utility.Constants.EmptyString, location:String= Utility.Constants.EmptyString, year: Int= Utility.Constants.EmptyInt, km: Int= Utility.Constants.EmptyInt, price: Int= Utility.Constants.EmptyInt, properties:HashMap[String,String]= Utility.Constants.EmptyMap, equipment:Set[String]= Utility.Constants.EmptyList, information:String= Utility.Constants.EmptyString, sold:Boolean=false, deleted:Boolean=false, load_time:Long = Utility.Constants.EmptyInt)
 case class BtlCar(url:String = Utility.Constants.EmptyString,finnkode:Int = Utility.Constants.EmptyInt,title:String = Utility.Constants.EmptyString,location:String = Utility.Constants.EmptyString,year:Int = Utility.Constants.EmptyInt,km:Int = Utility.Constants.EmptyInt,price_first:Int = Utility.Constants.EmptyInt,price_last:Int = Utility.Constants.EmptyInt,price_delta:Int = Utility.Constants.EmptyInt,sold:Boolean = false,sold_date:String = Utility.Constants.EmptyDate,lead_time_sold:Int = Utility.Constants.EmptyInt,deleted:Boolean = false,deleted_date:String = Utility.Constants.EmptyDate,lead_time_deleted:Int = Utility.Constants.EmptyInt,load_date_first:String = Utility.Constants.EmptyDate,load_date_latest:String = Utility.Constants.EmptyDate,automatgir:Boolean = false,hengerfeste:Boolean = false,skinninterior:String = Utility.Constants.EmptyString,drivstoff:String = Utility.Constants.EmptyString,sylindervolum:Double = Utility.Constants.EmptyInt,effekt:Int = Utility.Constants.EmptyInt,regnsensor:Boolean = false,farge:String = Utility.Constants.EmptyString,cruisekontroll:Boolean = false,parkeringssensor:Boolean = false,antall_eiere:Int = Utility.Constants.EmptyInt,kommune:String = Utility.Constants.EmptyString,fylke:String = Utility.Constants.EmptyString,xenon:Boolean = false,navigasjon:Boolean = false,servicehefte:Boolean = false,sportsseter:String = Utility.Constants.EmptyString,tilstandsrapport:Boolean = false,vekt:Int = Utility.Constants.EmptyInt)
 
 
@@ -24,22 +28,22 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
   /* returns the current price, but if the car is marked as sold, then the price from before it was sold is retrieved.  */
   // tbd : derive load_date from load time and reduce number of parameters
   def getLastPrice(price:String, url:String, load_date:String, load_time:Long):Int = {
-
     if (price != "Solgt") {
       val parsedPrice = price.replace(",-","").replace(" ","").replace("\"", "")
       if (parsedPrice.forall(_.isDigit)) parsedPrice.toInt else -1 //price invalid
     } else {
+
       val prevAcqCarHeaderNotSold = _csc.sparkContext.cassandraTable[AcqCarHeader]("finncars", "acq_car_header").
         where("url = ?", url).
         where("load_time <= ?", new java.util.Date(load_time)).
         filter(row => row.price != "Solgt").
-        filter(row => row.load_date != load_date). //since we also want to find the price diff from yesterday
         collect
-
       if (prevAcqCarHeaderNotSold.length > 0) {
         val acqCarHeader = prevAcqCarHeaderNotSold.maxBy(_.load_time)
         val parsedPrice = acqCarHeader.price.replace(",-","").replace(" ","").replace("\"", "")
-        if (parsedPrice.forall(_.isDigit)) parsedPrice.toInt else -1 //price invalid
+        if (parsedPrice.forall(_.isDigit)) {
+          parsedPrice.toInt
+        } else -1 //price invalid
       } else -1 //previous car price not found
     }
   }
@@ -58,8 +62,6 @@ class DAO (_hc: SQLContext, _csc:CassandraSQLContext) extends java.io.Serializab
     }
     propCarPairRDD
   }
-
-
 
 
   def getLatestLoadDate(tableName:String):LocalDate = {

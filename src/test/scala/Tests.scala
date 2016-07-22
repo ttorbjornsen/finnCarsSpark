@@ -4,6 +4,7 @@ import org.mkuthan.spark.SparkSqlSpec
 import org.scalatest.{BeforeAndAfter, FunSpec, FunSuite, Matchers}
 import play.api.libs.json._
 import java.util.HashMap
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.io.Source
 import scala.collection.JavaConversions._
@@ -26,6 +27,8 @@ import scala.collection.JavaConversions._
 import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
+
+import scala.util.{Failure, Success}
 
 
 
@@ -175,6 +178,56 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       propCarRecord.load_date should equal ("2016-07-15")
       propCarRecord.url should equal ("http://m.finn.no/car/used/ad.html?finnkode=79021972")
     }
+
+    it("can get the last known price when car is marked as solgt") {
+      val rddDeltaLoadAcqHeaderDatePartition = sc.cassandraTable[AcqCarHeader]("finncars", "acq_car_header")//.where("load_date = ?", "2016-07-15")
+
+      val rddDeltaLoadAcqHeaderLastLoadTimePerDay = sc.union(rddDeltaLoadAcqHeaderDatePartition).
+        map(row => ((row.load_date, row.url), (AcqCarHeader(title = row.title, url = row.url, location = row.location, year = row.year, km = row.km, price = row.price, load_time = row.load_time, load_date = row.load_date)))).reduceByKey((x, y) => if (y.load_time > x.load_time) y else x)
+
+      rddDeltaLoadAcqHeaderLastLoadTimePerDay.cache
+      rddDeltaLoadAcqHeaderLastLoadTimePerDay.first
+      val rddDeltaLoadAcqDetailsDatePartition = sc.cassandraTable[AcqCarDetails]("finncars", "acq_car_details")//.where("load_date = ?", "2016-07-15")
+
+      val rddDeltaLoadAcqDetailsLastLoadTimePerDay = sc.union(rddDeltaLoadAcqDetailsDatePartition).map(row =>
+        ((row.load_date, row.url), (AcqCarDetails(url = row.url, load_date = row.load_date, load_time = row.load_time, properties = row.properties, equipment = row.equipment, information = row.information, deleted = row.deleted)))).
+        reduceByKey((x, y) => if (y.load_time > x.load_time) y else x)
+
+      rddDeltaLoadAcqDetailsLastLoadTimePerDay.cache
+      rddDeltaLoadAcqDetailsLastLoadTimePerDay.first
+      val propCarDeltaRDD = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay).map { row =>
+        (row._1._2, PropCar(load_date = row._1._1, url = row._1._2,price = getLastPrice(row._2._1.price, row._2._1.url, row._2._1.load_date, row._2._1.load_time) ))
+      }
+//      val propCarDeltaRDD = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay).map { row =>
+//        (row._1._2, PropCar(load_date = row._1._1, url = row._1._2,price = dao.getLastPriceAsync(row._2._1.price, row._2._1.url, row._2._1.load_date, row._2._1.load_time) ))
+//      }
+
+
+      propCarDeltaRDD.take(1000)
+
+    }
+
+
+
+
+    def getLastPrice(price:String, url:String, load_date:String, load_time:Long):Int = {
+      if (price != "Solgt") {
+        val parsedPrice = price.replace(",-","").replace(" ","").replace("\"", "")
+        if (parsedPrice.forall(_.isDigit)) parsedPrice.toInt else -1 //price invalid
+      } else {
+        //      println("get last price before acq car header lookup")
+        println(url + ";ATTEMPT")
+        val prevAcqCarHeaderNotSold = sc.cassandraTable[AcqCarHeader]("finncars", "acq_car_header").
+          where("url = ?", url).
+          where("load_time <= ?", new java.util.Date(load_time)).
+          filter(row => row.price != "Solgt").
+          collect
+        println(url + ";SUCCESS")
+        -2
+      }
+    }
+
+
 
     it("can get the date when a car was last loaded into Acq-layer") {
       val propCarLastRecords = Utility.getLastPropCarAll(testPropCarPairRDD)

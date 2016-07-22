@@ -226,11 +226,11 @@ object Utility {
     firstRecordsRDD
   }
 
-  def getLastPropCarAll(propCarPairRDD: RDD[(String,PropCar)]) = {
-    "START REDUCING"
-    propCarPairRDD.map(t => println(t._1)).collect
-    val lastRecordsRDD = propCarPairRDD.reduceByKey((c1,c2) => if (c1.load_time > c2.load_time) c1 else c2)
-    "FINISH REDUCTNG"
+  def getLastPropCarAll(propCarPairRDD: RDD[(String,PropCar)], filterFunc: ((String, PropCar)) => Boolean = (t => true)):RDD[(String, PropCar)] = {
+    val propCarPairRDDFiltered = propCarPairRDD.filter(filterFunc)
+    val lastRecordsRDD = propCarPairRDDFiltered.reduceByKey((c1,c2) => {
+      if (c1.load_time >= c2.load_time) c1 else c2
+    })
     lastRecordsRDD
   }
   //    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
@@ -295,6 +295,8 @@ object Utility {
     val temp = rdd.map(row => row.mkString(";"))
     temp.coalesce(1).saveAsTextFile("/home/torbjorn/projects/temp_spark_output/")
   }
+
+  def printCurrentMethodName() : Unit = println(Thread.currentThread.getStackTrace()(2).getMethodName)
 
   object Constants {
     val EmptyMap = new java.util.HashMap[String,String](Map("NULL" -> "NULL"))
