@@ -1,3 +1,5 @@
+import java.lang.IndexOutOfBoundsException
+
 import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.SparkConf
 import org.apache.spark.rdd.RDD
@@ -236,7 +238,9 @@ object Utility {
   //    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
 
   def popTopPropCarRecord(propCarPairRDD:RDD[(String,PropCar)], url:String):PropCar = {
-    val topPropCar = propCarPairRDD.lookup(url)(0)
+    val topPropCar = if (propCarPairRDD.count > 0) {
+      propCarPairRDD.lookup(url)(0)
+    } else PropCar()
     topPropCar
   }
 
@@ -257,6 +261,7 @@ object Utility {
     load_date_latest = lastPropCar.load_date,
     automatgir = hasAutomatgir(lastPropCar.properties)
     )
+
   }
 
   def getBtlKfEventDates(propCarPairRDD:RDD[(String,PropCar)], url:String):BtlCar= {

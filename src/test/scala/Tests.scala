@@ -120,7 +120,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
    }
 
   describe("application") {
-    it("should be able to extract and correctly parse details page") {
+    ignore("should be able to extract and correctly parse details page") {
       val url = "http://m.finn.no/car/used/ad.html?finnkode=77386827" //temp
       val carDetails: Map[String, JsValue] = Utility.scrapeCarDetails(url)
 
@@ -152,7 +152,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       parsedPropertiesMap should contain value("Automat")
     }
 
-    it("can parse and subset json car equipment to scala list") {
+    ignore("can parse and subset json car equipment to scala list") {
       val jsonEquipmentArray = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
       val parsedEquipmentList = Utility.getSetFromJsonArray(jsonEquipmentArray, Seq("Aluminiumsfelger"))
       parsedEquipmentList.size should equal(2)
@@ -165,21 +165,21 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       propCar.information should equal ("Fin bil. NEDSATT PRIS")
     }
 
-    it("can return a sequence of dates between two dates, used for querying C*") {
+    ignore("can return a sequence of dates between two dates, used for querying C*") {
       val startDate = LocalDate.of(2016,12,31)
       val endDate = LocalDate.of(2017,1,4)
       val dates:Seq[String] = Utility.getDatesBetween(startDate, endDate)
       dates.length should equal(5)
     }
 
-    it("can get the date when a car was first loaded into Acq-layer") {
+    ignore("can get the date when a car was first loaded into Acq-layer") {
       val propCarFirstRecords = Utility.getFirstRecordFromFilteredPropCarRDD(testPropCarPairRDD)
       val propCarRecord = Utility.popTopPropCarRecord(propCarFirstRecords,"http://m.finn.no/car/used/ad.html?finnkode=79021972")
       propCarRecord.load_date should equal ("2016-07-15")
       propCarRecord.url should equal ("http://m.finn.no/car/used/ad.html?finnkode=79021972")
     }
 
-    it("can get the last known price when car is marked as solgt") {
+    ignore("can get the last known price when car is marked as solgt") {
       val rddDeltaLoadAcqHeaderDatePartition = sc.cassandraTable[AcqCarHeader]("finncars", "acq_car_header")//.where("load_date = ?", "2016-07-15")
 
       val rddDeltaLoadAcqHeaderLastLoadTimePerDay = sc.union(rddDeltaLoadAcqHeaderDatePartition).
@@ -229,13 +229,13 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
 
 
 
-    it("can get the date when a car was last loaded into Acq-layer") {
+    ignore("can get the date when a car was last loaded into Acq-layer") {
       val propCarLastRecords = Utility.getLastPropCarAll(testPropCarPairRDD)
       val propCarRecord = Utility.popTopPropCarRecord(propCarLastRecords,"http://m.finn.no/car/used/ad.html?finnkode=79021972")
       propCarRecord.load_date should equal ("2016-07-18")
       propCarRecord.url should equal ("http://m.finn.no/car/used/ad.html?finnkode=79021972")
     }
-    it("can identify automatgir") {
+    ignore("can identify automatgir") {
       var propCarRecord = Utility.popTopPropCarRecord(testPropCarPairRDD,"http://m.finn.no/car/used/ad.html?finnkode=79021972")
       var automatgir = Utility.hasAutomatgir(propCarRecord.properties)
       automatgir should equal(true)
@@ -244,7 +244,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       automatgir = Utility.hasAutomatgir(propCarRecord.properties)
       automatgir should equal(false)
     }
-    it("can calculate number of days between two date strings") {
+    ignore("can calculate number of days between two date strings") {
       val startDate = "2006-12-31"
       val endDate = "2007-01-04"
       val numberOfDays = Utility.getDaysBetweenStringDates(startDate, endDate)
@@ -258,7 +258,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
   describe("JSON to Cassandra") {
     //subject of the test
 
-    it("can convert JSON hdr file to list of AcqCarHeaders") {
+    ignore("can convert JSON hdr file to list of AcqCarHeaders") {
       val sourceJson = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\carsFinn.json")
       val jsonCarHdr: JsValue = Json.parse(sourceJson.mkString)
       val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size
@@ -267,7 +267,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       acqCarHeaderList.length should equal (numOfCars)
     }
 
-    it("can convert JSON hdr file to list of AcqCarDetails") {
+    ignore("can convert JSON hdr file to list of AcqCarDetails") {
       val sourceJson = Source.fromFile("C:\\Users\\torbjorn.torbjornsen\\IdeaProjects\\finnCarsSpark\\files\\carsFinnLimited.json")
       val jsonCarHdr: JsValue = Json.parse(sourceJson.mkString)
       val numOfCars = jsonCarHdr.\\("group")(0).as[JsArray].value.size

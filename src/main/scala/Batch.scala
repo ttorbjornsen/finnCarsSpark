@@ -52,11 +52,12 @@ object Batch extends App {
     ((row.load_date, row.url), (AcqCarDetails(url = row.url, load_date = row.load_date, load_time = row.load_time, properties = row.properties, equipment = row.equipment, information = row.information, deleted = row.deleted)))).
     reduceByKey((x, y) => if (y.load_time > x.load_time) y else x)
 
-  val propCarDeltaJoin:Array[((String, String), (AcqCarHeader, AcqCarDetails))] = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay).collect
+  //val propCarDeltaJoin:Array[((String, String), (AcqCarHeader, AcqCarDetails))] = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay).collect
   //NOTE COALESCE(3), if more partitions there will be a deadlock. Possible to reengineer code?
   val propCarDeltaRDD = rddDeltaLoadAcqHeaderLastLoadTimePerDay.join(rddDeltaLoadAcqDetailsLastLoadTimePerDay).coalesce(3).map { row =>
     (row._1._2, PropCar(load_date = row._1._1, url = row._1._2, finnkode = Utility.parseFinnkode(row._1._2), title = row._2._1.title, location = row._2._1.location, year = Utility.parseYear(row._2._1.year), km = Utility.parseKM(row._2._1.km), price = dao.getLastPrice(row._2._1.price, row._2._1.url, row._2._1.load_date, row._2._1.load_time), properties = Utility.getMapFromJsonMap(row._2._2.properties), equipment = Utility.getSetFromJsonArray(row._2._2.equipment), information = Utility.getStringFromJsonString(row._2._2.information), sold = Utility.carMarkedAsSold(row._2._1.price), deleted = row._2._2.deleted, load_time = row._2._1.load_time))
   }
+  propCarDeltaRDD.persist(StorageLevel.MEMORY_AND_DISK)
 
   //NOTE! Number of records between PropCar and AcqHeader/AcqDetails may differ. E.g. when traversing Finn header pages, some cars will be bound to come two times when new cars are entered. Duplicate entries may in other words occur due to load_time being part of Acq* primary key.
   propCarDeltaRDD.map(t => t._2).saveToCassandra("finncars", "prop_car_daily")
@@ -71,7 +72,9 @@ object Batch extends App {
 
   /* START populate key figures in BTL based on the first record */
   val propCarFirstRecordsRDD = Utility.getFirstRecordFromFilteredPropCarRDD(propCarYearRDD)
+  propCarFirstRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
   val propCarLastRecordsRDD = Utility.getLastPropCarAll(propCarDeltaRDD)
+  propCarLastRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
 
   val btlCar = btlDeltaUrlList.map{url =>
     val btlCarKf_FirstLoad:BtlCar = Utility.getBtlKfFirstLoad(Utility.popTopPropCarRecord(propCarFirstRecordsRDD ,url))
