@@ -307,13 +307,16 @@ object Utility {
   }
 
   def getSylindervolum(properties:HashMap[String, String]):Double= {
-    val text = properties.getOrElse("Sylindervolum", Utility.Constants.EmptyString)
-    println(text)
-    text.replaceAll("[A-Za-z\\s ]", "").replace(",",".").toDouble
+    val text = properties.getOrElse("Sylindervolum", Utility.Constants.EmptyInt.toString)
+    val parsedText = text.replaceAll("[A-Za-z\\s ]", "").replace(",",".")
+    parseDouble(parsedText) match {
+      case Some(d) => d
+      case None => Utility.Constants.EmptyInt
+    }
   }
 
   def getEffekt(properties:HashMap[String, String]):Int= {
-    val text = properties.getOrElse("Effekt", Utility.Constants.EmptyString)
+    val text = properties.getOrElse("Effekt", Utility.Constants.EmptyInt.toString)
     text.replaceAll("[A-Za-z\\s]", "").toInt
   }
 
@@ -397,6 +400,11 @@ object Utility {
     val temp = rdd.map(row => row.mkString(";"))
     temp.coalesce(1).saveAsTextFile("/home/torbjorn/projects/temp_spark_output/")
   }
+
+  def parseDouble(s:String): Option[Double] = {
+    Try {s.toDouble}.toOption
+  }
+
 
   def printCurrentMethodName() : Unit = println(Thread.currentThread.getStackTrace()(2).getMethodName)
 
