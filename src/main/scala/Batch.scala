@@ -80,7 +80,6 @@ object Batch extends App {
   propCarLastRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
 
 
-
   val btlCar = btlDeltaUrlList.map{url =>
     val btlCarKf_FirstLoad:BtlCar = Utility.getBtlKfFirstLoad(Utility.popTopPropCarRecord(propCarFirstRecordsRDD ,url))
     val btlCarKf_LastLoad:BtlCar = Utility.getBtlKfLastLoad(Utility.popTopPropCarRecord(propCarLastRecordsRDD,url))
@@ -114,7 +113,7 @@ object Batch extends App {
       regnsensor = btlCarKf_LastLoad.regnsensor,
       farge = btlCarKf_LastLoad.farge,
       cruisekontroll = btlCarKf_LastLoad.cruisekontroll,
-      parkeringssensor = btlCarKf_LastLoad.parkeringssensor,
+      parkeringsensor = btlCarKf_LastLoad.parkeringsensor,
       antall_eiere = btlCarKf_LastLoad.antall_eiere,
       kommune = btlCarKf_LastLoad.kommune,
       fylke = btlCarKf_LastLoad.fylke,
@@ -127,8 +126,7 @@ object Batch extends App {
       )
   }
 
-  btlCar.take(10).foreach(println)
-
+  sc.parallelize(btlCar).saveToCassandra("finncars", "btl_car")
 
   /* END populate key figures in BTL based on the first record */
 

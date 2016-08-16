@@ -4,8 +4,8 @@ import org.mkuthan.spark.SparkSqlSpec
 import org.scalatest.{BeforeAndAfter, FunSpec, FunSuite, Matchers}
 import play.api.libs.json._
 import java.util.HashMap
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 import scala.collection.JavaConversions._
 import com.datastax.spark.connector._
@@ -27,6 +27,7 @@ import scala.collection.JavaConversions._
 import com.datastax.spark.connector.cql.CassandraConnector
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
+import org.apache.spark.storage.StorageLevel
 
 import scala.util.{Failure, Success}
 
@@ -105,9 +106,9 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
     //REPL: USE val
     testPropCarPairRDD = sc.parallelize(Seq(
       ("http://m.finn.no/car/used/ad.html?finnkode=79166971",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79166971", "2016-07-18", 79166971, "Volkswagen Passat 1,6 Comfortline", "Stjørdal", 2000, 191200, 27538, new HashMap[String,String](Map("Effekt"->"101 Hk", "Km.stand"->"191 200 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Manuell", "Antall dører"->"5", "Hjuldrift"->"Forhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"BP52393", "CO2 utslipp"->"202 g/km", "Bilen står i"->"Norge", "Årsmodell"->"2000", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 282 kg", "1. gang registrert"->"25.07.2000", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Sølv", "Antall eiere"->"4", "Sylindervolum"->"1,6 l")), Set("MissingValues"), "Jeg selger denne bilen, grunnen til at jeg skal kjøpe stor bil, EU godkjent til 2018 april. Har ikke noen problem. spør mer informasjon om bilen.", false, false, 1468837502495L)),
-      ("http://m.finn.no/car/used/ad.html?finnkode=79021972",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79021972", "2016-07-16", 79021972, "Volvo 940 aut", "Svene", 1995, 395352, 16538, new HashMap[String,String](Map("Effekt"->"135 Hk", "Km.stand"->"395 352 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Automat", "Antall dører"->"5", "Hjuldrift"->"Bakhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"DH52357", "Bilen står i"->"Norge", "Årsmodell"->"1995", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 440 kg", "1. gang registrert"->"04.05.1995", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Blå", "Antall eiere"->"3", "Sylindervolum"->"2,3 l")), Set("MissingValues"), "Dette er en grei bil, ikke strøken. Bilen er brukt som ekstra bil under rep. av annen bil. Bremse skiver og klosser er byttet. Eksos anlegg er nytt 3 deler. Motor olje og filter er bytte. Lakk rust er det, kanaler ser OK ut. Men ingen bemerkning på EU kontroll, godkjent til november 2017", false, false, 1468660323000L)),
-      ("http://m.finn.no/car/used/ad.html?finnkode=79021972",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79021972", "2016-07-15", 79021972, "Volvo 940 aut", "Svene", 1995, 395352, 16538, new HashMap[String,String](Map("Effekt"->"135 Hk", "Km.stand"->"395 352 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Automat", "Antall dører"->"5", "Hjuldrift"->"Bakhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"DH52357", "Bilen står i"->"Norge", "Årsmodell"->"1995", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 440 kg", "1. gang registrert"->"04.05.1995", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Blå", "Antall eiere"->"3", "Sylindervolum"->"2,3 l")), Set("MissingValues"), "Dette er en grei bil, ikke strøken. Bilen er brukt som ekstra bil under rep. av annen bil. Bremse skiver og klosser er byttet. Eksos anlegg er nytt 3 deler. Motor olje og filter er bytte. Lakk rust er det, kanaler ser OK ut. Men ingen bemerkning på EU kontroll, godkjent til november 2017", false, false, 1468569871692L)),
-      ("http://m.finn.no/car/used/ad.html?finnkode=79021972",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79021972", "2016-07-18", 79021972, "Volvo 940 aut", "Svene", 1995, 395352, 16538, new HashMap[String,String](Map("Effekt"->"135 Hk", "Km.stand"->"395 352 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Automat", "Antall dører"->"5", "Hjuldrift"->"Bakhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"DH52357", "Bilen står i"->"Norge", "Årsmodell"->"1995", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 440 kg", "1. gang registrert"->"04.05.1995", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Blå", "Antall eiere"->"3", "Sylindervolum"->"2,3 l")), Set("MissingValues"), "Dette er en grei bil, ikke strøken. Bilen er brukt som ekstra bil under rep. av annen bil. Bremse skiver og klosser er byttet. Eksos anlegg er nytt 3 deler. Motor olje og filter er bytte. Lakk rust er det, kanaler ser OK ut. Men ingen bemerkning på EU kontroll, godkjent til november 2017", false, false, 1468830669000L)),
+      ("http://m.finn.no/car/used/ad.html?finnkode=79021972",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79021972", "2016-07-16", 79021972, "Volvo 940 aut", "Svene", 1995, 395352, 16538, new HashMap[String,String](Map("Effekt"->"135 Hk", "Km.stand"->"395 352 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Automat", "Antall dører"->"5", "Hjuldrift"->"Bakhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"DH52357", "Bilen står i"->"Norge", "Årsmodell"->"1995", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 440 kg", "1. gang registrert"->"04.05.1995", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Blå", "Antall eiere"->"3", "Sylindervolum"->"2,3 l")), Set("Lettmet. felg sommer", "Sentrallås", "Sideairbager", "Cruisekontroll", "Kjørecomputer", "Antispinn", "Airbag foran", "Farget glass", "Hengerfeste", "El.vinduer", "Startsperre", "Radio/CD", "Klimaanlegg", "Servostyring", "Oppvarmede seter", "Elektriske speil", "Alarm", "Metallic lakk", "Elektrisk sete m. memory", "Bagasjeromstrekk", "Stålbjelker", "Midtarmlene", "Air Condition", "ABS-bremser", "Multifunksjonsratt", "Skinninteriør"), "Dette er en grei bil, ikke strøken. Bilen er brukt som ekstra bil under rep. av annen bil. Bremse skiver og klosser er byttet. Eksos anlegg er nytt 3 deler. Motor olje og filter er bytte. Lakk rust er det, kanaler ser OK ut. Men ingen bemerkning på EU kontroll, godkjent til november 2017", true, false, 1468660323000L)),
+      ("http://m.finn.no/car/used/ad.html?finnkode=79021972",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79021972", "2016-07-15", 79021972, "Volvo 940 aut", "Svene", 1995, 395352, 23538, new HashMap[String,String](Map("Effekt"->"135 Hk", "Km.stand"->"395 352 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Automat", "Antall dører"->"5", "Hjuldrift"->"Bakhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"DH52357", "Bilen står i"->"Norge", "Årsmodell"->"1995", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 440 kg", "1. gang registrert"->"04.05.1995", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Blå", "Antall eiere"->"3", "Sylindervolum"->"2,3 l")), Set("Lettmet. felg sommer", "Sentrallås", "Sideairbager", "Cruisekontroll", "Kjørecomputer", "Antispinn", "Airbag foran", "Farget glass", "Hengerfeste", "El.vinduer", "Startsperre", "Radio/CD", "Klimaanlegg", "Servostyring", "Oppvarmede seter", "Elektriske speil", "Alarm", "Metallic lakk", "Elektrisk sete m. memory", "Bagasjeromstrekk", "Stålbjelker", "Midtarmlene", "Air Condition", "ABS-bremser", "Multifunksjonsratt", "Skinninteriør"), "Dette er en grei bil, ikke strøken. Bilen er brukt som ekstra bil under rep. av annen bil. Bremse skiver og klosser er byttet. Eksos anlegg er nytt 3 deler. Motor olje og filter er bytte. Lakk rust er det, kanaler ser OK ut. Men ingen bemerkning på EU kontroll, godkjent til november 2017", false, false, 1468569871692L)),
+      ("http://m.finn.no/car/used/ad.html?finnkode=79021972",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79021972", "2016-07-18", 79021972, "Volvo 940 aut", "Svene", 1995, 395352, 16538, new HashMap[String,String](Map("Effekt"->"135 Hk", "Km.stand"->"395 352 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Automat", "Antall dører"->"5", "Hjuldrift"->"Bakhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"DH52357", "Bilen står i"->"Norge", "Årsmodell"->"1995", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 440 kg", "1. gang registrert"->"04.05.1995", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Blå", "Antall eiere"->"3", "Sylindervolum"->"2,3 l")), Set("Lettmet. felg sommer", "Sentrallås", "Sideairbager", "Cruisekontroll", "Kjørecomputer", "Antispinn", "Airbag foran", "Farget glass", "Hengerfeste", "El.vinduer", "Startsperre", "Radio/CD", "Klimaanlegg", "Servostyring", "Oppvarmede seter", "Elektriske speil", "Alarm", "Metallic lakk", "Elektrisk sete m. memory", "Bagasjeromstrekk", "Stålbjelker", "Midtarmlene", "Air Condition", "ABS-bremser", "Multifunksjonsratt", "Skinninteriør"), "Dette er en grei bil, ikke strøken. Bilen er brukt som ekstra bil under rep. av annen bil. Bremse skiver og klosser er byttet. Eksos anlegg er nytt 3 deler. Motor olje og filter er bytte. Lakk rust er det, kanaler ser OK ut. Men ingen bemerkning på EU kontroll, godkjent til november 2017", true, false, 1468830669000L)),
       ("http://m.finn.no/car/used/ad.html?finnkode=79030138",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79030138", "2016-07-18", 79030138, "Saab 9-5 2.0TURBO, AUTOMAT, CRUISE,F1 GIRING", "Kolbotn", 2003, 305000, 23038, new HashMap[String,String](Map("Effekt"->"150 Hk", "Km.stand"->"305 000 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Automat", "Hjuldrift"->"Forhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"ad95736", "CO2 utslipp"->"251 g/km", "Bilen står i"->"Norge", "Årsmodell"->"2003", "Karosseri"->"Stasjonsvogn", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Sølv", "Sylindervolum"->"2 l")), Set("Lettmet. felg sommer", "Sentrallås", "Sideairbager", "Cruisekontroll", "Kjørecomputer", "Antispinn", "Airbag foran", "Farget glass", "Hengerfeste", "El.vinduer", "Startsperre", "Radio/CD", "Klimaanlegg", "Servostyring", "Oppvarmede seter", "Elektriske speil", "Alarm", "Metallic lakk", "Elektrisk sete m. memory", "Bagasjeromstrekk", "Stålbjelker", "Midtarmlene", "Air Condition", "ABS-bremser", "Multifunksjonsratt", "Skinninteriør"), "EN MEGET POPULÆR, VELUTSTYRT, EKSKLUSIV, SIKKER OG ROMSLIG BIL. Bilen fremstår som meget hel og fin. Bruker lite bensin, er veldig driftsikker bil og veldig økonomisk da den er kun er 2.0 liter bensin. Dette er en meget velutstyrt utgave av Saab 95 med: Automat gir, F1 giring på ratt, Cruise controll, Elekrisk memory sete, Skinn, Klima osv++ Utrolig behagelig bil å kjøre med stor bagasjeplass. Utrolig gode og behagelige skinn seter. Under panseret finner man en 2.0 liter bensin motor med turbo som yter hele 150 hester. Motor og girkasse jobber bra sammen. EU godkjent til 30 JUNI 2017. Ring 47442525 for mer info", false, false, 1468837517823L)),
       ("http://m.finn.no/car/used/ad.html?finnkode=79052280",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79052280", "2016-07-15", 79052280, "Volvo V70", "Kongsvinger", 2001, 279000, 31538, new HashMap[String,String](Map("Effekt"->"170 Hk", "Km.stand"->"279 000 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Manuell", "Hjuldrift"->"Forhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"DK73754", "Bilen står i"->"Norge", "Årsmodell"->"2001", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 479 kg", "1. gang registrert"->"05.02.2004", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Grønn", "Antall eiere"->"2", "Sylindervolum"->"2,4 l")), Set("Sentrallås", "Cruisekontroll", "Lettmet. felg vinter", "Airbag foran", "Sommerhjul", "Hengerfeste", "El.vinduer", "Radio/CD", "Klimaanlegg", "Servostyring", "Oppvarmede seter", "Elektriske speil", "Alarm", "Vinterhjul", "Motorvarmer", "Air Condition", "ABS-bremser"), "meget fin bil å kjøre ingen rust fin bade innvendig og utvendig NYLIG EU GODKJENT Neste frist for godkjent EU-kontroll 30.04.2018", false, false, 1468569503691L)),
       ("http://m.finn.no/car/used/ad.html?finnkode=79154538",PropCar("http://m.finn.no/car/used/ad.html?finnkode=79154538", "2016-07-18", 79154538, "Ford Focus 1,6 Comfort", "Løken", 2002, 265913, 15528, new HashMap[String,String](Map("Effekt"->"101 Hk", "Km.stand"->"265 913 km", "Salgsform"->"Bruktbil til salgs", "Girkasse"->"Manuell", "Antall dører"->"5", "Hjuldrift"->"Forhjulsdrift", "Avgiftsklasse"->"Personbil", "Reg.nr."->"PP43120", "CO2 utslipp"->"165 g/km", "Bilen står i"->"Norge", "Årsmodell"->"2002", "Karosseri"->"Stasjonsvogn", "Vekt"->"1 105 kg", "1. gang registrert"->"04.03.2002", "Drivstoff"->"Bensin", "Antall seter"->"5", "Farge"->"Svart", "Antall eiere"->"5", "Sylindervolum"->"1,6 l")), Set("MissingValues"), "Skiftet begge hjul lager foran. Topp deksel pakning og ABS føler. I meget bra stand. Noe overflaterust er pusset og lakkert over hjemme. Bra og billig bruksbil. Pris kan diskuteres ved rask handel.", false, false, 1468837517501L)),
@@ -140,6 +141,77 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       carDetails("equipment").as[List[String]] should contain ("NULL")
       carDetails("information").as[String] should include ("NULL")
       carDetails("deleted").as[Boolean] should equal(true)
+    }
+
+    it ("can parse propcar record correctly into btlcar record (i.e. derive extra properties") {
+      val urlList = List("http://m.finn.no/car/used/ad.html?finnkode=79021972")
+
+      val propCarYearDeletedCarsMap = sc.broadcast(Utility.getFirstRecordFromFilteredPropCarRDD(testPropCarPairRDD , (t => t._2.deleted == true)).collectAsMap)
+      val propCarYearSoldCarsMap = sc.broadcast(Utility.getFirstRecordFromFilteredPropCarRDD(testPropCarPairRDD, (t => t._2.sold == true)).collectAsMap)
+
+      /* START populate key figures in BTL based on the first record */
+      val propCarFirstRecordsRDD = Utility.getFirstRecordFromFilteredPropCarRDD(testPropCarPairRDD)
+      val propCarLastRecordsRDD = Utility.getLastPropCarAll(testPropCarPairRDD)
+
+
+
+      val btlCar = urlList.map{url =>
+        val btlCarKf_FirstLoad:BtlCar = Utility.getBtlKfFirstLoad(Utility.popTopPropCarRecord(propCarFirstRecordsRDD,url))
+        val btlCarKf_LastLoad:BtlCar = Utility.getBtlKfLastLoad(Utility.popTopPropCarRecord(propCarLastRecordsRDD,url))
+        val btlCarKf_sold_date = propCarYearSoldCarsMap.value.getOrElse(url, PropCar()).load_date
+        val btlCarKf_deleted_date = propCarYearDeletedCarsMap.value.getOrElse(url, PropCar()).load_date
+
+        BtlCar(url = url,
+          finnkode = btlCarKf_LastLoad.finnkode,
+          title = btlCarKf_LastLoad.title,
+          location = btlCarKf_LastLoad.location,
+          year = btlCarKf_LastLoad.year,
+          km = btlCarKf_LastLoad.km,
+          price_first = btlCarKf_FirstLoad.price_first,
+          price_last = btlCarKf_LastLoad.price_last,
+          price_delta = (btlCarKf_LastLoad.price_last - btlCarKf_FirstLoad.price_first),
+          sold = btlCarKf_LastLoad.sold,
+          sold_date = btlCarKf_sold_date,
+          lead_time_sold = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_sold_date),
+          deleted = btlCarKf_LastLoad.deleted,
+          deleted_date = btlCarKf_deleted_date,
+          lead_time_deleted = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_deleted_date),
+          load_date_first = btlCarKf_FirstLoad.load_date_first,
+          load_date_latest = btlCarKf_LastLoad.load_date_latest,
+          automatgir = btlCarKf_LastLoad.automatgir,
+          hengerfeste = btlCarKf_LastLoad.hengerfeste,
+          skinninterior = btlCarKf_LastLoad.skinninterior,
+          drivstoff = btlCarKf_LastLoad.drivstoff,
+          sylindervolum = btlCarKf_LastLoad.sylindervolum,
+          effekt = btlCarKf_LastLoad.effekt,
+          regnsensor = btlCarKf_LastLoad.regnsensor,
+          farge = btlCarKf_LastLoad.farge,
+          cruisekontroll = btlCarKf_LastLoad.cruisekontroll,
+          parkeringsensor = btlCarKf_LastLoad.parkeringsensor,
+          antall_eiere = btlCarKf_LastLoad.antall_eiere,
+          kommune = btlCarKf_LastLoad.kommune,
+          fylke = btlCarKf_LastLoad.fylke,
+          xenon = btlCarKf_LastLoad.xenon,
+          navigasjon = btlCarKf_LastLoad.navigasjon,
+          servicehefte = btlCarKf_LastLoad.servicehefte,
+          sportsseter = btlCarKf_LastLoad.sportsseter,
+          tilstandsrapport = btlCarKf_LastLoad.tilstandsrapport,
+          vekt = btlCarKf_LastLoad.vekt
+        )
+      }
+
+      //check first car
+      val btlCarTest1 = btlCar(0)
+      btlCarTest1.sold_date should equal ("2016-07-16")
+      btlCarTest1.hengerfeste should equal (true)
+      btlCarTest1.sylindervolum should equal (2.3)
+      btlCarTest1.vekt should equal (1440)
+      btlCarTest1.effekt should equal (135)
+      btlCarTest1.load_date_first should equal ("2016-07-15")
+      btlCarTest1.price_first should equal (23538)
+      btlCarTest1.price_last should equal (16538)
+      btlCarTest1.antall_eiere should equal (3)
+      btlCarTest1.skinninterior should equal ("Skinnseter")
     }
 
      it("can parse and subset json car properties into scala map") {

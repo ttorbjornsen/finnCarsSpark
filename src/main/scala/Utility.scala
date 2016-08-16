@@ -253,31 +253,124 @@ object Utility {
   }
 
   def getBtlKfLastLoad(lastPropCar:PropCar):BtlCar ={
-    BtlCar(url=lastPropCar.url,
-    finnkode=lastPropCar.finnkode,
-    title=lastPropCar.title,
-    location=lastPropCar.location,
-    year=lastPropCar.year,
-    km=lastPropCar.km,
-    price_last = lastPropCar.price,
-    sold = lastPropCar.sold,
-    deleted = lastPropCar.deleted,
-    load_date_latest = lastPropCar.load_date,
-    automatgir = hasAutomatgir(lastPropCar.properties)
+      BtlCar(url=lastPropCar.url,
+      finnkode=lastPropCar.finnkode,
+      title=lastPropCar.title,
+      location=lastPropCar.location,
+      year=lastPropCar.year,
+      km=lastPropCar.km,
+      price_last = lastPropCar.price,
+      sold = lastPropCar.sold,
+      deleted = lastPropCar.deleted,
+      load_date_latest = lastPropCar.load_date,
+      automatgir = hasAutomatgir(lastPropCar.properties),
+      hengerfeste = hasHengerfeste(lastPropCar.equipment),
+      skinninterior = getSkinninterior(lastPropCar.equipment),
+      drivstoff = getDrivstoff(lastPropCar.properties),
+      sylindervolum = getSylindervolum(lastPropCar.properties),
+      effekt = getEffekt(lastPropCar.properties),
+      regnsensor = hasRegnsensor(lastPropCar.equipment),
+      farge = getFarge(lastPropCar.properties),
+      cruisekontroll = hasCruisekontroll(lastPropCar.equipment),
+      parkeringsensor = hasParkeringsensor(lastPropCar.equipment),
+      antall_eiere = getAntallEiere(lastPropCar.properties),
+      kommune = getKommune(lastPropCar.location),
+      fylke = getFylke(lastPropCar.location),
+      xenon = hasXenon(lastPropCar.equipment),
+      navigasjon = hasNavigasjon(lastPropCar.equipment),
+      servicehefte = hasServicehefte(lastPropCar.information),
+      sportsseter = hasSportsseter(lastPropCar.equipment),
+      tilstandsrapport = hasTilstandsrapport(lastPropCar.properties),
+      vekt = getVekt(lastPropCar.properties)
     )
-
   }
 
-//  def getBtlKfEventDates(propCarPairRDD:RDD[(String,PropCar)], url:String):BtlCar= {
-//    val firstDeletedDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.deleted == true)), url)
-//    val firstSoldDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.sold == true)), url)
-//    BtlCar(sold_date = firstDeletedDatePropCar.load_date,
-//      deleted_date = firstSoldDatePropCar.load_date)
-//  }
 
   def hasAutomatgir(properties:HashMap[String, String]):Boolean = {
     properties.get("Girkasse") == "Automat"
   }
+
+  def hasHengerfeste(equipment:Set[String]):Boolean = {
+    equipment.contains("Hengerfeste") || equipment.contains("Tilhengarfeste") || equipment.contains("Tilhengerfeste")
+  }
+
+  def getSkinninterior(equipment:Set[String]):String = {
+    if (equipment.contains("Skinninteriør") || equipment.contains("Skinnseter")) {
+      "Skinnseter"
+    } else if (equipment.contains("Delskinn")) {
+      "Delskinn"
+    } else "Tøyseter"
+  }
+
+  def getDrivstoff(properties:HashMap[String, String]):String= {
+    properties.get("Drivstoff")
+  }
+
+  def getSylindervolum(properties:HashMap[String, String]):Double= {
+    val text = properties.getOrElse("Sylindervolum", Utility.Constants.EmptyString)
+    println(text)
+    text.replaceAll("[A-Za-z\\s ]", "").replace(",",".").toDouble
+  }
+
+  def getEffekt(properties:HashMap[String, String]):Int= {
+    val text = properties.getOrElse("Effekt", Utility.Constants.EmptyString)
+    text.replaceAll("[A-Za-z\\s]", "").toInt
+  }
+
+  def hasRegnsensor(equipment:Set[String]):Boolean = {
+    equipment.contains("Regnsensor")
+  }
+
+  def getFarge(properties:HashMap[String, String]):String= {
+    properties.get("Farge")
+  }
+
+  def hasCruisekontroll(equipment:Set[String]):Boolean = {
+    equipment.contains("Cruisekontroll")
+  }
+
+  def hasParkeringsensor(equipment:Set[String]):Boolean = {
+    equipment.contains("Parkeringsensor") || equipment.contains("Parkeringsensor bak") || equipment.contains("Parkeringsensor foran")
+  }
+
+  def getAntallEiere(properties:HashMap[String, String]):Int= {
+    properties.getOrElse("Antall eiere", Utility.Constants.EmptyInt.toString).toInt
+  }
+
+  def getKommune(location:String):String = {
+    Utility.Constants.EmptyString
+  }
+
+
+  def getFylke(location:String):String = {
+    Utility.Constants.EmptyString
+  }
+
+  def hasXenon(equipment:Set[String]):Boolean = {
+    equipment.contains("Xenon")
+  }
+
+  def hasNavigasjon(equipment:Set[String]):Boolean = {
+    equipment.contains("Navigasjonssystem")
+  }
+
+  def hasServicehefte(description:String):Boolean = {
+    description.contains("servicehefte") || description.contains("Servicehefte") || description.contains("service hefte")
+  }
+
+  def hasSportsseter(equipment:Set[String]):Boolean = {
+    equipment.contains("Sportsseter")
+  }
+
+  def hasTilstandsrapport(properties:HashMap[String, String]):Boolean= {
+    properties.containsKey("Tilstandsrapport")
+  }
+
+  def getVekt(properties:HashMap[String, String]):Int= {
+    val text = properties.getOrElse("Vekt", Utility.Constants.EmptyInt.toString)
+    text.replaceAll("[\\D]", "").toInt
+  }
+
 
   def propCarToString(p:Product):String = {
     p.productIterator.map {
