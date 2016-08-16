@@ -25,12 +25,18 @@ import java.time.{LocalDate, ZoneId}
 import java.util
 import java.util.HashMap
 
+
+
+
 /**
   * Created by torbjorn.torbjornsen on 04.07.2016.
   */
 
 
 object Utility {
+
+
+
 
   def createAcqCarDetailsObject(i:Int, jsonCarHdr:JsValue)= {
     val url = jsonCarHdr.\\("group").head(i).\("title").head.\("href").as[String]
@@ -238,9 +244,7 @@ object Utility {
   //    val jsonString = "[\"Aluminiumsfelger\",\"Automatisk klimaanlegg\",\"Skinnseter\"]"
 
   def popTopPropCarRecord(propCarPairRDD:RDD[(String,PropCar)], url:String):PropCar = {
-    val topPropCar = if (propCarPairRDD.count > 0) {
-      propCarPairRDD.lookup(url)(0)
-    } else PropCar()
+    val topPropCar = propCarPairRDD.lookup(url)(0)
     topPropCar
   }
 
@@ -264,12 +268,12 @@ object Utility {
 
   }
 
-  def getBtlKfEventDates(propCarPairRDD:RDD[(String,PropCar)], url:String):BtlCar= {
-    val firstDeletedDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.deleted == true)), url)
-    val firstSoldDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.sold == true)), url)
-    BtlCar(sold_date = firstDeletedDatePropCar.load_date,
-      deleted_date = firstSoldDatePropCar.load_date)
-  }
+//  def getBtlKfEventDates(propCarPairRDD:RDD[(String,PropCar)], url:String):BtlCar= {
+//    val firstDeletedDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.deleted == true)), url)
+//    val firstSoldDatePropCar: PropCar = popTopPropCarRecord(getFirstRecordFromFilteredPropCarRDD(propCarPairRDD, (t => t._1 == url & t._2.sold == true)), url)
+//    BtlCar(sold_date = firstDeletedDatePropCar.load_date,
+//      deleted_date = firstSoldDatePropCar.load_date)
+//  }
 
   def hasAutomatgir(properties:HashMap[String, String]):Boolean = {
     properties.get("Girkasse") == "Automat"

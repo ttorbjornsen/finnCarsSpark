@@ -70,16 +70,24 @@ object Batch extends App {
   val propCarYearRDD = dao.getPropCarDateRange(LocalDate.now.plusDays(-365), LocalDate.now)
   propCarYearRDD.persist(StorageLevel.MEMORY_AND_DISK)
 
+  val propCarYearDeletedCarsMap = sc.broadcast(Utility.getFirstRecordFromFilteredPropCarRDD(propCarYearRDD, (t => t._2.deleted == true)).collectAsMap)
+  val propCarYearSoldCarsMap = sc.broadcast(Utility.getFirstRecordFromFilteredPropCarRDD(propCarYearRDD, (t => t._2.sold == true)).collectAsMap)
+
   /* START populate key figures in BTL based on the first record */
   val propCarFirstRecordsRDD = Utility.getFirstRecordFromFilteredPropCarRDD(propCarYearRDD)
   propCarFirstRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
   val propCarLastRecordsRDD = Utility.getLastPropCarAll(propCarDeltaRDD)
   propCarLastRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
 
+
+
   val btlCar = btlDeltaUrlList.map{url =>
     val btlCarKf_FirstLoad:BtlCar = Utility.getBtlKfFirstLoad(Utility.popTopPropCarRecord(propCarFirstRecordsRDD ,url))
     val btlCarKf_LastLoad:BtlCar = Utility.getBtlKfLastLoad(Utility.popTopPropCarRecord(propCarLastRecordsRDD,url))
-    val btlCarKf_EventDates:BtlCar = Utility.getBtlKfEventDates(propCarYearRDD, url)
+    val btlCarKf_sold_date = propCarYearSoldCarsMap.value.getOrElse(url, PropCar()).load_date
+    val btlCarKf_deleted_date = propCarYearDeletedCarsMap.value.getOrElse(url, PropCar()).load_date
+
+//    val btlCarKf_EventDates:BtlCar = Utility.getBtlKfEventDates(propCarYearRDD, url)
     BtlCar(url = url,
       finnkode = btlCarKf_LastLoad.finnkode,
       title = btlCarKf_LastLoad.title,
@@ -90,11 +98,11 @@ object Batch extends App {
       price_last = btlCarKf_LastLoad.price_last,
       price_delta = (btlCarKf_LastLoad.price_last - btlCarKf_FirstLoad.price_first),
       sold = btlCarKf_LastLoad.sold,
-      sold_date = btlCarKf_EventDates.sold_date,
-      lead_time_sold = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_EventDates.sold_date),
+      sold_date = btlCarKf_sold_date,
+      lead_time_sold = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_sold_date),
       deleted = btlCarKf_LastLoad.deleted,
-      deleted_date = btlCarKf_EventDates.deleted_date,
-      lead_time_deleted = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_EventDates.deleted_date),
+      deleted_date = btlCarKf_deleted_date,
+      lead_time_deleted = Utility.getDaysBetweenStringDates(btlCarKf_FirstLoad.load_date_first, btlCarKf_deleted_date),
       load_date_first = btlCarKf_FirstLoad.load_date_first,
       load_date_latest = btlCarKf_LastLoad.load_date_latest,
       automatgir = btlCarKf_LastLoad.automatgir,
