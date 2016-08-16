@@ -64,7 +64,7 @@ object Batch extends App {
 
   /* Start populating BTL-layer */
   //get the urls that are part of the delta load
-  val btlDeltaUrlList = rddDeltaLoadAcqHeaderLastLoadTimePerDay.map(row => row._1._2).distinct.collect
+  val btlDeltaUrlList = propCarDeltaRDD.map(row => row._1).distinct.collect
 
   //create propcar lookup table, limit by x number of days
   val propCarYearRDD = dao.getPropCarDateRange(LocalDate.now.plusDays(-365), LocalDate.now)
