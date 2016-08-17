@@ -201,7 +201,7 @@ class Tests extends FunSpec with Matchers with SparkSqlSpec{
       }
 
       //check first car
-      val btlCarTest1 = btlCar(0)
+      val btlCarTest1 = btlCar(0) //based on the url list input
       btlCarTest1.sold_date should equal ("2016-07-16")
       btlCarTest1.hengerfeste should equal (true)
       btlCarTest1.sylindervolum should equal (2.3)

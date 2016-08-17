@@ -208,9 +208,10 @@ object Utility {
   }
 
   def getDaysBetweenStringDates(dateStart:String, dateFinish:String):Int = {
-    LocalDate.parse(dateStart).until(LocalDate.parse(dateFinish), ChronoUnit.DAYS).toInt
+    if (dateFinish == Utility.Constants.EmptyDate) {
+      Utility.Constants.EmptyInt
+    } else LocalDate.parse(dateStart).until(LocalDate.parse(dateFinish), ChronoUnit.DAYS).toInt
   }
-
   def getDatesBetween(dateStart:LocalDate, dateEnd:LocalDate):Seq[String] = {
     //val dateStart = LocalDate.now
     //val dateEnd = LocalDate.now.plusDays(-365)
