@@ -61,6 +61,7 @@ object Batch extends App {
 
   //NOTE! Number of records between PropCar and AcqHeader/AcqDetails may differ. E.g. when traversing Finn header pages, some cars will be bound to come two times when new cars are entered. Duplicate entries may in other words occur due to load_time being part of Acq* primary key.
   propCarDeltaRDD.map(t => t._2).saveToCassandra("finncars", "prop_car_daily")
+  println("Saved to prop_car_daily")
 
   /* Start populating BTL-layer */
   //get the urls that are part of the delta load
@@ -78,7 +79,6 @@ object Batch extends App {
   propCarFirstRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
   val propCarLastRecordsRDD = Utility.getLastPropCarAll(propCarDeltaRDD)
   propCarLastRecordsRDD.persist(StorageLevel.MEMORY_AND_DISK)
-
 
   val btlCar = btlDeltaUrlList.map{url =>
     val btlCarKf_FirstLoad:BtlCar = Utility.getBtlKfFirstLoad(Utility.popTopPropCarRecord(propCarFirstRecordsRDD ,url))
@@ -127,7 +127,7 @@ object Batch extends App {
   }
 
   sc.parallelize(btlCar).saveToCassandra("finncars", "btl_car")
-
+  println("Saved to btl_car")
   /* END populate key figures in BTL based on the first record */
 
 
